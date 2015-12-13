@@ -1,0 +1,130 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>ChangeLog</title>
+    <link rel="stylesheet" type="text/css" href="Content/webix.css"/>
+    <script type="text/javascript" src="Scripts/webix.js"></script>
+    
+    <style type="text/css">
+        
+        .webix_layout_toolbar.webix_toolbar .bt_1 .webixtype_base{
+            background: #3D7113;
+        }
+        
+    </style>
+
+    <script type="text/javascript">        
+
+        webix.protoUI({
+            name: 'database-toolbar',
+            defaults: {
+                id:'tbar',
+                height:62,
+                cols: [{ view: 'icon', icon: 'plus-circle',click:'$$("tbar")._addButton("DB2","transport")' }]
+            },
+
+           _addButton:function(server,database) {
+                this.addView(this._createButton(server, database), 0);
+            },
+
+            _createButton: function (server, database) {
+                var template = webix.template('<span class="webix_icon fa-icon fa-database"></span> #serverName# <br/>#databaseName#');
+                return {
+                    icon: 'database',
+                    autowidth: true,
+                    view: "button",
+                    type: "htmlbutton",
+                    icon: "database",
+                    server: server,
+                    database:database,
+                    label: template({ serverName: server, databaseName: database }),
+                    on: {
+                        'onItemClick': this.onButtonClick
+                    }
+                };
+            },
+            
+            onButtonClick:function(id) {
+                var button = $$(id);
+                console.log(button.config.database ,button.config.server);
+            }
+            
+
+        },webix.ui.toolbar);
+
+        webix.ready(function () {
+            webix.ui({
+                rows: [
+                    {
+                        view: "database-toolbar",
+                        id: 'tbar'
+                    },
+                    {
+                        cols: [
+                        {
+                            view: 'datatable',
+                            gravity: 2,
+                            columns: [
+                                { id: 'Operations', header: "Operations", width: 100, template: "<span class='webix_icon fa-plus-square-o'></span><span class='webix_icon fa-edit'></span><span class='webix_icon fa-trash-o'></span>" },
+                                { id: "Name", fillspace: true, header: "Table" }
+                            ],
+                            url:'SelectTables.ashx'
+                        },
+                        { view: 'resizer' },
+                            {
+                                view: 'tabview',
+                                cells: [
+                                    {
+                                        header: "<span class='webix_icon fa-plus-square-o'></span>Insert",
+                                        view:'datatable',
+                                        columns: [
+                                            { id: "checked", header: { content: "masterCheckbox" }, template: "{common.checkbox()}", width: 40 },
+                                            { id: "ColumnName", fillspace: true, header: "Column Name" }
+                                        ],
+                                        data:[
+		                                    { checked: true, ColumnName: 'VehicleId' },
+                                            { checked: false, ColumnName: 'RegistrationNumber' }
+	                                       ]
+                                    },
+                                    {
+                                        header: "<span class='webix_icon fa-edit'></span>Update", icon: 'edit',
+                                        view: 'datatable',
+                                        columns: [
+                                            { id: "checked", header: { content: "masterCheckbox" }, template: "{common.checkbox()}", width: 40 },
+                                            { id: "ColumnName", fillspace: true, header: "Column Name" }
+                                        ],
+                                        data: [
+		                                    { checked: true, ColumnName: 'VehicleId' },
+                                            { checked: false, ColumnName: 'RegistrationNumber' }
+	                                       ]
+                                    },
+                                    {
+                                        header: "<span class='webix_icon fa-trash-o'></span>Delete",
+                                        view: 'datatable',
+                                        columns: [
+                                            { id: "checked", header: { content: "masterCheckbox" }, template: "{common.checkbox()}", width: 40 },
+                                            { id: "ColumnName", fillspace: true, header: "Column Name" }
+                                        ],
+                                        data: [
+		                                    { checked: true, ColumnName: 'VehicleId' },
+                                            { checked: false, ColumnName: 'RegistrationNumber' }
+	                                       ]
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+
+                ]
+
+            });
+
+        });
+
+    </script>
+
+</head>
+<body>
+
+</body>
+</html>

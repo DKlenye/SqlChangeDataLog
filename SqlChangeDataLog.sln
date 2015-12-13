@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SqlChangeDataLog", "SqlChangeDataLog\SqlChangeDataLog.csproj", "{DCEE9B25-1C77-4AE3-8851-332AC426FB67}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SqlChangeDataLog.Web", "SqlChangeDataLog.Web\SqlChangeDataLog.Web.csproj", "{6936C925-B6B7-4ADE-B4FB-AFEC9BEB8793}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DCEE9B25-1C77-4AE3-8851-332AC426FB67}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DCEE9B25-1C77-4AE3-8851-332AC426FB67}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DCEE9B25-1C77-4AE3-8851-332AC426FB67}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DCEE9B25-1C77-4AE3-8851-332AC426FB67}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6936C925-B6B7-4ADE-B4FB-AFEC9BEB8793}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6936C925-B6B7-4ADE-B4FB-AFEC9BEB8793}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6936C925-B6B7-4ADE-B4FB-AFEC9BEB8793}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6936C925-B6B7-4ADE-B4FB-AFEC9BEB8793}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
