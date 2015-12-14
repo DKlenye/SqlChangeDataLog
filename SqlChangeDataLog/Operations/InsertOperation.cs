@@ -6,7 +6,7 @@
         {
         }
 
-        protected override string Name
+        public override string Name
         {
             get { return "insert"; }
         }

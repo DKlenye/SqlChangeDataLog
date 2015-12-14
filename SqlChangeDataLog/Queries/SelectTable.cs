@@ -1,4 +1,4 @@
-﻿namespace SqlChangeDataLog.MSSql.Queries
+﻿namespace SqlChangeDataLog.Queries
 {
     public class SelectTable
     {

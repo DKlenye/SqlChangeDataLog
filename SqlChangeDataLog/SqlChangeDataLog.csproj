@@ -44,20 +44,20 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Extensions\DapperQueryObjectExtensions.cs" />
-    <Compile Include="MSSql\Queries\QueryObject.cs" />
-    <Compile Include="MSSql\Queries\SelectTable.cs" />
-    <Compile Include="MSSql\Queries\SelectLogTrigger.cs" />
     <Compile Include="Operations\DataOperation.cs" />
     <Compile Include="Operations\DeleteOperation.cs" />
     <Compile Include="Operations\InsertOperation.cs" />
     <Compile Include="Operations\UpdateOperation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Queries\CreateLogTrigger.cs" />
+    <Compile Include="Queries\QueryObject.cs" />
+    <Compile Include="Queries\SelectLogTrigger.cs" />
+    <Compile Include="Queries\SelectTable.cs" />
+    <Compile Include="Queries\SelectTriggerText.cs" />
     <Compile Include="TableDto.cs" />
     <Compile Include="TableListDto.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="MSSql\Commands\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>

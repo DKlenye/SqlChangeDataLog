@@ -9,6 +9,6 @@
 
         public string[] Columns { get; private set; }
 
-        protected abstract string Name { get; }
+        public abstract string Name { get; }
     }
 }
