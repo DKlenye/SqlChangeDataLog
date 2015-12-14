@@ -18,8 +18,8 @@ namespace SqlChangeDataLog.Web.Handlers
         {
             context.Response.ContentType = "application/json";
 
-            var database = "transport";
-            var server = "db2";
+            var database = "DDD";
+            var server = ".";
             IEnumerable<string> tables;
             var operations = new Dictionary<string, List<string>>(); 
             

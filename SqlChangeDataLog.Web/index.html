@@ -12,7 +12,8 @@
     <style type="text/css">
         
         .webix_layout_toolbar.webix_toolbar .bt_1 .webixtype_base{
-            background: #3D7113;
+            background: #50E650;
+            background: #FF7777;
         }
         
     </style>
@@ -23,9 +24,30 @@
         webix.protoUI({
             name: 'database-toolbar',
             defaults: {
-                id:'tbar',
-                height:62,
-                cols: [{ view: 'icon', icon: 'plus-circle',click:'$$("tbar")._addButton("DB2","transport")' }]
+                id: 'tbar',
+                height: 66,
+                cols: [
+                    {id:'addbutton', view: 'icon', icon: 'plus-circle', click: '$$("tbar")._addButtonClick("DB2","transport")' },
+                    {id:'addtext', width:250, hidden:true,
+                        rows: [
+                            {label:'server',view:'text', height:30},
+                            {label:'database', view: 'text', height: 30 }
+                        ]
+                    },
+                    { id:'addconfirm', width:100,hidden:true,
+                        rows: [
+                            { view:'button', type:'icon', height:30, label:'Cancel', icon:'ban'},
+                            { view: 'button', type:'icon', height:30, label: 'Ok', icon:'check'}
+                        ]
+                    }
+                ]
+            },
+
+
+            _addButtonClick:function() {
+                $$("addbutton").hide();
+                $$("addtext").show();
+                $$("addconfirm").show();
             },
 
            _addButton:function(server,database) {
@@ -92,7 +114,7 @@
                         {
                             view: 'datatable',
                             id:'tables',
-                            gravity: 2,
+                            gravity: 1,
                             select: "row",
                             on:{
                                     onBeforeLoad:function(){
