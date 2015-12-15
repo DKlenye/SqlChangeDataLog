@@ -5,12 +5,19 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using SqlChangeDataLog.Extensions;
 using SqlChangeDataLog.Queries;
 
 namespace SqlChangeDataLog.Web.Handlers
 {
-
+    
+    public class RequestParams
+    {
+        public string Server { get; set; }
+        public string Database { get; set; }
+    }
+    
     public class SelectTables : IHttpHandler
     {
 
@@ -18,21 +25,25 @@ namespace SqlChangeDataLog.Web.Handlers
         {
             context.Response.ContentType = "application/json";
 
-            var database = "DDD";
-            var server = ".";
+            var httpRequest = context.Request;
+            
+            var obj = new JObject();
+            httpRequest.Form.AllKeys.ToList().ForEach(x => obj.Add(new JProperty(x,httpRequest[x])));
+            var param = obj.ToObject<RequestParams>();
+
+
             IEnumerable<string> tables;
             var operations = new Dictionary<string, List<string>>(); 
             
-            using (IDbConnection dbConnection = Connect(server,database))
+            using (IDbConnection dbConnection = Connect(param.Server,param.Database))
             {
                 tables = dbConnection.Query<string>(new SelectTable().All());
-                var triggers = dbConnection.Query<string>(new SelectLogTrigger().All());
+                var triggers = dbConnection.Query<TriggerDto>(new SelectLogTrigger().All());
 
                 triggers.ToList().ForEach(trigger =>
                 {
-                    var nameArray = trigger.Split('_');
-                    var tableName = nameArray[0].ToLower();
-                    var operationName = nameArray[1];
+                    var tableName = trigger.TableName.ToLower();
+                    var operationName = trigger.GetOperation().ToLower();
 
                     if (!operations.ContainsKey(tableName))
                     {
