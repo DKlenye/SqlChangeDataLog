@@ -2,7 +2,14 @@
 {
     public class SelectLogTrigger
     {
-        private const string SqlAll = @"select * from sysobjects where xtype = 'TR' and name like '%_log'";
+        private const string SqlAll = @"
+            SELECT
+                tr.name AS TriggerName,
+                t.name TableName 
+            from sysobjects tr
+            LEFT JOIN sysobjects t ON tr.parent_obj = t.id AND t.XTYPE = 'U'
+            WHERE tr.xtype = 'TR' and tr.name like '%log'
+        ";
 
         public QueryObject All()
         {
