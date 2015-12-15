@@ -56,6 +56,7 @@
     <Compile Include="Queries\SelectTriggerText.cs" />
     <Compile Include="TableDto.cs" />
     <Compile Include="TableListDto.cs" />
+    <Compile Include="TriggerDto.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
