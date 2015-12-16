@@ -3,7 +3,6 @@
 <head>
     <title>ChangeLog</title>
     <link rel="stylesheet" type="text/css" href="Content/webix.css"/>
-    <link href="Content/font-awesome.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" type="text/css" href="Content/sidebar.css"/>
     
     <script type="text/javascript" src="Scripts/polyfill.js"></script>
@@ -21,6 +20,7 @@
             background: #27ae60
         }
         
+       
     </style>
 
     <script type="text/javascript">
@@ -78,7 +78,7 @@
                                             case 13:
                                             {
                                                 console.log(event);
-                                                    $$('tbar')._confirmDatabase();
+                                                $$('logtabletext').focus();
                                                     return false;
                                                 }
                                         }
@@ -90,6 +90,7 @@
                                 label: 'log_table',
                                 view: 'text',
                                 height: 30,
+                                value:'ChangeLog',
                                 on: {
                                     'onKeyPress': function (key, event) {
                                         switch (key) {
@@ -244,7 +245,7 @@
             var icons = {
                 'insert': 'fa-plus-square-o',
                 'update': 'fa-edit',
-                'delete': 'fa-trash-o'
+                'delete': 'fa-minus-square-o'
             };
 
             webix.ui({
@@ -256,6 +257,7 @@
                     {
                         cols: [
                             {
+                                id:"app.sidebar",
                                 view: "sidebar",
                                 collapsed: true,
                                 data: [
@@ -317,15 +319,77 @@
                             },
                             { view: 'resizer' },
                             {
+                                rows: [
+                                {
+                                    view:'toolbar',
+                                    cols:[
+                                    {
+                                    
+                                        view: "segmented",
+                                        optionWidth:120,
+                                        value: 4,
+                                        options: [
+                                            { id: "1", value: "</span><span class='webix_icon " + icons["insert"] + "'></span><span style='padding-left: 4px'>Insert</span>" },
+                                            { id: "2", value: "<span class='webix_icon " + icons['update'] + "'></span><span style='padding-left: 4px'>Update</span>" },
+                                            { id: "3", value: "<span class='webix_icon " + icons['delete'] + "'></span><span style='padding-left: 4px'>Delete</span>" }
+                                        ]
+                                    }  
+                                    ]
+                                },
+                                    
+                                    
+                                    {
+                                        rows: [
+                                            {
+                                                cells: [
+                                                    {
+                                                        view: 'datatable',
+                                                        id: 'triggertable',
+                                                        columns: [
+                                                             { id: "checked", header: { content: "masterCheckbox" }, template: "{common.checkbox()}", width: 40 },
+                                                            { id: "ColumnName", fillspace: true, header: "Column Name" }
+                                                        ],
+                                                        data: [
+                                                            { checked: true, ColumnName: 'VehicleId' },
+                                                            { checked: false, ColumnName: 'RegistrationNumber' }
+                                                        ]
+                                                    },
+                                                    {
+                                                        rows: [
+                                                            {
+                                                                id: 'triggertext',
+                                                                view: 'textarea'
+                                                            },
+                                                            {
+                                                                view:'button',
+                                                                label:'Save'
+                                                            }
+                                                        ]
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                view: 'segmented',
+                                                multiview:true,
+                                                value: 'triggertable',
+                                                options: [
+                                                    { value: "<span class='webix_icon fa-table'></span><span style='padding-left: 4px'>Table</span>", id: 'triggertable' },
+                                                    { value: "<span class='webix_icon fa-file-text-o'></span><span style='padding-left: 4px'>TriggerText</span>", id: 'triggertext' }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                ]
+
+                            }
+
+                            /*{
                                 view: 'tabview',
                                 cells: [
                                     {
-                                        header: "<span class='webix_icon fa-trash-o'></span>Delete",
+                                        header: "<span class='webix_icon fa-minus-square-o'></span>Delete",
                                         view: 'datatable',
                                         columns: [
-                                            { id: "insert", header: ["<span class='webix_icon " + icons['insert'] + "'></span> Insert", { content: "masterCheckbox" }], template: "{common.checkbox()}", width: 100 },
-                                            { id: "update", header: ["<span class='webix_icon " + icons['update'] + "'></span> Update", { content: "masterCheckbox" }], template: "{common.checkbox()}", width: 100 },
-                                            { id: "delete", header: ["<span class='webix_icon " + icons['delete'] + "'></span> Delete", { content: "masterCheckbox" }], template: "{common.checkbox()}", width: 100 },
                                             { id: "ColumnName", fillspace: true, header: "Column Name" }
                                         ],
                                         data: [
@@ -358,15 +422,15 @@
                                         ]
                                     }
                                 ]
-                            }
+                            }*/
                         ]
                     }
                 ]
 
             });
 
-
             $$('tbar').restore_state();
+            $$('app.sidebar').select('tables'); 
 
         });
 
