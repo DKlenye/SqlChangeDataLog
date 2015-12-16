@@ -15,5 +15,10 @@
         {
             return new QueryObject(SqlAll);
         }
+
+        public QueryObject ByTableName(string tableName)
+        {
+            return new QueryObject(All().Sql + " AND t.tableName = @TableName", new {TableName = tableName});
+        }
     }
 }
