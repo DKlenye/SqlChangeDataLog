@@ -1,4 +1,4 @@
-﻿namespace SqlChangeDataLog
+﻿namespace SqlChangeDataLog.Dtos
 {
     public class TableListDto
     {

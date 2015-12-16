@@ -6,6 +6,7 @@ using System.Linq;
 using System.Web;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using SqlChangeDataLog.Dtos;
 using SqlChangeDataLog.Extensions;
 using SqlChangeDataLog.Queries;
 

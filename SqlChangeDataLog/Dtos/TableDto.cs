@@ -1,6 +1,6 @@
 ﻿using SqlChangeDataLog.Operations;
 
-namespace SqlChangeDataLog
+namespace SqlChangeDataLog.Dtos
 {
     public class TableDto
     {

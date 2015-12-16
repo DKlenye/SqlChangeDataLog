@@ -43,6 +43,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Dtos\PrimaryKeyDto.cs" />
+    <Compile Include="Dtos\TableDto.cs" />
+    <Compile Include="Dtos\TableListDto.cs" />
+    <Compile Include="Dtos\TriggerDto.cs" />
+    <Compile Include="Dtos\TriggerTextDto.cs" />
     <Compile Include="Extensions\DapperQueryObjectExtensions.cs" />
     <Compile Include="Operations\DataOperation.cs" />
     <Compile Include="Operations\DeleteOperation.cs" />
@@ -53,10 +58,8 @@
     <Compile Include="Queries\QueryObject.cs" />
     <Compile Include="Queries\SelectLogTrigger.cs" />
     <Compile Include="Queries\SelectTable.cs" />
+    <Compile Include="Queries\SelectPrimaryKey.cs" />
     <Compile Include="Queries\SelectTriggerText.cs" />
-    <Compile Include="TableDto.cs" />
-    <Compile Include="TableListDto.cs" />
-    <Compile Include="TriggerDto.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
