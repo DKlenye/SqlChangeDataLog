@@ -20,6 +20,10 @@
             background: #27ae60
         }
         
+        .webix_icon {
+                font-size: 20px;
+        }
+        
        
     </style>
 
@@ -54,6 +58,7 @@
                                             case 13:
                                             {
                                                 $$('databasetext').focus();
+                                                $$('databasetext').getInputNode().select();
                                                 return false;
                                             }
                                         }
@@ -77,8 +82,8 @@
                                                 //ENTER
                                             case 13:
                                             {
-                                                console.log(event);
                                                 $$('logtabletext').focus();
+                                                $$('logtabletext').getInputNode().select();
                                                     return false;
                                                 }
                                         }
@@ -103,7 +108,6 @@
                                                 //ENTER
                                             case 13:
                                                 {
-                                                    console.log(event);
                                                     $$('tbar')._confirmDatabase();
                                                     return false;
                                                 }
@@ -157,6 +161,7 @@
 
 
                 $$('servertext').focus();
+                $$('servertext').getInputNode().select();
             },
 
             _addButton: function (cfg) {
@@ -243,12 +248,13 @@
         webix.ready(function () {
 
             var icons = {
-                'insert': 'fa-plus-square-o',
+                'insert': 'fa-plus-square-o ',
                 'update': 'fa-edit',
                 'delete': 'fa-minus-square-o'
             };
 
             webix.ui({
+                id:"app.layout",
                 rows: [
                     {
                         view: "database-toolbar",
@@ -290,11 +296,30 @@
                                                 gravity: 1,
                                                 select: "row",
                                                 on: {
-                                                    onBeforeLoad: function () {
-                                                        this.showOverlay("Loading...");
-                                                    },
-                                                    onAfterLoad: function () {
-                                                        this.hideOverlay();
+                                                    onSelectChange:function() {
+                                                        var selection = this.getSelectedItem();
+
+                                                        if (!selection) {
+                                                            var grid = $$('columnstable');
+                                                            grid.clearAll();
+                                                            return;
+                                                        }
+
+                                                        webix.ajax().post('/Handlers/SelectTableDetails.ashx', { server: 'db2', database: 'nsd2', tableName:selection.Name }, function (data) {
+                                                            
+                                                            var a = []
+                                                            data = JSON.parse(data);
+                                                            console.log(data);
+
+                                                            data.Columns.forEach(function(col) {
+                                                                a.push({ ColumnName: col });
+                                                            });
+
+                                                            var grid = $$('columnstable');
+                                                            grid.clearAll();
+                                                            grid.parse(a);
+
+                                                        });
                                                     }
                                                 },
                                                 columns: [
@@ -330,6 +355,7 @@
                                             },
                                             { view: 'resizer' },
                                             {
+                                                id:"tabledetails",
                                                 rows: [
                                                     {
                                                         view: 'toolbar',
@@ -353,7 +379,7 @@
                                                                 multiview: true,
                                                                 value: 'triggertable',
                                                                 options: [
-                                                                    { value: "<span class='webix_icon fa-table'></span><span style='padding-left: 4px'>Table</span>", id: 'triggertable' },
+                                                                    { value: "<span class='webix_icon fa-columns'></span><span style='padding-left: 4px'>Columns</span>", id: 'triggertable' },
                                                                     { value: "<span class='webix_icon fa-file-text-o'></span><span style='padding-left: 4px'>TriggerText</span>", id: 'triggertext' }
                                                                 ]
                                                             },
@@ -363,6 +389,7 @@
                                                                         id: 'triggertable',
                                                                         rows: [{
                                                                             view: 'datatable',
+                                                                            id:'columnstable',
                                                                             columns: [
                                                                                     { id: "checked", header: { content: "masterCheckbox" }, template: "{common.checkbox()}", width: 40 },
                                                                                     { id: "ColumnName", fillspace: true, header: "Column Name" }
@@ -375,10 +402,8 @@
                                                                             {
                                                                                 height: 45,
                                                                                 cols: [
-                                                                                    { view: "button", type: "iconButton", label: "Reply", icon: "reply", width: 95 },
-                                                                                    { view: "button", type: "iconButton", label: "Create", icon: "envelope", width: 95 },
-                                                                                    {},
-                                                                                    { view: "button", type: "iconButton", label: "Delete", icon: "times", width: 95 }
+                                                                                    { view: "button", type: "iconButton", label: "Save", icon: "floppy-o", width: 95},
+                                                                                    {}
                                                                                 ]
                                                                             }
                                                                         ]
@@ -392,11 +417,9 @@
                                                                             {
                                                                                 height: 45,
                                                                                 cols: [
-                                                                                    { view: "button", type: "iconButton", label: "Reply", icon: "reply", width: 95 },
-                                                                                    { view: "button", type: "iconButton", label: "Create", icon: "envelope", width: 95 },
-                                                                                    {},
-                                                                                    { view: "button", type: "iconButton", label: "Delete", icon: "times", width: 95 }
-                                                                                ]
+                                                                                { view: "button", type: "iconButton", label: "Save", icon: "floppy-o", width: 95},
+                                                                                {}
+                                                                        ]
                                                                             }
                                                                         ]
                                                                     }
@@ -449,13 +472,15 @@
         var LoadTables = function(server, database) {
 
             var grid = $$("tables");
+            grid.disable();
             grid.clearAll();
-            grid.showOverlay("Loading...");
+            grid.showOverlay("Loading <span class='webix_icon fa-spinner fa-spin'></span>");
 
             webix.ajax().post('/Handlers/SelectTables.ashx', { server: server, database: database }, function(data) {
                 grid.parse(data);
                 grid.filterByAll();
                 grid.hideOverlay();
+                grid.enable();
             });
         };
 
