@@ -4,7 +4,7 @@
     <title>ChangeLog</title>
     <link rel="stylesheet" type="text/css" href="Content/webix.css"/>
     <link rel="stylesheet" type="text/css" href="Content/sidebar.css"/>
-    
+
     <script type="text/javascript" src="Scripts/polyfill.js"></script>
     <script type="text/javascript" src="Scripts/webix.js"></script>
     <script type="text/javascript" src="Scripts/Sidebar.js"></script>
@@ -254,7 +254,7 @@
             };
 
             webix.ui({
-                id:"app.layout",
+                id: "app.layout",
                 rows: [
                     {
                         view: "database-toolbar",
@@ -296,7 +296,7 @@
                                                 gravity: 1,
                                                 select: "row",
                                                 on: {
-                                                    onSelectChange:function() {
+                                                    onSelectChange: function () {
                                                         var selection = this.getSelectedItem();
 
                                                         if (!selection) {
@@ -305,13 +305,13 @@
                                                             return;
                                                         }
 
-                                                        webix.ajax().post('/Handlers/SelectTableDetails.ashx', { server: 'db2', database: 'nsd2', tableName:selection.Name }, function (data) {
-                                                            
+                                                        webix.ajax().post('/Handlers/SelectTableDetails.ashx', { server: '.', database: 'DDD', tableName: selection.Name }, function (data) {
+
                                                             var a = []
                                                             data = JSON.parse(data);
                                                             console.log(data);
 
-                                                            data.Columns.forEach(function(col) {
+                                                            data.Columns.forEach(function (col) {
                                                                 a.push({ ColumnName: col });
                                                             });
 
@@ -355,7 +355,7 @@
                                             },
                                             { view: 'resizer' },
                                             {
-                                                id:"tabledetails",
+                                                id: "tabledetails",
                                                 rows: [
                                                     {
                                                         view: 'toolbar',
@@ -389,7 +389,7 @@
                                                                         id: 'triggertable',
                                                                         rows: [{
                                                                             view: 'datatable',
-                                                                            id:'columnstable',
+                                                                            id: 'columnstable',
                                                                             columns: [
                                                                                     { id: "checked", header: { content: "masterCheckbox" }, template: "{common.checkbox()}", width: 40 },
                                                                                     { id: "ColumnName", fillspace: true, header: "Column Name" }
@@ -402,7 +402,7 @@
                                                                             {
                                                                                 height: 45,
                                                                                 cols: [
-                                                                                    { view: "button", type: "iconButton", label: "Save", icon: "floppy-o", width: 95},
+                                                                                    { view: "button", type: "iconButton", label: "Save", icon: "floppy-o", width: 95 },
                                                                                     {}
                                                                                 ]
                                                                             }
@@ -417,7 +417,7 @@
                                                                             {
                                                                                 height: 45,
                                                                                 cols: [
-                                                                                { view: "button", type: "iconButton", label: "Save", icon: "floppy-o", width: 95},
+                                                                                { view: "button", type: "iconButton", label: "Save", icon: "floppy-o", width: 95 },
                                                                                 {}
                                                                         ]
                                                                             }
@@ -434,22 +434,43 @@
                                     {
                                         id: "viewlog",
                                         cols: [
-                                            {
-                                                view: 'datatable',
-                                                columns: [
-                                                    { id: "Id", header: "Id" },
-                                                    { id: "Date", header: "Date" },
-                                                    { id: "UserName", header: "UserName" },
-                                                    { id: "ChangeType", header: "ChangeType" },
-                                                    { id: "TableName", header: "TableName" },
-                                                    { id: "IdString", header: "IdString" }
+                                            {   
+                                                gravity:1.5,
+                                                rows: [
+                                                    {
+                                                        view: 'datatable',
+                                                        columns: [
+                                                            { id: "Id", header: "Id", width: 100 },
+                                                            { id: "Date", header: "Date", width: 100 },
+                                                            { id: "UserName", header: "UserName", width: 100 },
+                                                            { id: "ChangeType", header: "ChangeType", width: 100 },
+                                                            { id: "TableName", header: "TableName",fillspace: true },
+                                                            { id: "IdString", header: "IdString",width:100 }
+                                                        ],
+                                                        select:'row',
+                                                        data:[
+                                                            {}, {}, {}, {}
+                                                        ],
+                                                        pager:'pagerA'
+                                                    },
+                                                    {
+                                                        paddingY: 7,
+                                                        rows: [
+							                                {
+							                                    view: "pager", id: "pagerA",
+							                                    template: "{common.first()} {common.prev()} {common.pages()} {common.next()} {common.last()} Page {common.page()} from #limit#",
+                                                                size: 50,
+							                                    group: 5
+							                                }
+						                                ]
+							                        }
                                                 ]
                                             },
-                                            {view:"resizer"},
+                                            { view: "resizer" },
                                             {
                                                 view: 'datatable',
                                                 columns: [
-                                                    { id: "Column", header: "Column" },
+                                                    { id: "Column", header: "Column", fillspace: true },
                                                     { id: "OldValue", header: "Date" },
                                                     { id: "NewValue", header: "Date" }
                                                 ]

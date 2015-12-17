@@ -58,7 +58,32 @@
     <Content Include="Content\font-awesome.min.css" />
     <Content Include="Content\fonts\font-license.txt" />
     <Content Include="Content\fonts\fontawesome-webfont.svg" />
+    <Content Include="Content\fonts\Roboto-Medium-webfont.svg" />
+    <Content Include="Content\fonts\Roboto-Regular-webfont.svg" />
     <Content Include="Content\sidebar.css" />
+    <Content Include="Content\skins\air.css" />
+    <Content Include="Content\skins\aircompact.css" />
+    <Content Include="Content\skins\clouds.css" />
+    <Content Include="Content\skins\compact.css" />
+    <Content Include="Content\skins\debug\air.css" />
+    <Content Include="Content\skins\debug\aircompact.css" />
+    <Content Include="Content\skins\debug\clouds.css" />
+    <Content Include="Content\skins\debug\compact.css" />
+    <Content Include="Content\skins\debug\flat.css" />
+    <Content Include="Content\skins\debug\glamour.css" />
+    <Content Include="Content\skins\debug\light.css" />
+    <Content Include="Content\skins\debug\metro.css" />
+    <Content Include="Content\skins\debug\terrace.css" />
+    <Content Include="Content\skins\debug\touch.css" />
+    <Content Include="Content\skins\debug\web.css" />
+    <Content Include="Content\skins\flat.css" />
+    <Content Include="Content\skins\glamour.css" />
+    <Content Include="Content\skins\light.css" />
+    <Content Include="Content\skins\material.css" />
+    <Content Include="Content\skins\metro.css" />
+    <Content Include="Content\skins\terrace.css" />
+    <Content Include="Content\skins\touch.css" />
+    <Content Include="Content\skins\web.css" />
     <Content Include="Content\webix.css" />
     <Content Include="Content\webix.min.css" />
     <Content Include="index.html" />
@@ -98,6 +123,12 @@
     <Content Include="packages.config" />
     <Content Include="Handlers\SelectTables.ashx" />
     <Content Include="Handlers\SelectTableDetails.ashx" />
+    <None Include="Content\fonts\Roboto-Medium-webfont.eot" />
+    <None Include="Content\fonts\Roboto-Medium-webfont.ttf" />
+    <None Include="Content\fonts\Roboto-Medium-webfont.woff" />
+    <None Include="Content\fonts\Roboto-Regular-webfont.eot" />
+    <None Include="Content\fonts\Roboto-Regular-webfont.ttf" />
+    <None Include="Content\fonts\Roboto-Regular-webfont.woff" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SqlChangeDataLog\SqlChangeDataLog.csproj">
