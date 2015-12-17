@@ -75,6 +75,9 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Handlers\SelectTableDetails.ashx.cs">
+      <DependentUpon>SelectTableDetails.ashx</DependentUpon>
+    </Compile>
     <Compile Include="Handlers\SelectTables.ashx.cs">
       <DependentUpon>SelectTables.ashx</DependentUpon>
     </Compile>
@@ -94,6 +97,7 @@
     <None Include="Content\fonts\PTS-webfont.woff" />
     <Content Include="packages.config" />
     <Content Include="Handlers\SelectTables.ashx" />
+    <Content Include="Handlers\SelectTableDetails.ashx" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SqlChangeDataLog\SqlChangeDataLog.csproj">
@@ -109,7 +113,7 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>10533</DevelopmentServerPort>
+          <DevelopmentServerPort>12791</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>
           </IISUrl>
