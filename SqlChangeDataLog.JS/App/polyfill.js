@@ -1,4 +1,4 @@
-// Шаги алгоритма ECMA-262, 5-е издание, 15.4.4.19
+﻿// Шаги алгоритма ECMA-262, 5-е издание, 15.4.4.19
 // Ссылка (en): http://es5.github.com/#x15.4.4.19
 // Ссылка (ru): http://es5.javascript.ru/x15.4.html#x15.4.4.19
 if (!Array.prototype.map) {

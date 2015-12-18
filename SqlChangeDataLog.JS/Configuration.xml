@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/MsBuild/2003">
+  <UsingTask TaskName="CssCompressorTask" AssemblyFile="bin\DEBUG\Yahoo.Yui.Compressor.Build.MsBuild.dll" />
+  <UsingTask TaskName="JavaScriptCompressorTask" AssemblyFile="bin\DEBUG\Yahoo.Yui.Compressor.Build.MsBuild.dll" />
+
+  <PropertyGroup>
+    <JS_Folder>App</JS_Folder>
+    <JS_OutputFolder>..\SqlChangeDataLog.Web\Scripts</JS_OutputFolder>
+  </PropertyGroup>
+  
+  <Target Name="Minify">
+    <ItemGroup>
+      
+      <!--Transport-->
+      <JS_Dependency Include="$(JS_Folder)\polyfill.js"/>
+
+      <JS_App Include="@(JS_Dependency)"/>
+      <JS_App Include="$(JS_Folder)\**\*.js" Exclude="@(JS_Dependency)"/>
+      
+    </ItemGroup>
+
+
+    <JavaScriptCompressorTask
+          SourceFiles="@(JS_App)"
+          OutputFile="$(JS_OutputFolder)\app.js"
+          EncodingType="UTF8"
+     />
+
+    <JavaScriptCompressorTask
+          SourceFiles="@(JS_App)"
+          OutputFile="$(JS_OutputFolder)\app-debug.js"
+          CompressionType="None"
+          EncodingType="UTF8"
+     />
+    
+  </Target>
+</Project>

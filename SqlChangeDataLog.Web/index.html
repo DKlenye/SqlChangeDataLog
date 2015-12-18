@@ -2,13 +2,12 @@
 <html>
 <head>
     <title>ChangeLog</title>
-    <link rel="stylesheet" type="text/css" href="Content/webix.css"/>
+    <link href="Content/webix.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" type="text/css" href="Content/sidebar.css"/>
 
-    <script type="text/javascript" src="Scripts/polyfill.js"></script>
     <script type="text/javascript" src="Scripts/webix.js"></script>
     <script type="text/javascript" src="Scripts/Sidebar.js"></script>
-    
+    <script src="Scripts/app-debug.js" type="text/javascript"></script>
     <style type="text/css">
         
         .webix_layout_toolbar.webix_toolbar .bt_1 .webixtype_base{
@@ -31,219 +30,7 @@
 
         
 
-        webix.protoUI({
-            name: 'database-toolbar',
-            defaults: {
-                id: 'tbar',
-                height: 66,
-                cols: [
-                    {id:'addbutton', view: 'icon', icon: 'plus-circle', tooltip:'Add database', click: '$$("tbar")._addButtonClick()' },
-                    {id:'addtext', width:250, hidden:true,
-                        rows: [
-                            {
-                                id: 'servertext',
-                                label: 'server',
-                                view: 'text',
-                                height: 30,
-                                on: {
-                                    'onKeyPress': function(key,event) {
-                                        switch(key) {
-                                            //ESC
-                                            case 27:
-                                            {
-                                                $$('tbar')._cancelConfirm();
-                                                return false;
-                                            }
-                                            //ENTER
-                                            case 13:
-                                            {
-                                                $$('databasetext').focus();
-                                                $$('databasetext').getInputNode().select();
-                                                return false;
-                                            }
-                                        }
-                                    }
-                                }
-                            },
-                            {
-                                id: 'databasetext',
-                                label: 'database',
-                                view: 'text',
-                                height: 30,
-                                on: {
-                                    'onKeyPress': function (key, event) {
-                                        switch (key) {
-                                            //ESC 
-                                            case 27:
-                                                {
-                                                    $$('tbar')._cancelConfirm();
-                                                    return false;
-                                                }
-                                                //ENTER
-                                            case 13:
-                                            {
-                                                $$('logtabletext').focus();
-                                                $$('logtabletext').getInputNode().select();
-                                                    return false;
-                                                }
-                                        }
-                                    }
-                                }
-                            },
-                            {
-                                id: 'logtabletext',
-                                label: 'log_table',
-                                view: 'text',
-                                height: 30,
-                                value:'ChangeLog',
-                                on: {
-                                    'onKeyPress': function (key, event) {
-                                        switch (key) {
-                                            //ESC  
-                                            case 27:
-                                                {
-                                                    $$('tbar')._cancelConfirm();
-                                                    return false;
-                                                }
-                                                //ENTER
-                                            case 13:
-                                                {
-                                                    $$('tbar')._confirmDatabase();
-                                                    return false;
-                                                }
-                                        }
-                                    }
-                                }
-                            }
-                        ]
-                    },
-                    { id:'addconfirm', width:100,hidden:true,
-                        rows: [
-                            {},
-                            { view: 'button', type: 'icon', height: 30, label: 'Cancel', icon: 'ban', click: '$$("tbar")._cancelConfirm()' },
-                            { view: 'button', type: 'icon', height: 30, label: 'Ok', icon: 'check', click: '$$("tbar")._confirmDatabase()' }
-                        ]
-                    }
-                ]
-            },
-
-
-            _confirmDatabase:function() {
-
-                var textData = {};
-
-                $$('addtext').getChildViews().forEach(function(textInput) {
-                    textData[textInput.config.label] = textInput.getValue();
-                });
-
-                this._cancelConfirm();
-
-                $$('tbar')._addButton(textData);
-
-            },
-
-            _cancelConfirm:function() {
-                $$("addbutton").show();
-                $$("addtext").hide();
-                $$("addconfirm").hide();
-
-                this.define('height', 66);
-                this.resize();
-
-            },
-
-            _addButtonClick:function() {
-                $$("addbutton").hide();
-                $$("addtext").show();
-                $$("addconfirm").show();
-                this.define('height', 99);
-                this.resize();
-
-
-                $$('servertext').focus();
-                $$('servertext').getInputNode().select();
-            },
-
-            _addButton: function (cfg) {
-                var insertIndex = this.index($$("addbutton"));
-                var view = this.addView(this._createButton(cfg), insertIndex);
-
-                this.save_state();
-
-                this._connect($$(view));
-            },
-
-            _createButton: function (cfg) {
-                var template = webix.template('<span class="webix_icon fa-icon fa-database"></span> #server# #database# <br/>#log_table#');
-                return {
-                    icon: 'database',
-                    autowidth: true,
-                    view: "button",
-                    type: "htmlbutton",
-                    icon: "database",
-                    server: cfg.server,
-                    database: cfg.database,
-                    log_table: cfg.log_table,
-                    label: template(cfg),
-                    on: {
-                        'onItemClick': this.onButtonClick
-                    }
-                    
-                };
-            },
-
-            _connect:function(button) {
-
-                if (this.connection) {
-                    webix.html.removeCss(this.connection.getNode(), "connect");
-                }
-
-                this.connection = button;
-                webix.html.addCss(button.getNode(), "connect");
-                LoadTables(button.config.server, button.config.database);
-            },
-            
-            onButtonClick:function(id) {
-                var button = $$(id);
-                $$("tbar")._connect(button);
-            },
-
-            restore_state:function() {
-                var state = this.load_state();
-                var me = this;
-                if (state) {
-                    state.forEach(function(cfg) {
-                        var insertIndex = me.index($$("addbutton"));
-                        view = me.addView(me._createButton(cfg), insertIndex);
-                    });
-                }
-            },
-
-            get_State: function () {
-                var state = [];
-                this.getChildViews().forEach(function (v) {
-                    if (v.name == "button") {
-                        state.push({
-                            server: v.config.server,
-                            database: v.config.database,
-                            log_table: v.config.log_table
-                        });
-                    }
-                });
-                return JSON.stringify(state);
-            },
-
-            save_state:function (){
-                webix.storage.local.put("tbarState", this.get_State());
-            },
-
-            load_state:function() {
-                var state = webix.storage.local.get("tbarState");
-                if(state) return JSON.parse(state);
-            }
-            
-
-        },webix.ui.toolbar);
+        
 
         webix.ready(function () {
 
@@ -257,7 +44,7 @@
                 id: "app.layout",
                 rows: [
                     {
-                        view: "database-toolbar",
+                        view: "app.toolbar",
                         id: 'tbar'
                     },
                     {
@@ -305,7 +92,7 @@
                                                             return;
                                                         }
 
-                                                        webix.ajax().post('/Handlers/SelectTableDetails.ashx', { server: '.', database: 'DDD', tableName: selection.Name }, function (data) {
+                                                        webix.ajax().post('/Handlers/SelectTableDetails.ashx', { server: 'db2', database: 'nsd2', tableName: selection.Name }, function (data) {
 
                                                             var a = []
                                                             data = JSON.parse(data);
@@ -393,10 +180,6 @@
                                                                             columns: [
                                                                                     { id: "checked", header: { content: "masterCheckbox" }, template: "{common.checkbox()}", width: 40 },
                                                                                     { id: "ColumnName", fillspace: true, header: "Column Name" }
-                                                                                ],
-                                                                            data: [
-                                                                                    { checked: true, ColumnName: 'VehicleId' },
-                                                                                    { checked: false, ColumnName: 'RegistrationNumber' }
                                                                                 ]
                                                                         },
                                                                             {

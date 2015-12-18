@@ -87,7 +87,8 @@
     <Content Include="Content\webix.css" />
     <Content Include="Content\webix.min.css" />
     <Content Include="index.html" />
-    <Content Include="Scripts\polyfill.js" />
+    <Content Include="Scripts\app-debug.js" />
+    <Content Include="Scripts\app.js" />
     <Content Include="Scripts\Sidebar.js" />
     <Content Include="Scripts\webix.js" />
     <Content Include="Scripts\webix.min.js" />
@@ -144,7 +145,7 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>12791</DevelopmentServerPort>
+          <DevelopmentServerPort>64175</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>
           </IISUrl>
