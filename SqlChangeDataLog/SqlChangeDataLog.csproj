@@ -67,6 +67,7 @@
     <Compile Include="Queries\SelectTable.cs" />
     <Compile Include="Queries\SelectPrimaryKey.cs" />
     <Compile Include="Queries\SelectTriggerText.cs" />
+    <Compile Include="Triggers\Trigger.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

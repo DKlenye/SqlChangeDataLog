@@ -1,260 +1,239 @@
 webix.protoUI({
-    name: 'app.toolbar',
-    $init: function() {
+    name: 'view.toolbar',
+    defaultLogTable: "ChangeLog",
+    stateName:'toolbar',
+    minHeight: 66,
+    maxHeight: 99,
+    inserting: false,
+    $init: function () {
 
         var me = this,
-            bind = function(fn) {
+            bind = function (fn) {
                 return webix.bind(me[fn], me);
             };
 
         webix.extend(this.defaults, {
-            height:66,
+            height: me.minHeight,
             cols: [
                 {
                     id: 'button.add',
                     view: 'icon',
                     icon: 'plus-circle',
                     tooltip: 'Add database',
-                    on: {
-                        onItemClick: bind("onAddButtonClick")
-                    }
-                    //click: '$$("tbar")._addButtonClick()'
-                }
-            ]
+                    click: bind("toggleAdd")
+                },
+                {
+                    id: 'layout.add',
+                    hidden: true,
+                    cols: [{
+                        width: 250,
+                        id:'layout.add.text',
+                        rows: [
+                                {
+                                    id: 'text.server',
+                                    label: 'server',
+                                    dataIndex: 'server',
+                                    view: 'text',
+                                    height: 30,
+                                    nextFocus: 'text.database',
+                                    on: { 'onKeyPress': bind("onTextKeyPress") }
+                                },
+                                {
+                                    id: 'text.database',
+                                    dataIndex: 'database',
+                                    label: 'database',
+                                    view: 'text',
+                                    height: 30,
+                                    nextFocus: 'text.logtable',
+                                    on: { 'onKeyPress': bind("onTextKeyPress") }
+                                },
+                                {
+                                    id: 'text.logtable',
+                                    dataIndex:'logtable',
+                                    label: 'log table',
+                                    view: 'text',
+                                    value:this.defaultLogTable,
+                                    height: 30,
+                                    on: { 'onKeyPress': bind("onTextKeyPress") }
+                                }
+                            ]
+                    }, {
+                        width: 100,
+                        rows: [
+                            {},
+                            { view: 'button', type: 'icon', height: 30, label: 'Cancel', icon: 'ban', click: bind("toggleAdd") },
+                            { view: 'button', type: 'icon', height: 30, label: 'Ok', icon: 'check', click: bind("confirmAdd") }
+                        ]
+                    }]
+                }]
         });
 
     },
+   
+    onTextKeyPress: function (key, event) {
     
-   /* defaults: {
-        id: 'toolbar',
-        height: 66,
-        cols: [
+        switch (key) {
+        //ESC         
+        case 27:
             {
-                id: 'button.add',
-                view: 'icon',
-                icon: 'plus-circle',
-                tooltip: 'Add database',
-                click: '$$("tbar")._addButtonClick()'
-            },  
-            {
-                id: 'addtext',
-                width: 250,
-                hidden: true,
-                rows: [
-                    {
-                        id: 'servertext',
-                        label: 'server',
-                        view: 'text',
-                        height: 30,
-                        nextFocus:'databasetext',
-                        on: {
-                           'onKeyPress': function(key, event) {
-                                switch (key) {
-                                    //ESC 
-                                case 27:
-                                {
-                                    $$('tbar')._cancelConfirm();
-                                    return false;
-                                }
-                                //ENTER
-                                case 13:
-                                {
-                                    $$('databasetext').focus();
-                                    $$('databasetext').getInputNode().select();
-                                    return false;
-                                }
-                                }
-                            }
-                        }
-
-                    },
-                    {
-                        id: 'databasetext',
-                        label: 'database',
-                        view: 'text',
-                        height: 30,
-                        on: {
-                            'onKeyPress': function(key, event) {
-                                switch (key) {
-                                    //ESC  
-                                case 27:
-                                {
-                                    $$('tbar')._cancelConfirm();
-                                    return false;
-                                }
-                                //ENTER
-                                case 13:
-                                {
-                                    $$('logtabletext').focus();
-                                    $$('logtabletext').getInputNode().select();
-                                    return false;
-                                }
-                                }
-                            }
-                        }
-                    },
-                    {
-                        id: 'logtabletext',
-                        label: 'log_table',
-                        view: 'text',
-                        height: 30,
-                        value: 'ChangeLog',
-                        on: {
-                            'onKeyPress': function(key, event) {
-                                switch (key) {
-                                    //ESC   
-                                case 27:
-                                {
-                                    $$('tbar')._cancelConfirm();
-                                    return false;
-                                }
-                                //ENTER
-                                case 13:
-                                {
-                                    $$('tbar')._confirmDatabase();
-                                    return false;
-                                }
-                                }
-                            }
-                        }
-                    }
-                ]
-            },
-            {
-                id: 'addconfirm',
-                width: 100,
-                hidden: true,
-                rows: [
-                    {},
-                    { view: 'button', type: 'icon', height: 30, label: 'Cancel', icon: 'ban', click: '$$("tbar")._cancelConfirm()' },
-                    { view: 'button', type: 'icon', height: 30, label: 'Ok', icon: 'check', click: '$$("tbar")._confirmDatabase()' }
-                ]
+                this.toggleAdd();
+                return false;
             }
-        ]
-    },*/
+        //ENTER
+        case 13:
+            {
+                var id = event.srcElement.parentNode.parentNode.getAttribute("view_id");
+                var field = $$(id);
 
+                if (field && field.config.nextFocus) {
+                    var focusField = $$(field.config.nextFocus);
+                    focusField.focus();
+                    focusField.getInputNode().select();
+                    return false;
+                }
 
-    onTextKeyPress: function(key, event) {
-        console.log(this, arguments);
+                this.confirmAdd();
+                return false;
+            }
+        }
     },
-    
-    onAddButtonClick:function() {
-        this.define('height', 99);
-        this.resize();
-    },
 
+    toggleAdd: function () {
+        var isInserting = this.inserting;
+        var height = isInserting ? this.minHeight : this.maxHeight;
 
-    _confirmDatabase: function() {
+        $$('layout.add')[isInserting ? "hide" : "show"]();
+        $$('button.add')[isInserting ? "show" : "hide"]();
 
-        var textData = {};
-
-        $$('addtext').getChildViews().forEach(function(textInput) {
-            textData[textInput.config.label] = textInput.getValue();
+        this.eachButtons(function(b) {
+            b[isInserting ?"enable":"disable"]();
         });
 
-        this._cancelConfirm();
+        if (!isInserting) {
+            var server = $$("text.server");
+            server.focus();
+            server.getInputNode().select();
+        } else {
+            this.resetAddLayout();
+        }
 
-        $$('tbar')._addButton(textData);
-
-    },
-
-    _cancelConfirm: function() {
-        $$("addbutton").show();
-        $$("addtext").hide();
-        $$("addconfirm").hide();
-
-        this.define('height', 66);
+        this.define('height', height);
         this.resize();
 
+        this.inserting = !this.inserting;
     },
 
-    _addButtonClick: function() {
-        $$("addbutton").hide();
-        $$("addtext").show();
-        $$("addconfirm").show();
-        this.define('height', 99);
-        this.resize();
-
-
-        $$('servertext').focus();
-        $$('servertext').getInputNode().select();
+    resetAddLayout:function() {
+        this.eachAddFields(function(text) {
+            text.setValue('');
+        });
+        $$('text.logtable').setValue(this.defaultLogTable);
     },
 
-    _addButton: function(cfg) {
-        var insertIndex = this.index($$("addbutton"));
-        var view = this.addView(this._createButton(cfg), insertIndex);
-
-        this.save_state();
-
-        this._connect($$(view));
+    eachAddFields: function (fn, scope) {
+        $$('layout.add.text').getChildViews().forEach(fn, scope || this);
     },
 
-    _createButton: function(cfg) {
-        var template = webix.template('<span class="webix_icon fa-icon fa-database"></span> #server# #database# <br/>#log_table#');
+    eachButtons:function(fn) {
+        this.getChildViews().forEach(function(button) {
+            if (button.name == "button") {
+                fn(button);
+            }
+        });
+
+    },
+
+    getAddConfig:function() {
+        var cfg = {};
+        this.eachAddFields(function(field) {
+            cfg[field.config.dataIndex] = field.getValue();
+        });
+        return cfg;
+    },
+    
+    confirmAdd:function() {
+        var addCfg = this.getAddConfig();
+        var button = this.addButton(addCfg);
+        this.activate($$(button));
+        this.toggleAdd();
+        this.saveState();
+    },
+
+    addButton: function (cfg) {
+        var insertIndex = this.index($$("button.add"));
+        var view = this.addView(this.createButton(cfg), insertIndex);
+        return view;
+    },
+
+    createButton: function (cfg) {
+        var template = webix.template('<span class="webix_icon fa-icon fa-database"></span> #server# #database# <br/>#logtable#');
         return {
             icon: 'database',
             autowidth: true,
             view: "button",
             type: "htmlbutton",
+            css:'webix_segment_N',
             icon: "database",
-            server: cfg.server,
-            database: cfg.database,
-            log_table: cfg.log_table,
+            logCfg: cfg,
             label: template(cfg),
-            on: {
-                'onItemClick': this.onButtonClick
-            }
-
+            click: webix.bind(this.onButtonClick,this)
         };
     },
 
-    _connect: function(button) {
-
-        if (this.connection) {
-            webix.html.removeCss(this.connection.getNode(), "connect");
+    activate: function(button) {
+        if (this.activeButton) {
+            webix.html.removeCss(this.activeButton.getNode(), "webix_selected");
         }
+        this.activeButton = button;
+        webix.html.addCss(button.getNode(), "webix_selected");
 
-        this.connection = button;
-        webix.html.addCss(button.getNode(), "connect");
-        LoadTables(button.config.server, button.config.database);
+        this.callEvent("activate", [button.config.logCfg]);
     },
 
-    onButtonClick: function(id) {
+    onButtonClick: function (id) {
         var button = $$(id);
-        $$("tbar")._connect(button);
+        this.activate(button);
+        this.saveState();
     },
-
-    restore_state: function() {
-        var state = this.load_state();
+    
+    restoreState: function () {
+        var state = this.loadState();
         var me = this;
         if (state) {
-            state.forEach(function(cfg) {
-                var insertIndex = me.index($$("addbutton"));
-                view = me.addView(me._createButton(cfg), insertIndex);
+            state.forEach(function (cfg) {
+
+                var active = cfg.active || false;
+                delete cfg.active;
+
+                var button = me.addButton(cfg);
+                if (active) {
+                    me.activate($$(button));
+                }
             });
         }
     },
 
-    get_State: function() {
+    getState: function () {
         var state = [];
-        this.getChildViews().forEach(function(v) {
-            if (v.name == "button") {
-                state.push({
-                    server: v.config.server,
-                    database: v.config.database,
-                    log_table: v.config.log_table
-                });
+        var me = this;
+
+        this.eachButtons(function(b) {
+            var cfg = b.config.logCfg;
+            if (me.activeButton && me.activeButton == b) {
+                cfg.active = true;
             }
+            state.push(cfg);
         });
+
         return JSON.stringify(state);
     },
 
-    save_state: function() {
-        webix.storage.local.put("tbarState", this.get_State());
+    saveState: function () {
+        webix.storage.local.put(this.stateName, this.getState());
     },
 
-    load_state: function() {
-        var state = webix.storage.local.get("tbarState");
+    loadState: function () {
+        var state = webix.storage.local.get(this.stateName);
         if (state) return JSON.parse(state);
     }
 

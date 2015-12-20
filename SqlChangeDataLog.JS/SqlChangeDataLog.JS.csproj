@@ -57,7 +57,7 @@
     <Content Include="App\view\LogDetails.js" />
     <Content Include="App\view\LogGrid.js" />
     <Content Include="App\view\TableEditor.js" />
-    <Content Include="App\view\TablesGrid.js" />
+    <Content Include="App\view\Tables.js" />
     <Content Include="App\view\Toolbar.js" />
     <Content Include="Configuration.xml" />
     <Content Include="App\polyfill.js" />
