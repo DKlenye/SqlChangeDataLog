@@ -9,7 +9,7 @@
 	            c.Text
             from sysobjects tr
             INNER JOIN sysobjects t ON tr.parent_obj = t.id AND t.XTYPE = 'U'
-            INNER JOIN syscomments c on tr.id = c.id
+            LEFT JOIN syscomments c on tr.id = c.id
             WHERE tr.XType = 'TR'
         ";
 
