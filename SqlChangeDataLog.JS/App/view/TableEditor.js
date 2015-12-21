@@ -120,7 +120,9 @@ webix.protoUI({
 
         var a = []
         data = JSON.parse(data);
-        
+
+        console.log(data);
+
         this.setSegmentedTableName(data.Name);
         
         data.Columns.forEach(function (col) {

@@ -33,18 +33,6 @@ webix.ready(function() {
 
     $$('toolbar').restoreState();
 
-
-    console.log(document.getElementsByName('text.trigger')[0])
-
-    window.editor = CodeMirror.fromTextArea(document.getElementsByName('text.trigger')[0], {
-        mode: "sql",
-        indentWithTabs: true,
-        smartIndent: true,
-        lineNumbers: true,
-        matchBrackets: true,
-        extraKeys: { "Ctrl-Space": "autocomplete" }
-    });
-
 });
 
 var onToolbarActivate = function (logCfg) {
