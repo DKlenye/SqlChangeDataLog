@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace SqlChangeDataLog.Triggers
 {
@@ -9,17 +10,19 @@ namespace SqlChangeDataLog.Triggers
 
         public Trigger(string tableName, string triggerText)
         {
-
             _parser = new TriggerTextParser(triggerText);
             
             TriggerText = triggerText;
             TableName = tableName;
 
-            Operation = _parser.ParseOperation();
+            if (!String.IsNullOrEmpty(TriggerText))
+            {
+                Operation = _parser.ParseOperation();
+                Columns = _parser.ParseColumns();
+            }
 
         }
-
-
+        
         public string TableName { get; private set; }
         public string LogTableName { get; set; }
         public string Operation { get; set; }
