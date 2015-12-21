@@ -4,11 +4,19 @@ namespace SqlChangeDataLog.Triggers
 {
     public class Trigger
     {
+
+        private TriggerTextParser _parser;
+
         public Trigger(string tableName, string triggerText)
         {
+
+            _parser = new TriggerTextParser(triggerText);
+            
             TriggerText = triggerText;
             TableName = tableName;
-            Operation = "insert";
+
+            Operation = _parser.ParseOperation();
+
         }
 
 
