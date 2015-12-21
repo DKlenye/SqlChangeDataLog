@@ -153,9 +153,9 @@ webix.protoUI({
     
     confirmAdd:function() {
         var addCfg = this.getAddConfig();
+        this.toggleAdd();
         var button = this.addButton(addCfg);
         this.activate($$(button));
-        this.toggleAdd();
         this.saveState();
     },
 
