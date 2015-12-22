@@ -49,5 +49,9 @@ namespace SqlChangeDataLog.Triggers
             return new Regex(Pattern,RegexOptions.IgnoreCase|RegexOptions.Singleline);
         }
 
+        public string ParseExtendedLogic()
+        {
+            return "";
+        }
     }
 }

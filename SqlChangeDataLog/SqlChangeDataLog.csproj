@@ -69,8 +69,13 @@
     <Compile Include="Queries\SelectTable.cs" />
     <Compile Include="Queries\SelectPrimaryKey.cs" />
     <Compile Include="Queries\SelectTriggerText.cs" />
+    <Compile Include="Triggers\DeleteSqlTemplates.cs" />
+    <Compile Include="Triggers\InsertSqlTemplates.cs" />
     <Compile Include="Triggers\Trigger.cs" />
+    <Compile Include="Triggers\TriggerTextBuilder.cs" />
     <Compile Include="Triggers\TriggerTextParser.cs" />
+    <Compile Include="Triggers\UpdateSqlTemplates.cs" />
+    <Compile Include="Triggers\SqlTemplates.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

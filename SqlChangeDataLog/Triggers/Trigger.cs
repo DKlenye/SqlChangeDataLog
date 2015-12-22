@@ -5,27 +5,26 @@ namespace SqlChangeDataLog.Triggers
 {
     public class Trigger
     {
-        private TriggerTextParser _parser;
-
         public Trigger(string tableName, string triggerText)
         {
-            _parser = new TriggerTextParser(triggerText);
-            
             TriggerText = triggerText;
             TableName = tableName;
 
             if (!String.IsNullOrEmpty(TriggerText))
             {
-                Operation = _parser.ParseOperation();
-                Columns = _parser.ParseColumns();
+                var parser = new TriggerTextParser(triggerText);
+                Operation = parser.ParseOperation();
+                Columns = parser.ParseColumns();
+                ExtendedLogic = parser.ParseExtendedLogic();
             }
 
         }
         
-        public string TableName { get; private set; }
+        public string TableName { get; set; }
         public string LogTableName { get; set; }
         public string Operation { get; set; }
         public IEnumerable<string> Columns { get; set; }
-        public string TriggerText { get; private set; }
+        public string TriggerText { get; set; }
+        public string ExtendedLogic { get; set; }
     }
 }
