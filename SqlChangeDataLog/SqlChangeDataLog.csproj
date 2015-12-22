@@ -48,6 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Context.cs" />
+    <Compile Include="Dtos\ChangeLogDto.cs" />
     <Compile Include="Dtos\PrimaryKeyDto.cs" />
     <Compile Include="Dtos\TableDto.cs" />
     <Compile Include="Dtos\TableListDto.cs" />
@@ -62,6 +63,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Queries\CreateLogTrigger.cs" />
     <Compile Include="Queries\QueryObject.cs" />
+    <Compile Include="Queries\SelectChangeLog.cs" />
     <Compile Include="Queries\SelectColumns.cs" />
     <Compile Include="Queries\SelectLogTrigger.cs" />
     <Compile Include="Queries\SelectTable.cs" />

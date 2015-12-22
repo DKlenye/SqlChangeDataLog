@@ -54,15 +54,12 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\codemirror.css" />
-    <Content Include="Content\docs.css" />
     <Content Include="Content\font-awesome.css" />
     <Content Include="Content\font-awesome.min.css" />
     <Content Include="Content\fonts\font-license.txt" />
     <Content Include="Content\fonts\fontawesome-webfont.svg" />
     <Content Include="Content\fonts\Roboto-Medium-webfont.svg" />
     <Content Include="Content\fonts\Roboto-Regular-webfont.svg" />
-    <Content Include="Content\show-hint.css" />
     <Content Include="Content\sidebar.css" />
     <Content Include="Content\skins\air.css" />
     <Content Include="Content\skins\aircompact.css" />
@@ -104,6 +101,9 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Handlers\SelectChangeLog.ashx.cs">
+      <DependentUpon>SelectChangeLog.ashx</DependentUpon>
+    </Compile>
     <Compile Include="Handlers\SelectTableDetails.ashx.cs">
       <DependentUpon>SelectTableDetails.ashx</DependentUpon>
     </Compile>
@@ -133,6 +133,7 @@
     <None Include="Content\fonts\Roboto-Regular-webfont.eot" />
     <None Include="Content\fonts\Roboto-Regular-webfont.ttf" />
     <None Include="Content\fonts\Roboto-Regular-webfont.woff" />
+    <Content Include="Handlers\SelectChangeLog.ashx" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SqlChangeDataLog\SqlChangeDataLog.csproj">
@@ -148,7 +149,7 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>12229</DevelopmentServerPort>
+          <DevelopmentServerPort>46634</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>
           </IISUrl>

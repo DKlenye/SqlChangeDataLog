@@ -1,8 +1,17 @@
 webix.protoUI({
     name: 'view.table_editor',
+    operations:[
+        { id: "Insert", value: "<span class='webix_icon " + app.settings.icons["insert"] + "'></span><span style='padding-left: 4px'>Insert</span>" },
+        { id: "Update", value: "<span class='webix_icon " + app.settings.icons['update'] + "'></span><span style='padding-left: 4px'>Update</span>" },
+        { id: "Delete", value: "<span class='webix_icon " + app.settings.icons['delete'] + "'></span><span style='padding-left: 4px'>Delete</span>" }
+    ],
     $init: function (config) {
         var icons = config.icons || {};
-
+        var me = this;
+        var bind = function(fn) {
+            return webix.bind(me[fn], me);
+        };
+        
         webix.extend(this.defaults, {
             disabled: true,
             rows: [
@@ -11,13 +20,15 @@ webix.protoUI({
                     cols: [
                         {
                             view: "segmented",
+                            id:"segmented.operation",
                             optionWidth: 120,
-                            value: 4,
+                            value: "none",
                             options: [
-                                { id: "operation.insert", value: "<span class='webix_icon " + icons["insert"] + "'></span><span style='padding-left: 4px'>Insert</span>" },
-                                { id: "operation.update", value: "<span class='webix_icon " + icons['update'] + "'></span><span style='padding-left: 4px'>Update</span>" },
-                                { id: "operation.delete", value: "<span class='webix_icon " + icons['delete'] + "'></span><span style='padding-left: 4px'>Delete</span>" }
-                            ]
+                                
+                            ],
+                            on: {
+                                onChange: bind("onOperationChange")
+                            }
                         }
                     ]
                 },
@@ -41,7 +52,7 @@ webix.protoUI({
                                             view: 'datatable',
                                             id: 'table.columns',
                                             columns: [
-                                                { id: "checked", header: { content: "masterCheckbox" }, template: "{common.checkbox()}", width: 40 },
+                                                { id: "Checked", header: { content: "masterCheckbox" }, template: "{common.checkbox()}", width: 40 },
                                                 {
                                                     id: "ColumnName",
                                                     fillspace: true,
@@ -87,10 +98,10 @@ webix.protoUI({
     },
 
     load: function (connection, table) {
-        if (table) {
+    if (table) {
             this.enable();
-            var params = connection;
-            connection["TableName"] = table;
+            var params = webix.copy(connection);
+            params["TableName"] = table;
             this._loadTable(params);
         } else {
             this.clear();
@@ -110,36 +121,88 @@ webix.protoUI({
         });
     },
 
-
     clear: function () {
         this.setSegmentedTableName();
+        this.clearView();
+        delete this.data;
+        
+        $$("segmented.operation")._settings.options = [];
+        $$("segmented.operation").refresh();
+    },
+
+    clearView:function() {
         $$("table.columns").clearAll();
+        $$("text.trigger").setValue("");
     },
 
     fillData: function (data) {
 
-        var a = []
         data = JSON.parse(data);
-
-        console.log(data);
+        this.data = data;
 
         this.setSegmentedTableName(data.Name);
-        
-        data.Columns.forEach(function (col) {
+        this.setOptions();
 
-            var column = { ColumnName: col };
-            if (data.KeyColumns.indexOf(col) != -1) {
-                column.IsKey = true;
+    },
+
+    setOptions:function() {
+
+        var data = this.data;
+        var optionValue;
+        var segment = $$('segmented.operation');
+        var options = segment._settings.options;
+
+        this.eachOperations(function(operation) {
+            var trigger = data[operation.id];
+            if (!trigger) {
+                //todo выключить опцию
+            } else {
+                options.push(operation);
+                if (!optionValue) {
+                    optionValue = operation.id;
+                }
             }
-
-            a.push(column);
         });
 
-        $$("table.columns").parse(a);
+        segment.refresh();
+        segment.setValue(optionValue || "none");
+        this.onOperationChange(optionValue);
+    },
+    
+    fillColumns:function(operation) {
 
-        this.setTrigger(data, "Insert");
+        var data = this.data;
+        var trigger = data[operation];
+        var rezult = [];
 
+        var isKey = function(column) {
+            return data.KeyColumns.indexOf(column) != -1;
+        };
 
+        var isChecked = function(column) {
+            if (!trigger || !trigger.Columns) return false;
+            return trigger.Columns.indexOf(column) != -1;
+        };
+        
+        data.Columns.forEach(function(column) {
+            rezult.push({
+                ColumnName:column,
+                IsKey:isKey(column),
+                Checked:isChecked(column)
+            });
+        });
+
+        $$("table.columns").parse(rezult);
+
+    },
+
+    fillTriggerText:function(operation) {
+        var trigger = this.data[operation];
+        var triggerText = "";
+        if (trigger && trigger.TriggerText) {
+            triggerText = trigger.TriggerText;
+        }
+        $$('text.trigger').setValue(triggerText);
     },
 
     setSegmentedTableName: function (tableName) {
@@ -147,10 +210,15 @@ webix.protoUI({
         columnOption.value = "<span class='webix_icon fa-columns'></span><span style='padding-left: 4px'>Columns " + (tableName || "") + "</span>";
         $$('segmented.trigger').refresh();
     },
-    
-    setTrigger:function(data, operation) {
-        var trigger = data[operation];
-        $$('text.trigger').setValue(trigger.TriggerText);
+
+    onOperationChange: function (operation) {
+        this.clearView();
+        this.fillColumns(operation);
+        this.fillTriggerText(operation);
+    },
+
+    eachOperations: function (fn) {
+        this.operations.forEach(fn);
     }
 
 

@@ -7,12 +7,10 @@ using SqlChangeDataLog.Queries;
 
 namespace SqlChangeDataLog.Web.Handlers
 {
-    public class ReadParams:Context
-    {}
-
-    public class SelectTables : Handler<ReadParams>
+    
+    public class SelectTables : Handler<Context>
     {
-        protected override object Process(ReadParams parameters)
+        protected override object Process(Context parameters)
         {
             IEnumerable<string> tables;
             var operations = new Dictionary<string, List<string>>();

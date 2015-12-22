@@ -2,7 +2,7 @@ webix.protoUI({
     name: 'view.toolbar',
     defaultLogTable: "ChangeLog",
     stateName:'toolbar',
-    minHeight: 66,
+    minHeight: 68,
     maxHeight: 99,
     inserting: false,
     $init: function () {
@@ -166,7 +166,7 @@ webix.protoUI({
     },
 
     createButton: function (cfg) {
-        var template = webix.template('<span class="webix_icon fa-icon fa-database"></span> #server# #database# <br/>#logtable#');
+        var template = webix.template('<span class="webix_icon fa-icon fa-database" style="font-size:18px;"></span><span> #server# #database# <br/>#logtable# </span>');
         return {
             icon: 'database',
             autowidth: true,
