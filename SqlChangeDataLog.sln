@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SqlChangeDataLog.Web", "Sql
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SqlChangeDataLog.JS", "SqlChangeDataLog.JS\SqlChangeDataLog.JS.csproj", "{A0EB0FA1-BFF1-4D0D-BD41-918B6554BA39}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SqlChangeDataLog.Tests", "SqlChangeDataLog.Tests\SqlChangeDataLog.Tests.csproj", "{C73A42A7-06C8-45D7-88F2-DCE3E65DB852}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,6 +27,10 @@ Global
 		{A0EB0FA1-BFF1-4D0D-BD41-918B6554BA39}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A0EB0FA1-BFF1-4D0D-BD41-918B6554BA39}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A0EB0FA1-BFF1-4D0D-BD41-918B6554BA39}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C73A42A7-06C8-45D7-88F2-DCE3E65DB852}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C73A42A7-06C8-45D7-88F2-DCE3E65DB852}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C73A42A7-06C8-45D7-88F2-DCE3E65DB852}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C73A42A7-06C8-45D7-88F2-DCE3E65DB852}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
