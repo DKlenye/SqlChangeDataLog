@@ -5,6 +5,8 @@ namespace SqlChangeDataLog.Triggers
 {
     public class Trigger
     {
+        public Trigger(){}
+
         public Trigger(string tableName, string triggerText)
         {
             TriggerText = triggerText;

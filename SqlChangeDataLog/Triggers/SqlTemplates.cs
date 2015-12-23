@@ -4,5 +4,6 @@
     {
         public abstract string SelectXml();
         public abstract string ChangeType();
+        public abstract string IdFrom();
     }
 }

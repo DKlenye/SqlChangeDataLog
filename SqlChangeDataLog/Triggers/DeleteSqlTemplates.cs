@@ -5,15 +5,18 @@
         public override string SelectXml()
         {
                 return @"
-                    SELECT {Columns}
-			        FROM DELETED AS D FOR XML AUTO
-                ";
+        SELECT {Columns}
+        FROM DELETED AS D FOR XML AUTO";
         }
-
-
+        
         public override string ChangeType()
         {
             return "D";
+        }
+
+        public override string IdFrom()
+        {
+            return "DELETED";
         }
     }
 }

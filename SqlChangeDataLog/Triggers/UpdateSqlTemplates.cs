@@ -5,22 +5,24 @@
         public override string SelectXml()
         {
                 return @"
+        SELECT {Columns}
+        FROM(
             SELECT {Columns}
-			FROM 			
-			(
-				SELECT  {Columns}
-				FROM INSERTED 
-					UNION ALL 
-				SELECT {Columns}
-				FROM DELETED
-			) 
-			AS U FOR XML AUTO
-        ";
+            FROM INSERTED
+            UNION ALL
+            SELECT {Columns}
+            FROM DELETED
+        )AS U FOR XML AUTO";
         }
 
         public override string ChangeType()
         {
             return "U";
+        }
+
+        public override string IdFrom()
+        {
+            return "DELETED";
         }
     }
 }

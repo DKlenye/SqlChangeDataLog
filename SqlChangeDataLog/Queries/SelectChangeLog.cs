@@ -4,7 +4,7 @@ namespace SqlChangeDataLog.Queries
 {
     public class SelectChangeLog
     {
-        private const string Sql = @"SELECT TOP 1000 idChangeLog,[date],[user],changeType,[table],idString,[description] FROM {0} ";
+        private const string Sql = @"SELECT TOP 1000 idChangeLog,[date],[user],changeType,[table],idString,[description] FROM {0} order by idChangeLog desc ";
 
         public QueryObject All(string tableName)
         {
