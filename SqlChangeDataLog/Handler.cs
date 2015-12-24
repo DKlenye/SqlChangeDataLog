@@ -19,7 +19,9 @@ namespace SqlChangeDataLog
             context.Response.ContentType = "application/json";
             context.Response.Write(
                 JsonConvert.SerializeObject(
-                    Process(ReadParams<TParams>())
+                    Process(ReadParams<TParams>()),
+                    Formatting.Indented,
+                    new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }
                 )
             );
         }

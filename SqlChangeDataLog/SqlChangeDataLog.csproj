@@ -48,6 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Context.cs" />
+    <Compile Include="DataSerializer.cs" />
     <Compile Include="Dtos\ChangeLogDto.cs" />
     <Compile Include="Dtos\PrimaryKeyDto.cs" />
     <Compile Include="Dtos\TableDto.cs" />
@@ -56,6 +57,7 @@
     <Compile Include="Dtos\TriggerTextDto.cs" />
     <Compile Include="Extensions\DapperQueryObjectExtensions.cs" />
     <Compile Include="Extensions\StringApplyTemplateExtension.cs" />
+    <Compile Include="Filter.cs" />
     <Compile Include="Handler.cs" />
     <Compile Include="Operations\DataOperation.cs" />
     <Compile Include="Operations\DeleteOperation.cs" />
@@ -71,6 +73,7 @@
     <Compile Include="Queries\SelectTable.cs" />
     <Compile Include="Queries\SelectPrimaryKey.cs" />
     <Compile Include="Queries\SelectTriggerText.cs" />
+    <Compile Include="Sort.cs" />
     <Compile Include="Triggers\DeleteSqlTemplates.cs" />
     <Compile Include="Triggers\InsertSqlTemplates.cs" />
     <Compile Include="Triggers\Trigger.cs" />

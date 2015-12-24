@@ -7,6 +7,7 @@ webix.protoUI({
                 {
                     id:"table.logdetails",
                     view: 'datatable',
+                    resizeColumn: true,
                     columns: [
                         { id: "Column", header: "Column", fillspace: 0.5 },
                         { id: "OldValue", header: "OldValue", fillspace: 1 },
