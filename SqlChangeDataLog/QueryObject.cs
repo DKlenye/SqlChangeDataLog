@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SqlChangeDataLog.Queries
+namespace SqlChangeDataLog
 {
     public class QueryObject
     {

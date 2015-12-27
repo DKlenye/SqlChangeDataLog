@@ -1,5 +1,5 @@
 webix.protoUI({
-    name: 'view.tables',
+    name: 'view.table_list',
     $init: function(config) {
 
         var icons = config.icons || {};
@@ -12,7 +12,7 @@ webix.protoUI({
             rows: [
                 {
                     view: "datatable",
-                    id: "table.tables",
+                    id: "table.table_list",
                     select: "row",
                     columns: [
                         {
@@ -54,14 +54,14 @@ webix.protoUI({
         });
     },
     _onBeforeLoad: function() {
-        var grid = $$("table.tables");
+        var grid = $$("table.table_list");
 
         grid.disable();
         grid.clearAll();
         grid.showOverlay("Loading <span class='webix_icon fa-spinner fa-spin'></span>");
     },
     _onAfterLoad: function() {
-        var grid = $$("table.tables");
+        var grid = $$("table.table_list");
 
         grid.filterByAll();
         grid.hideOverlay();
@@ -69,7 +69,7 @@ webix.protoUI({
     },
 
     _onSelectChange: function() {
-        var grid = $$("table.tables");
+        var grid = $$("table.table_list");
         var item = grid.getSelectedItem();
         var table = '';
         if (item) {
@@ -79,6 +79,6 @@ webix.protoUI({
     },
 
     load: function(params) {
-        $$("table.tables").load("post->/Handlers/SelectTables.ashx", null, params);
+        $$("table.table_list").load("post->/Handlers/SelectTableList.ashx", null, params);
     }
 }, webix.ui.layout);

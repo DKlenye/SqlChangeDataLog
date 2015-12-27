@@ -106,6 +106,11 @@ END";
                 .Append(BuildFooter());
             return sb.ToString();
         }
+
+        public QueryObject Query()
+        {
+            return new QueryObject(BuildTriggerText());
+        }
         
     }
 }

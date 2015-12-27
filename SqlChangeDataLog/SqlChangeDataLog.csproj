@@ -47,8 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Context.cs" />
-    <Compile Include="DataSerializer.cs" />
+    <Compile Include="Commands\SaveTable.cs" />
     <Compile Include="Dtos\ChangeLogDto.cs" />
     <Compile Include="Dtos\PrimaryKeyDto.cs" />
     <Compile Include="Dtos\TableDto.cs" />
@@ -58,21 +57,21 @@
     <Compile Include="Extensions\DapperQueryObjectExtensions.cs" />
     <Compile Include="Extensions\StringApplyTemplateExtension.cs" />
     <Compile Include="Filter.cs" />
-    <Compile Include="Handler.cs" />
-    <Compile Include="Operations\DataOperation.cs" />
-    <Compile Include="Operations\DeleteOperation.cs" />
-    <Compile Include="Operations\InsertOperation.cs" />
-    <Compile Include="Operations\UpdateOperation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Queries\TableQuery.cs" />
-    <Compile Include="Queries\ChangeLogTableQuery.cs" />
-    <Compile Include="Queries\QueryObject.cs" />
-    <Compile Include="Queries\SelectChangeLog.cs" />
-    <Compile Include="Queries\SelectColumns.cs" />
-    <Compile Include="Queries\SelectLogTrigger.cs" />
-    <Compile Include="Queries\SelectTable.cs" />
-    <Compile Include="Queries\SelectPrimaryKey.cs" />
-    <Compile Include="Queries\SelectTriggerText.cs" />
+    <Compile Include="Queries\AbstractQuery.cs" />
+    <Compile Include="Queries\SelectTableDto.cs" />
+    <Compile Include="Queries\SelectTableListDto.cs" />
+    <Compile Include="QueryObject.cs" />
+    <Compile Include="QueryObjects\DropTrigger.cs" />
+    <Compile Include="QueryObjects\CreateChangeLogTable.cs" />
+    <Compile Include="QueryObjects\DropTable.cs" />
+    <Compile Include="QueryObjects\ExistsChangeLogTable.cs" />
+    <Compile Include="QueryObjects\SelectChangeLog.cs" />
+    <Compile Include="QueryObjects\SelectColumns.cs" />
+    <Compile Include="QueryObjects\SelectLogTrigger.cs" />
+    <Compile Include="QueryObjects\SelectPrimaryKey.cs" />
+    <Compile Include="QueryObjects\SelectTables.cs" />
+    <Compile Include="QueryObjects\SelectTriggerText.cs" />
     <Compile Include="Sort.cs" />
     <Compile Include="Triggers\DeleteSqlTemplates.cs" />
     <Compile Include="Triggers\InsertSqlTemplates.cs" />

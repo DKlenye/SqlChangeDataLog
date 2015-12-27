@@ -1,11 +1,14 @@
 ﻿using System;
 using SqlChangeDataLog.Extensions;
 
-namespace SqlChangeDataLog.Queries
+namespace SqlChangeDataLog.QueryObjects
 {
+
+    //todo Refactoring
+
     public class SelectChangeLog
     {
-        private const string Sql = @"SELECT TOP 50 idChangeLog,[date],[user],changeType,[table],idString,[description] FROM {0} order by idChangeLog desc ";
+        private const string Sql = @"SELECT idChangeLog,[date],[user],changeType,[table],idString,[description] FROM {0} order by idChangeLog desc ";
 
         private const string SqlByParams = @"
         SELECT TOP {Count} idChangeLog,[date],[user],changeType,[table],idString,[description]

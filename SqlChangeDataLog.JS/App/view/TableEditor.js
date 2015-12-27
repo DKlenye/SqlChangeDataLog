@@ -116,7 +116,7 @@ webix.protoUI({
 
         me.clear();
 
-        webix.ajax().post('/Handlers/SelectTableDetails.ashx', params, function (data) {
+        webix.ajax().post('/Handlers/SelectTable.ashx', params, function (data) {
             me.fillData(data);
         });
     },

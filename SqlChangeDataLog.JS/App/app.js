@@ -41,8 +41,8 @@ webix.ready(function() {
                                 id: 'viewscroll.tablesettings',
                                 cols: [
                                     {
-                                        view: 'view.tables',
-                                        id: 'tables',
+                                        view: 'view.table_list',
+                                        id: 'table_list',
                                         icons: app.settings.icons,
                                         on: {
                                             'tableSelect': onTableSelect
@@ -80,7 +80,7 @@ webix.ready(function() {
 
 var onToolbarActivate = function (logCfg) {
     app.connection = logCfg;
-    $$('tables').load(logCfg);
+    $$('table_list').load(logCfg);
     $$('logtable').load(logCfg);
 };
 

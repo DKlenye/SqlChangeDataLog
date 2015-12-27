@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Data;
 using Dapper;
-using SqlChangeDataLog.Queries;
 
 namespace SqlChangeDataLog.Extensions
 {

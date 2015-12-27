@@ -5,7 +5,7 @@ namespace SqlChangeDataLog.Dtos
 {
     public class TableDto
     {
-        public string Name { get; set; }
+        public string TableName { get; set; }
         public IEnumerable<string> Columns { get; set; }
         public IEnumerable<string> KeyColumns { get; set; }
 

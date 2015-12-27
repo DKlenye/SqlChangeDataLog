@@ -101,14 +101,17 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Application\Context.cs" />
+    <Compile Include="Application\DataSerializer.cs" />
+    <Compile Include="Application\Handler.cs" />
     <Compile Include="Handlers\SelectChangeLog.ashx.cs">
       <DependentUpon>SelectChangeLog.ashx</DependentUpon>
     </Compile>
-    <Compile Include="Handlers\SelectTableDetails.ashx.cs">
-      <DependentUpon>SelectTableDetails.ashx</DependentUpon>
+    <Compile Include="Handlers\SelectTable.ashx.cs">
+      <DependentUpon>SelectTable.ashx</DependentUpon>
     </Compile>
-    <Compile Include="Handlers\SelectTables.ashx.cs">
-      <DependentUpon>SelectTables.ashx</DependentUpon>
+    <Compile Include="Handlers\SelectTableList.ashx.cs">
+      <DependentUpon>SelectTableList.ashx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -125,8 +128,8 @@
     <None Include="Content\fonts\PTS-webfont.ttf" />
     <None Include="Content\fonts\PTS-webfont.woff" />
     <Content Include="packages.config" />
-    <Content Include="Handlers\SelectTables.ashx" />
-    <Content Include="Handlers\SelectTableDetails.ashx" />
+    <Content Include="Handlers\SelectTableList.ashx" />
+    <Content Include="Handlers\SelectTable.ashx" />
     <None Include="Content\fonts\Roboto-Medium-webfont.eot" />
     <None Include="Content\fonts\Roboto-Medium-webfont.ttf" />
     <None Include="Content\fonts\Roboto-Medium-webfont.woff" />
@@ -141,6 +144,7 @@
       <Name>SqlChangeDataLog</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
   <ProjectExtensions>

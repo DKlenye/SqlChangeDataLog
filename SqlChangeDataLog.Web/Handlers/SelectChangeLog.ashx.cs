@@ -4,6 +4,7 @@ using System.Linq;
 using Newtonsoft.Json;
 using SqlChangeDataLog.Dtos;
 using SqlChangeDataLog.Extensions;
+using SqlChangeDataLog.Web.Application;
 
 namespace SqlChangeDataLog.Web.Handlers
 {
@@ -41,25 +42,13 @@ namespace SqlChangeDataLog.Web.Handlers
         {
             using (IDbConnection dbConnection = Connect())
             {
-
-                var query = new Queries.SelectChangeLog();
-
+                var query = new QueryObjects.SelectChangeLog();
                 var context = ReadParams<ChangeLogParams>();
+
                 var data = dbConnection.Query<ChangeLogDto>(query.ByParams(context.LogTable,context.Filter,context.Sort,context.from,context.count));
+                int? count = dbConnection.Query<int>(query.CountByParams(context.LogTable, context.Filter)).FirstOrDefault();
 
-
-                int? pos = null;
-                int? count = null;
-                if (context.from != 0 )
-                {
-                    pos = context.from;
-                }
-                
-                {
-                    count = dbConnection.Query<int>(query.CountByParams(context.LogTable, context.Filter)).FirstOrDefault();
-                }
-
-                return new DataSerializer(data, count, pos);
+                return new DataSerializer(data, count, context.from);
             }
         }
     }

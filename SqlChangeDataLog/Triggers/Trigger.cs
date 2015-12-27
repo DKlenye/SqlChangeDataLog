@@ -11,7 +11,7 @@ namespace SqlChangeDataLog.Triggers
         {
             TriggerText = triggerText;
             TableName = tableName;
-
+            
             if (!String.IsNullOrEmpty(TriggerText))
             {
                 var parser = new TriggerTextParser(triggerText);
@@ -19,7 +19,6 @@ namespace SqlChangeDataLog.Triggers
                 Columns = parser.ParseColumns();
                 ExtendedLogic = parser.ParseExtendedLogic();
             }
-
         }
         
         public string TableName { get; set; }

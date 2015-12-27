@@ -6,7 +6,7 @@ using System.Web;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace SqlChangeDataLog
+namespace SqlChangeDataLog.Web.Application
 {
     public abstract class Handler<TParams>:IHttpHandler
     {

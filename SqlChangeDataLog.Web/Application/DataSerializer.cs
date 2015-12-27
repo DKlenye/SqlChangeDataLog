@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace SqlChangeDataLog
+namespace SqlChangeDataLog.Web.Application
 {
     public class DataSerializer
     {
