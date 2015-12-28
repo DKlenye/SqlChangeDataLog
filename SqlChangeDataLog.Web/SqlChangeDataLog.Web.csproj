@@ -104,6 +104,9 @@
     <Compile Include="Application\Context.cs" />
     <Compile Include="Application\DataSerializer.cs" />
     <Compile Include="Application\Handler.cs" />
+    <Compile Include="Handlers\SaveTable.ashx.cs">
+      <DependentUpon>SaveTable.ashx</DependentUpon>
+    </Compile>
     <Compile Include="Handlers\SelectChangeLog.ashx.cs">
       <DependentUpon>SelectChangeLog.ashx</DependentUpon>
     </Compile>
@@ -137,6 +140,7 @@
     <None Include="Content\fonts\Roboto-Regular-webfont.ttf" />
     <None Include="Content\fonts\Roboto-Regular-webfont.woff" />
     <Content Include="Handlers\SelectChangeLog.ashx" />
+    <Content Include="Handlers\SaveTable.ashx" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SqlChangeDataLog\SqlChangeDataLog.csproj">
@@ -153,7 +157,7 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>3041</DevelopmentServerPort>
+          <DevelopmentServerPort>26225</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>
           </IISUrl>

@@ -7,7 +7,7 @@ namespace SqlChangeDataLog.Tests.Queries
         public QueryObject Query(EntityDto entity)
         {
             return new QueryObject(@"
-                insert into Entity(Name) values(@Name); Select last_insert_rowid();",
+                insert into Entity(Name) values(@Name); Select SCOPE_IDENTITY();",
                 new {entity.Name}
                 );
         }

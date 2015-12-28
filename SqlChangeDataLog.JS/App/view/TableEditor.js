@@ -62,7 +62,10 @@ webix.protoUI({
                                                         return "<span class='webix_icon fa-key' style='color:gold'></span> "+obj.ColumnName;
                                                     }
                                                 }
-                                            ]
+                                            ],
+                                            on: {
+                                                'onCheck': bind("_onCheck")
+                                            }
                                         },
                                         {
                                             height: 45,
@@ -79,14 +82,14 @@ webix.protoUI({
                                         {
                                             view: 'textarea',
                                             id:'text.trigger'
-                                        },
+                                        }/*,
                                         {
                                             height: 45,
                                             cols: [
                                                 { view: "button", type: "iconButton", label: "Save", icon: "floppy-o", width: 95 },
                                                 {}
                                             ]
-                                        }
+                                        }*/
                                     ]
                                 }
                             ]
@@ -219,6 +222,10 @@ webix.protoUI({
 
     eachOperations: function (fn) {
         this.operations.forEach(fn);
+    },
+
+    _onCheck: function () {
+        console.log(arguments);
     }
 
 

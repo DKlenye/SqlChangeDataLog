@@ -15,6 +15,7 @@ namespace SqlChangeDataLog
 
         public string BuildWhereClause()
         {
+            if (isEmpty()) return "";
 
             var StringEquals = new[] { "changeType", "table", "idString" };
             var IntEquals = new[] {"idChangeLog"};

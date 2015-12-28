@@ -9,7 +9,7 @@ using SqlChangeDataLog.Web.Application;
 namespace SqlChangeDataLog.Web.Handlers
 {
 
-    public class ChangeLogParams : Context
+    public class SelectChangeLogContext : Context
     {
         public int from { get; set; }
         public int count { get; set; }
@@ -36,14 +36,14 @@ namespace SqlChangeDataLog.Web.Handlers
 
     }
 
-    public class SelectChangeLog : Handler<ChangeLogParams>
+    public class SelectChangeLog : Handler<SelectChangeLogContext>
     {
-        protected override object Process(ChangeLogParams parameters)
+        protected override object Process(SelectChangeLogContext parameters)
         {
             using (IDbConnection dbConnection = Connect())
             {
                 var query = new QueryObjects.SelectChangeLog();
-                var context = ReadParams<ChangeLogParams>();
+                var context = ReadParams<SelectChangeLogContext>();
 
                 var data = dbConnection.Query<ChangeLogDto>(query.ByParams(context.LogTable,context.Filter,context.Sort,context.from,context.count));
                 int? count = dbConnection.Query<int>(query.CountByParams(context.LogTable, context.Filter)).FirstOrDefault();

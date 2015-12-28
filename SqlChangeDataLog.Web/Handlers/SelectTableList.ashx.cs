@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
+﻿using System.Data;
 using SqlChangeDataLog.Queries;
 using SqlChangeDataLog.Web.Application;
 

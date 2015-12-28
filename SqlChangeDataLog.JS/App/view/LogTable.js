@@ -9,7 +9,7 @@ webix.protoUI({
             };
 
         webix.extend(this.defaults, {
-            rows: [
+            rows: [ 
                 {
                     view: 'datatable',
                     id: 'table.log',
@@ -46,13 +46,13 @@ webix.protoUI({
                         }
                     },
                     on: {
-                        //onBeforeLoad: bind("_onBeforeLoad"),
-                       // onAfterLoad: bind("_onAfterLoad"),
+                        onBeforeLoad: bind("_onBeforeLoad"),
+                        onAfterLoad: bind("_onAfterLoad"),
                         onSelectChange: bind("_onSelectChange")
                     },
-                    select: 'row'//,
-                    //pager: 'pagerA'
-                }/*,
+                    select: 'row',
+                    pager: 'pagerA'
+                },
                 {
                     paddingY: 7,
                     rows: [
@@ -64,7 +64,7 @@ webix.protoUI({
                             group: 5
                         }
                     ]
-                }*/
+                }
             ]
         });
     },
@@ -79,7 +79,6 @@ webix.protoUI({
     _onAfterLoad: function() {
         var grid = $$("table.log");
 
-        //grid.filterByAll();
         grid.hideOverlay();
         grid.enable();
     },

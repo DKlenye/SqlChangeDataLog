@@ -5,16 +5,16 @@ using SqlChangeDataLog.Web.Application;
 namespace SqlChangeDataLog.Web.Handlers
 {
 
-    public class TableReadParams : Context
+    public class SelectTableContext : Context
     {
         public string TableName { get; set; }
     }
 
-    public class SelectTable : Handler<TableReadParams>
+    public class SelectTable : Handler<SelectTableContext>
     {
-        protected override object Process(TableReadParams parameters)
+        protected override object Process(SelectTableContext parameters)
         {
-            var param = ReadParams<TableReadParams>();
+            var param = ReadParams<SelectTableContext>();
             using (IDbConnection dbConnection = Connect())
             {
                 return new SelectTableDto(dbConnection, param.TableName).Query();

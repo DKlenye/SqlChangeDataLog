@@ -4,37 +4,22 @@ using SqlChangeDataLog.Extensions;
 namespace SqlChangeDataLog.QueryObjects
 {
 
-    //todo Refactoring
-
     public class SelectChangeLog
     {
-        private const string Sql = @"SELECT idChangeLog,[date],[user],changeType,[table],idString,[description] FROM {0} order by idChangeLog desc ";
-
-        private const string SqlByParams = @"
-        SELECT TOP {Count} idChangeLog,[date],[user],changeType,[table],idString,[description]
-        FROM (SELECT *,ROW_NUMBER() OVER(ORDER BY {Order}) AS row_number FROM {TableName} {Filter}) a
-        WHERE row_number > {From}
-        ORDER BY {Order}";
-
-        private const string SqlCountByParams = @"
-            SELECT COUNT(*) from {TableName} {Filter}
-        ";
 
         public QueryObject All(string tableName)
         {
-            if (CheckSqlInjection(tableName))
-            {
-                throw new Exception("Bad table name");
-            }
-            
-            return new QueryObject(String.Format(Sql,tableName));
+            return
+                new QueryObject(
+                    @"SELECT idChangeLog,[date],[user],changeType,[table],idString,[description] FROM {tableName}".ApplyTemplate(
+                        new {tableName}));
         }
 
         public QueryObject CountByParams(string tableName, Filter filter)
         {
-            return new QueryObject(SqlCountByParams.ApplyTemplate(new
+            return new QueryObject(@"SELECT COUNT(*) from {tableName} {Filter}".ApplyTemplate(new
             {
-                TableName = tableName,
+                tableName,
                 Filter = BuildFilter(filter)
             }));
         }
@@ -47,8 +32,12 @@ namespace SqlChangeDataLog.QueryObjects
             {
                 order = String.Format("[{0}] {1}", sort.id, sort.dir);
             }
-            
-            return new QueryObject(SqlByParams.ApplyTemplate(new
+
+            return new QueryObject(@"
+                SELECT TOP {Count} idChangeLog,[date],[user],changeType,[table],idString,[description]
+                FROM (SELECT *,ROW_NUMBER() OVER(ORDER BY {Order}) AS row_n FROM {TableName} {Filter}) a
+                WHERE row_n > {From}
+                ORDER BY {Order}".ApplyTemplate(new
             {
                 From = from,
                 Count = count,
@@ -66,11 +55,6 @@ namespace SqlChangeDataLog.QueryObjects
                 _filter = "Where " + filter.BuildWhereClause();
             }
             return _filter;
-        }
-
-        bool CheckSqlInjection(string query)
-        {
-            return query.Contains(" ");
         }
     }
 }
