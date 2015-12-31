@@ -80,5 +80,29 @@ webix.protoUI({
 
     load: function(params) {
         $$("table.table_list").load("post->/Handlers/SelectTableList.ashx", null, params);
+    },
+
+    refreshItem: function (item) {
+
+        var grid = $$("table.table_list");
+        var dataset = grid.data;
+
+        var record = dataset.find(function (obj) {
+            return obj.Name == item.TableName;
+        },true);
+
+        var operations = [];
+        ["Insert", "Update", "Delete"].forEach(function(o) {
+            if (item[o]) {
+                operations.push(o.toLowerCase());
+            }
+        });
+
+        if (operations.length == 0) {
+            operations = null;
+        }
+
+        dataset.updateItem(record.id, { Operations: operations });
     }
+
 }, webix.ui.layout);

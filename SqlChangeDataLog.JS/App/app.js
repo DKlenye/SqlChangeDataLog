@@ -49,7 +49,14 @@ webix.ready(function() {
                                         }
                                     },
                                     { view: 'resizer' },
-                                    { view: 'view.table_editor', id: 'table_editor', icons: app.settings.icons }
+                                    {
+                                        view: 'view.table_editor', id: 'table_editor', icons: app.settings.icons,
+                                        on: {
+                                            'onTableChange': function (data) {
+                                                $$('table_list').refreshItem(data);
+                                            }
+                                        }
+                                    }
                                 ]
                             },
                             {
@@ -64,7 +71,10 @@ webix.ready(function() {
                                         }
                                     },
                                     { view: 'resizer' },
-                                    { view: 'view.logdetails', id:'logdetails' }
+                                    {
+                                        view: 'view.logdetails',
+                                        id: 'logdetails'
+                                    }
                                 ]
                             }
                         ]

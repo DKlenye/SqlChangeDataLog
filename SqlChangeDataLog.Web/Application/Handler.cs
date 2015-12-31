@@ -17,9 +17,10 @@ namespace SqlChangeDataLog.Web.Application
         {
             _request = context.Request;
             context.Response.ContentType = "application/json";
+            var obj = Process(ReadParams<TParams>());
             context.Response.Write(
                 JsonConvert.SerializeObject(
-                    Process(ReadParams<TParams>()),
+                    obj,
                     Formatting.Indented,
                     new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }
                 )

@@ -22,7 +22,7 @@ webix.protoUI({
                             view: "segmented",
                             id:"segmented.operation",
                             optionWidth: 120,
-                            value: "none",
+                            value: "None",
                             options: [
                                 
                             ],
@@ -70,7 +70,7 @@ webix.protoUI({
                                         {
                                             height: 45,
                                             cols: [
-                                                { view: "button", type: "iconButton", label: "Save", icon: "floppy-o", width: 95 },
+                                                { view: "button", type: "iconButton", label: "Save", icon: "floppy-o", width: 95, on: { onItemClick: bind("saveTable")} },
                                                 {}
                                             ]
                                         }
@@ -82,14 +82,7 @@ webix.protoUI({
                                         {
                                             view: 'textarea',
                                             id:'text.trigger'
-                                        }/*,
-                                        {
-                                            height: 45,
-                                            cols: [
-                                                { view: "button", type: "iconButton", label: "Save", icon: "floppy-o", width: 95 },
-                                                {}
-                                            ]
-                                        }*/
+                                        }
                                     ]
                                 }
                             ]
@@ -103,23 +96,23 @@ webix.protoUI({
     load: function (connection, table) {
     if (table) {
             this.enable();
-            var params = webix.copy(connection);
-            params["TableName"] = table;
-            this._loadTable(params);
+            this.params = webix.copy(connection);
+            this.params["TableName"] = table;
+            this._loadTable();
         } else {
             this.clear();
             this.disable();
         }
     },
 
-    _loadTable: function (params) {
+    _loadTable: function () {
 
         var me = this;
         var table = $$("table.columns");
 
         me.clear();
 
-        webix.ajax().post('/Handlers/SelectTable.ashx', params, function (data) {
+        webix.ajax().post('/Handlers/SelectTable.ashx', this.params, function (data) {
             me.fillData(data);
         });
     },
@@ -139,13 +132,42 @@ webix.protoUI({
     },
 
     fillData: function (data) {
-
         data = JSON.parse(data);
         this.data = data;
 
-        this.setSegmentedTableName(data.Name);
-        this.setOptions();
+        this.records = {
+            Insert: this.buildOperationRecord("Insert"),
+            Update: this.buildOperationRecord("Update"),
+            Delete: this.buildOperationRecord("Delete")
+        };
 
+        this.setSegmentedTableName(data.TableName);
+        this.setOptions();
+    },
+
+    buildOperationRecord:function(operation) {
+        var data = this.data;
+        var trigger = data[operation];
+        var rezult = [];
+
+        var isKey = function (column) {
+            return data.KeyColumns.indexOf(column) != -1;
+        };
+
+        var isChecked = function (column) {
+            if (!trigger || !trigger.Columns) return false;
+            return trigger.Columns.indexOf(column) != -1;
+        };
+
+        data.Columns.forEach(function (column) {
+            rezult.push({
+                ColumnName: column,
+                IsKey: isKey(column),
+                Checked: isChecked(column)
+            });
+        });
+
+        return rezult;
     },
 
     setOptions:function() {
@@ -153,12 +175,13 @@ webix.protoUI({
         var data = this.data;
         var optionValue;
         var segment = $$('segmented.operation');
+        segment._settings.options = [];
         var options = segment._settings.options;
 
         this.eachOperations(function(operation) {
             var trigger = data[operation.id];
             if (!trigger) {
-                //todo выключить опцию
+                options.push(operation); //todo выключить опцию
             } else {
                 options.push(operation);
                 if (!optionValue) {
@@ -168,37 +191,11 @@ webix.protoUI({
         });
 
         segment.refresh();
-        segment.setValue(optionValue || "none");
+        optionValue = optionValue || "Insert";
+        segment.setValue(optionValue);
         this.onOperationChange(optionValue);
     },
     
-    fillColumns:function(operation) {
-
-        var data = this.data;
-        var trigger = data[operation];
-        var rezult = [];
-
-        var isKey = function(column) {
-            return data.KeyColumns.indexOf(column) != -1;
-        };
-
-        var isChecked = function(column) {
-            if (!trigger || !trigger.Columns) return false;
-            return trigger.Columns.indexOf(column) != -1;
-        };
-        
-        data.Columns.forEach(function(column) {
-            rezult.push({
-                ColumnName:column,
-                IsKey:isKey(column),
-                Checked:isChecked(column)
-            });
-        });
-
-        $$("table.columns").parse(rezult);
-
-    },
-
     fillTriggerText:function(operation) {
         var trigger = this.data[operation];
         var triggerText = "";
@@ -209,6 +206,7 @@ webix.protoUI({
     },
 
     setSegmentedTableName: function (tableName) {
+        
         var columnOption = $$('segmented.trigger')._settings.options[0];
         columnOption.value = "<span class='webix_icon fa-columns'></span><span style='padding-left: 4px'>Columns " + (tableName || "") + "</span>";
         $$('segmented.trigger').refresh();
@@ -216,7 +214,7 @@ webix.protoUI({
 
     onOperationChange: function (operation) {
         this.clearView();
-        this.fillColumns(operation);
+        $$("table.columns").parse(this.records[operation]);
         this.fillTriggerText(operation);
     },
 
@@ -225,7 +223,55 @@ webix.protoUI({
     },
 
     _onCheck: function () {
-        console.log(arguments);
+        var record = this.operations[$$('segmented.operation').getValue()];
+    },
+
+    saveTable:function() {
+        var data = this.data;
+        var me = this;
+
+        ["Insert", "Update", "Delete"].forEach(function(e) {
+            var record = me.records[e];
+            var columns = [];
+            record.forEach(function(_column) {
+                if (_column.Checked) {
+                    columns.push(_column.ColumnName);
+                }
+            });
+            if (columns.length == 0) {
+                delete data[e];
+            } else {
+                if (!data[e]) {
+                    data[e] = {
+                        Operation:e,
+                        TableName: data.TableName
+                    };
+                }
+                data[e].Columns = columns;
+            }
+        });
+
+        this.saveData();
+
+    },
+
+    saveData: function () {
+
+        this.disable();
+
+        var data = this.data;
+        var me = this;
+        var params = webix.copy(this.params);
+        params.Table = data;
+        webix.ajax().post('/Handlers/SaveTable.ashx', params, webix.bind(me.onSave, me));
+    },
+
+    onSave: function (data) {
+        var dto = JSON.parse(data);
+        this.callEvent("onTableChange", [dto]);
+        
+        this.fillData(data);
+        this.enable();
     }
 
 

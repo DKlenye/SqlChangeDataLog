@@ -99,9 +99,7 @@ END";
         {
             var sb = new StringBuilder();
             sb.Append(BuildHeader())
-                .AppendLine("--ExendedLogic--")
                 .AppendLine(Trigger.ExtendedLogic)
-                .AppendLine("--")
                 .Append(BuildSelectXml())
                 .Append(BuildFooter());
             return sb.ToString();
