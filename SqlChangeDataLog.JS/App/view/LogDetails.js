@@ -69,7 +69,10 @@ webix.protoUI({
         var _old = this.xmlToObject(xml.substring(splitIndex, xml.length));
 
         var rezult = [];
+        var map = {};
+
         for (var i in _old) {
+            map[i] = _old[i];
             rezult.push({
                 Column: i,
                 OldValue: _old[i],
@@ -77,6 +80,19 @@ webix.protoUI({
                 $css: _old[i] == _new[i] ? "" : { "background-color": "papayawhip" }
             });
         }
+
+        for (var i in _new) {
+            if (!map[i]) {
+                rezult.push({
+                    Column: i,
+                    OldValue: _old[i],
+                    NewValue: _new[i],
+                    $css: _old[i] == _new[i] ? "" : { "background-color": "papayawhip" }
+                });
+            }
+        }
+
+
         return rezult;
     },
 
