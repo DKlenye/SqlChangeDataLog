@@ -79,7 +79,7 @@ webix.protoUI({
     },
 
     load: function(params) {
-        $$("table.table_list").load("post->/Handlers/SelectTableList.ashx", null, params);
+        $$("table.table_list").load("post->"+app.settings.url.tableList, null, params);
     },
 
     refreshItem: function (item) {
