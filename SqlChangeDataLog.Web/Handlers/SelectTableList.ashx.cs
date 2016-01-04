@@ -4,15 +4,11 @@ using SqlChangeDataLog.Web.Application;
 
 namespace SqlChangeDataLog.Web.Handlers
 {
-    
     public class SelectTableList : Handler<Context>
     {
-        protected override object Process(Context parameters)
+        protected override object Process(Context context, IDbConnection connection)
         {
-            using (IDbConnection dbConnection = Connect())
-            {
-                return  new SelectTableListDto(dbConnection).Query();
-            }
+            return new SelectTableListDto(connection).Query();
         }
     }
 }

@@ -38,18 +38,14 @@ namespace SqlChangeDataLog.Web.Handlers
 
     public class SelectChangeLog : Handler<SelectChangeLogContext>
     {
-        protected override object Process(SelectChangeLogContext parameters)
+        protected override object Process(SelectChangeLogContext context, IDbConnection connection)
         {
-            using (IDbConnection dbConnection = Connect())
-            {
                 var query = new QueryObjects.SelectChangeLog();
-                var context = ReadParams<SelectChangeLogContext>();
 
-                var data = dbConnection.Query<ChangeLogDto>(query.ByParams(context.LogTable,context.Filter,context.Sort,context.from,context.count));
-                int? count = dbConnection.Query<int>(query.CountByParams(context.LogTable, context.Filter)).FirstOrDefault();
+                var data = connection.Query<ChangeLogDto>(query.ByParams(context.LogTable,context.Filter,context.Sort,context.from,context.count));
+                int? count = connection.Query<int>(query.CountByParams(context.LogTable, context.Filter)).FirstOrDefault();
 
                 return new DataSerializer(data, count, context.from);
-            }
         }
     }
 }

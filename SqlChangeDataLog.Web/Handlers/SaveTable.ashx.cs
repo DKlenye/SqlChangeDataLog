@@ -14,19 +14,16 @@ namespace SqlChangeDataLog.Web.Handlers
 
     public class SaveTable : Handler<SaveTableContext>
     {
-        protected override object Process(SaveTableContext parameters)
+        protected override object Process(SaveTableContext parameters, IDbConnection connection)
         {
-            using (IDbConnection connection = Connect())
-            {
-                var dto = parameters.Dto;
+            var dto = parameters.Dto;
 
-                if (dto.Insert != null) dto.Insert.LogTableName = parameters.LogTable;
-                if (dto.Update != null) dto.Update.LogTableName = parameters.LogTable;
-                if (dto.Delete != null) dto.Delete.LogTableName = parameters.LogTable;
+            if (dto.Insert != null) dto.Insert.LogTableName = parameters.LogTable;
+            if (dto.Update != null) dto.Update.LogTableName = parameters.LogTable;
+            if (dto.Delete != null) dto.Delete.LogTableName = parameters.LogTable;
 
-                new Commands.SaveTable(connection,dto).Execute();
-                return new SelectTableDto(connection,dto.TableName).Query();
-            }
+            new Commands.SaveTable(connection, dto).Execute();
+            return new SelectTableDto(connection, dto.TableName).Query();
         }
     }
 }

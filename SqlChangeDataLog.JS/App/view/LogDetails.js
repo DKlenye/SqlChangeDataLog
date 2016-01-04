@@ -73,6 +73,13 @@ webix.protoUI({
 
         for (var i in _old) {
             map[i] = _old[i];
+        }
+
+        for (var i in _new) {
+            if (!map[i]) map[i] = _new[i];
+        }
+
+        for (var i in map) {
             rezult.push({
                 Column: i,
                 OldValue: _old[i],
@@ -80,18 +87,6 @@ webix.protoUI({
                 $css: _old[i] == _new[i] ? "" : { "background-color": "papayawhip" }
             });
         }
-
-        for (var i in _new) {
-            if (!map[i]) {
-                rezult.push({
-                    Column: i,
-                    OldValue: _old[i],
-                    NewValue: _new[i],
-                    $css: _old[i] == _new[i] ? "" : { "background-color": "papayawhip" }
-                });
-            }
-        }
-
 
         return rezult;
     },
