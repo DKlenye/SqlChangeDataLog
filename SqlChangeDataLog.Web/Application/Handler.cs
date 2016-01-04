@@ -4,47 +4,55 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Linq;
 
 namespace SqlChangeDataLog.Web.Application
 {
-    public abstract class Handler<TParams>:IHttpHandler
+    public abstract class Handler<TContext>:IHttpHandler
+        where TContext:Context
     {
-
-        private HttpRequest _request;
-        
         public void ProcessRequest(HttpContext context)
         {
-            _request = context.Request;
+            var appContext = GetContext(context.Request);
+
             context.Response.ContentType = "application/json";
-            var obj = Process(ReadParams<TParams>());
-            context.Response.Write(
-                JsonConvert.SerializeObject(
-                    obj,
-                    Formatting.Indented,
-                    new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }
-                )
-            );
+
+            using (IDbConnection connection = Connect(appContext))
+            {
+                context.Response.Write(
+                    SerializeObject(
+                        Process(GetContext(context.Request),connection)
+                    )
+                );    
+            }
         }
 
-        protected abstract object Process(TParams parameters);
-        
-        protected T ReadParams<T>()
+        protected abstract object Process(TContext context, IDbConnection connection);
+
+        protected string SerializeObject(object obj)
+        {
+            return JsonConvert.SerializeObject(
+                obj,
+                Formatting.Indented,
+                new JsonSerializerSettings
+                {
+                    NullValueHandling = NullValueHandling.Ignore,
+                    Converters = {new IsoDateTimeConverter {DateTimeFormat = "yyyy'/'MM'/'dd' 'HH':'mm':'ss"}}
+                }
+                );
+        }
+
+        protected TContext GetContext(HttpRequest request)
         {
             var obj = new JObject();
-            _request.Form.AllKeys.ToList().ForEach(x => obj.Add(new JProperty(x, _request[x])));
-            return obj.ToObject<T>();    
+            request.Form.AllKeys.ToList().ForEach(x => obj.Add(new JProperty(x, request[x])));
+            return obj.ToObject<TContext>();    
         }
 
-        Context Context
+        protected IDbConnection Connect(TContext context)
         {
-            get { return ReadParams<Context>(); }
-        }
-
-        protected IDbConnection Connect()
-        {
-            var context = Context;
-            IDbConnection dbConnection = new SqlConnection(buildConnectionString(context.Server, context.Database));
+            IDbConnection dbConnection = new SqlConnection(buildConnectionString(context.Server,context.Database));
             dbConnection.Open();
             return dbConnection;
         }
