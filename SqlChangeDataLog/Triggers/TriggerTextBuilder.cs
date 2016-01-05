@@ -39,22 +39,21 @@ BEGIN
     SET NOCOUNT ON;
 ";
 
-        private const string DeclareXmlTemplate = @"
-    DECLARE @xml xml
-    SET @xml = ({SelectXml}
-    )    
-";
-
         private const string FooterTemplate = @"
-    IF @xml IS NOT NULL
-    BEGIN
-        DECLARE @idString VARCHAR(32)
-        SELECT @idString = CAST({PrimaryKey} AS VARCHAR) FROM {IdFrom}
-        INSERT INTO {LogTableName} ([date],[user],[changeType],[table],[idString],[description])
-        VALUES (GETDATE(), USER, '{ChangeType}', '{TableName}', @idString, @xml)
-    END
-END";
+    INSERT INTO {LogTableName} ([date],[user],[changeType],[table],[idString],[description])
+    SELECT 
+        GETDATE(),
+        USER,
+        '{ChangeType}',
+        '{TableName}',
+        CAST({PrimaryKey} as varchar(32)),
+        (
+            {SelectXml}
+        )
+    FROM {IdFrom} C
 
+END";
+        
         private string TriggerName
         {
             get
@@ -77,6 +76,7 @@ END";
         {
             return FooterTemplate.ApplyTemplate(new
             {
+                SelectXml = BuildSelectXml(),
                 PrimaryKey = PrimaryKey,
                 IdFrom = SqlTemplates.IdFrom(),
                 ChangeType = SqlTemplates.ChangeType(),
@@ -87,11 +87,10 @@ END";
 
         private string BuildSelectXml()
         {
-            return DeclareXmlTemplate.ApplyTemplate(new
+            return SqlTemplates.SelectXml().ApplyTemplate(new
             {
-                SelectXml = SqlTemplates.SelectXml().ApplyTemplate(new {
-                    Columns = String.Join(",",Trigger.Columns)
-                })
+                Columns = String.Join(",", Trigger.Columns),
+                PrimaryKey = PrimaryKey
             });
         }
         
@@ -100,7 +99,6 @@ END";
             var sb = new StringBuilder();
             sb.Append(BuildHeader())
                 .AppendLine(Trigger.ExtendedLogic)
-                .Append(BuildSelectXml())
                 .Append(BuildFooter());
             return sb.ToString();
         }

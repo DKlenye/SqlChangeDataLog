@@ -6,7 +6,9 @@ namespace SqlChangeDataLog.Triggers
     public class TriggerTextParser
     {
         private const string OperationPattern = @"(?<=for\s+)insert|update|delete";
-        private const string SelectXmlPattern = @"(?<=set\s+@xml\s+=\s+[(]).*?(?=\s*from)";
+        private const string LegacySelectXmlPattern = @"(?<=set\s+@xml\s+=\s+[(]).*?FOR XML AUTO";
+        private const string SelectXmlPattern = @"(?<=[(])\s*SELECT.*FOR XML AUTO";
+        private const string SelectColumnsPattern = @"(?<=select).*?(?=from\s?[(])";
         private const string RemoveSelectPattern = @"\s*select\s+(top\s+\d+\s+)?";
         private const string RemoveSpacesPattern = @"s*\r+\s*";
         private const string RemoveBracketsPattern = @"[\[\]]";

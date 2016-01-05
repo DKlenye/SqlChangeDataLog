@@ -4,15 +4,12 @@
     {
         public override string SelectXml()
         {
-                return @"
-        SELECT {Columns}
-        FROM(
-            SELECT {Columns}
-            FROM INSERTED
-            UNION ALL
-            SELECT {Columns}
-            FROM DELETED
-        )AS U FOR XML AUTO";
+                return @"SELECT {Columns}
+            FROM(
+                SELECT * FROM INSERTED as I WHERE I.{PrimaryKey} = C.{PrimaryKey}
+                UNION ALL
+                SELECT * FROM DELETED as D WHERE D.{PrimaryKey} = C.{PrimaryKey}
+            )AS U FOR XML AUTO";
         }
 
         public override string ChangeType()

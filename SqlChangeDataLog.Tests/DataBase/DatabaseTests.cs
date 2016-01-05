@@ -96,5 +96,33 @@ namespace SqlChangeDataLog.Tests.DataBase
             Assert.AreEqual(LogRecordsCount, 1);
         }
 
+        [Test]
+        public void UpdateMultipleTest()
+        {
+            var dto = new SelectTableDto(Connection, "Entity").Query();
+            dto.Insert = CreateTrigger("Update");
+            new SaveTable(Connection, dto).Execute();
+
+            InsertEntity("TestName1");
+            InsertEntity("TestName2");
+
+            Connection.Execute(new UpdateEntity().NameForAllEntities("NewName"));
+            Assert.AreEqual(LogRecordsCount, 2);
+        }
+
+        [Test]
+        public void DeleteMultipleTest()
+        {
+            InsertEntity("TestName1");
+            InsertEntity("TestName2");
+
+            var dto = new SelectTableDto(Connection, "Entity").Query();
+            dto.Insert = CreateTrigger("Delete");
+            new SaveTable(Connection, dto).Execute();
+
+            Connection.Execute(new DeleteEntity().All());
+            Assert.AreEqual(LogRecordsCount, 2);
+        }
+        
     }
 }
