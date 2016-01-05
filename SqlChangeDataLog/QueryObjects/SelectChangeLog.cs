@@ -56,5 +56,14 @@ namespace SqlChangeDataLog.QueryObjects
             }
             return _filter;
         }
+
+        public QueryObject ById(string tableName, int id)
+        {
+            return
+                new QueryObject(
+                    @"SELECT idChangeLog,[date],[user],changeType,[table],idString,[description] FROM {tableName} where idChangeLog = {id}"
+                        .ApplyTemplate(
+                            new {tableName, id}));
+        }
     }
 }
