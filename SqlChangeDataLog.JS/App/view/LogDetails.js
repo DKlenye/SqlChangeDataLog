@@ -82,8 +82,8 @@ webix.protoUI({
         for (var i in map) {
             rezult.push({
                 Column: i,
-                OldValue: _old[i],
-                NewValue:_new[i],
+                OldValue: webix.isUndefined(_old[i]) ? 'NULL' : _old[i],
+                NewValue: webix.isUndefined(_new[i]) ? 'NULL' : _new[i],
                 $css: _old[i] == _new[i] ? "" : { "background-color": "papayawhip" }
             });
         }
