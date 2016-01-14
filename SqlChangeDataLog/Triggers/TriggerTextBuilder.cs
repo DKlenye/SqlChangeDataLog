@@ -33,14 +33,14 @@ namespace SqlChangeDataLog.Triggers
         private const string HeaderTemplate = @"
 CREATE TRIGGER [dbo].[{TriggerName}]
     ON  [dbo].[{TableName}]
-    FOR {Operation}
+    FOR {Operation} NOT FOR REPLICATION
 AS
 BEGIN
     SET NOCOUNT ON;
 ";
 
         private const string FooterTemplate = @"
-    INSERT INTO {LogTableName} ([date],[user],[changeType],[table],[idString],[description])
+INSERT INTO {LogTableName} ([date],[user],[changeType],[table],[idString],[description])
     SELECT 
         GETDATE(),
         USER,
