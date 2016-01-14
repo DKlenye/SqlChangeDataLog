@@ -117,13 +117,28 @@ webix.protoUI({
         });
     },
 
+    _getOptions : function() {
+        var segmented = $$("segmented.operation");
+        var settings = segmented._settings || segmented.s;
+        return settings.options;
+    },
+
+    _setOptions:function(options) {
+        var segmented = $$("segmented.operation");
+        var settings = segmented._settings || segmented.s;
+        settings.options = options;
+    },
+    _refreshOptions:function() {
+        $$("segmented.operation").refresh();
+    },
+
     clear: function () {
         this.setSegmentedTableName();
         this.clearView();
         delete this.data;
-        
-        $$("segmented.operation")._settings.options = [];
-        $$("segmented.operation").refresh();
+
+        this._setOptions([]);
+        this._refreshOptions();
     },
 
     clearView:function() {
@@ -174,9 +189,8 @@ webix.protoUI({
 
         var data = this.data;
         var optionValue;
+        var options = [];
         var segment = $$('segmented.operation');
-        segment._settings.options = [];
-        var options = segment._settings.options;
 
         this.eachOperations(function(operation) {
             var trigger = data[operation.id];
@@ -190,7 +204,9 @@ webix.protoUI({
             }
         });
 
-        segment.refresh();
+        this._setOptions(options);
+        this._refreshOptions();
+
         optionValue = optionValue || "Insert";
         segment.setValue(optionValue);
         this.onOperationChange(optionValue);
@@ -206,8 +222,11 @@ webix.protoUI({
     },
 
     setSegmentedTableName: function (tableName) {
-        
-        var columnOption = $$('segmented.trigger')._settings.options[0];
+
+        var segmented = $$('segmented.trigger'),
+            settings = segmented._settings || segmented.s;
+
+        var columnOption = settings.options[0];
         columnOption.value = "<span class='webix_icon fa-columns'></span><span style='padding-left: 4px'>Columns " + (tableName || "") + "</span>";
         $$('segmented.trigger').refresh();
     },
