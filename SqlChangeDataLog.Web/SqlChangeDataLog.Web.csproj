@@ -86,6 +86,7 @@
     <Content Include="Content\skins\web.css" />
     <Content Include="Content\webix.css" />
     <Content Include="Content\webix.min.css" />
+    <Content Include="index-debug.html" />
     <Content Include="index.html" />
     <Content Include="Scripts\app-debug.js" />
     <Content Include="Scripts\app.js" />
@@ -157,7 +158,7 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>10451</DevelopmentServerPort>
+          <DevelopmentServerPort>54705</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>
           </IISUrl>

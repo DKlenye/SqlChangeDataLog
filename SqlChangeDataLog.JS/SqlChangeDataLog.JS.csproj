@@ -59,7 +59,9 @@
     <Content Include="App\view\TableEditor.js" />
     <Content Include="App\view\TableList.js" />
     <Content Include="App\view\Toolbar.js" />
-    <Content Include="Configuration.xml" />
+    <Content Include="Configuration.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="App\polyfill.js" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
