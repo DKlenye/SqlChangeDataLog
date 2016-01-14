@@ -46,6 +46,24 @@ namespace SqlChangeDataLog.Tests.DataBase
                 return dto;
         }
 
+        protected EntityDto[] InsertMultipleEntity(string name)
+        {
+            var dto1 = new EntityDto(name);
+            var dto2 = new EntityDto(name);
+
+            using (var connection = Connect())
+            {
+                using (var transaction = connection.BeginTransaction())
+                {
+                    dto1.Id = connection.Query<int>(new InsertEntity().Query(dto1), transaction).Single();
+                    dto2.Id = connection.Query<int>(new InsertEntity().Query(dto2), transaction).Single();
+                    transaction.Commit();
+                }
+            }
+
+            return new[] {dto1, dto2};
+        }
+
         protected Trigger CreateTrigger(string Operation)
         {
             return new Trigger()

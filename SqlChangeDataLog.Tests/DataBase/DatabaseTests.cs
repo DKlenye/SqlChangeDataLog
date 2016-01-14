@@ -28,37 +28,60 @@ namespace SqlChangeDataLog.Tests.DataBase
             get { return Connection.Query<ChangeLogDto>(new SelectChangeLog().All(LogTableName)).Count(); }
         }
 
+        protected TableDto Dto
+        {
+            get { return new SelectTableDto(Connection, "Entity").Query(); }
+        }
+
 
         [Test]
-        public void TableDtoTest()
+        public void Not_Logging_Table_Must_Not_Contain_Log_Triggers()
         {
-            var dto = new SelectTableDto(Connection, "Entity").Query();
-            Assert.IsNull(dto.Insert);
-            Assert.IsNull(dto.Update);
-            Assert.IsNull(dto.Delete);
+            var tableDto = Dto;
+            Assert.IsNull(tableDto.Insert);
+            Assert.IsNull(tableDto.Update);
+            Assert.IsNull(tableDto.Delete);
+        }
 
-            dto.Insert = CreateTrigger("Insert");
-            new SaveTable(Connection, dto).Execute();
+
+        [Test]
+        public void Logging_Table_Must_Contain_Log_Triggers()
+        {
+            var tableDto = Dto;
+            tableDto.Insert = CreateTrigger("Insert");
+            new SaveTable(Connection, tableDto).Execute();
+            
             Assert.AreEqual(TriggerCount, 1);
-
-            dto.Update = CreateTrigger("Update");
-            dto.Delete = CreateTrigger("Delete");
-            new SaveTable(Connection, dto).Execute();
+            tableDto.Update = CreateTrigger("Update");
+            tableDto.Delete = CreateTrigger("Delete");
+            new SaveTable(Connection, tableDto).Execute();
             Assert.AreEqual(TriggerCount, 3);
+        }
 
-            dto.Insert = null;
-            dto.Update = null;
-            dto.Delete = null;
-            new SaveTable(Connection, dto).Execute();
+        [Test]
+        public void Add_Remove_Log_Triggers_Test()
+        {
+            var tableDto = Dto;
+            tableDto.Insert = CreateTrigger("Insert");
+            tableDto.Update = CreateTrigger("Update");
+            tableDto.Delete = CreateTrigger("Delete");
+            new SaveTable(Connection, tableDto).Execute();
+            Assert.AreEqual(TriggerCount, 3);
+            
+            tableDto.Insert = null;
+            tableDto.Update = null;
+            tableDto.Delete = null;
+            new SaveTable(Connection, tableDto).Execute();
             Assert.AreEqual(TriggerCount, 0);
         }
+
 
         [Test]
         public void InsertTest()
         {
-            var dto = new SelectTableDto(Connection, "Entity").Query();
-            dto.Insert = CreateTrigger("Insert");
-            new SaveTable(Connection, dto).Execute();
+            var tableDto = Dto;
+            tableDto.Insert = CreateTrigger("Insert");
+            new SaveTable(Connection, tableDto).Execute();
 
             var entity = InsertEntity("TestName");
             
@@ -69,9 +92,9 @@ namespace SqlChangeDataLog.Tests.DataBase
         [Test]
         public void UpdateTest()
         {
-            var dto = new SelectTableDto(Connection, "Entity").Query();
-            dto.Insert = CreateTrigger("Update");
-            new SaveTable(Connection, dto).Execute();
+            var tableDto = Dto;
+            tableDto.Update = CreateTrigger("Update");
+            new SaveTable(Connection, tableDto).Execute();
 
             var entity = InsertEntity("TestName");
             Assert.AreEqual(LogRecordsCount, 0);
@@ -85,9 +108,9 @@ namespace SqlChangeDataLog.Tests.DataBase
         [Test]
         public void DeleteTest()
         {
-            var dto = new SelectTableDto(Connection, "Entity").Query();
-            dto.Insert = CreateTrigger("Delete");
-            new SaveTable(Connection, dto).Execute();
+            var tableDto = Dto;
+            tableDto.Insert = CreateTrigger("Delete");
+            new SaveTable(Connection, tableDto).Execute();
 
             var entity = InsertEntity("TestName");
             Assert.AreEqual(LogRecordsCount, 0);
@@ -97,11 +120,22 @@ namespace SqlChangeDataLog.Tests.DataBase
         }
 
         [Test]
+        public void InsertMultipleTest()
+        {
+            var tableDto = Dto;
+            tableDto.Insert = CreateTrigger("Insert");
+            new SaveTable(Connection, tableDto).Execute();
+
+            InsertMultipleEntity("TestName");
+            Assert.AreEqual(LogRecordsCount, 2);
+        }
+
+        [Test]
         public void UpdateMultipleTest()
         {
-            var dto = new SelectTableDto(Connection, "Entity").Query();
-            dto.Insert = CreateTrigger("Update");
-            new SaveTable(Connection, dto).Execute();
+            var tableDto = Dto;
+            tableDto.Update = CreateTrigger("Update");
+            new SaveTable(Connection, tableDto).Execute();
 
             InsertEntity("TestName1");
             InsertEntity("TestName2");
@@ -116,9 +150,9 @@ namespace SqlChangeDataLog.Tests.DataBase
             InsertEntity("TestName1");
             InsertEntity("TestName2");
 
-            var dto = new SelectTableDto(Connection, "Entity").Query();
-            dto.Insert = CreateTrigger("Delete");
-            new SaveTable(Connection, dto).Execute();
+            var query = Dto;
+            query.Delete = CreateTrigger("Delete");
+            new SaveTable(Connection, query).Execute();
 
             Connection.Execute(new DeleteEntity().All());
             Assert.AreEqual(LogRecordsCount, 2);
