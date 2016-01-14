@@ -140,7 +140,18 @@ webix.protoUI({
                 fn(button);
             }
         });
+    },
 
+    getTargetActivationButton:function() {
+        var rezult, me = this;
+        this.getChildViews().every(function(button) {
+            if (button.name == "button" && me.activeButton != button) {
+                rezult = button;
+                return false;
+            }
+            return true;
+        });
+        return rezult;
     },
 
     getAddConfig:function() {
@@ -166,7 +177,7 @@ webix.protoUI({
     },
 
     createButton: function (cfg) {
-        var template = webix.template('<span class="webix_icon fa-icon fa-database" style="font-size:18px;"></span><span> #server# #database# <br/>#logtable# </span>');
+        var template = webix.template('<span class="webix_tab_close webix_icon fa-times"></span> <span class="webix_icon fa-icon fa-database" style="font-size:18px;"></span><span> #server# #database# <br/>#logtable# </span> ');
         return {
             icon: 'database',
             autowidth: true,
@@ -184,16 +195,34 @@ webix.protoUI({
         if (this.activeButton) {
             webix.html.removeCss(this.activeButton.getNode(), "webix_selected");
         }
-        this.activeButton = button;
-        webix.html.addCss(button.getNode(), "webix_selected");
-
-        this.callEvent("activate", [button.config.logCfg]);
+        if (button) {
+            this.activeButton = button;
+            webix.html.addCss(button.getNode(), "webix_selected");
+            this.callEvent("activate", [button.config.logCfg]);
+        } else {
+            this.activeButton = null;
+            this.callEvent("activate", []);
+        }
+        
+        
     },
 
-    onButtonClick: function (id) {
+    onButtonClick: function (id,e) {
+
         var button = $$(id);
-        this.activate(button);
-        this.saveState();
+
+        if (e.target.className == "webix_tab_close webix_icon fa-times") {
+            if (this.activeButton == button) {
+                var targetButton = this.getTargetActivationButton();
+                this.activate(targetButton);    
+            }
+            this.removeView(button);
+            this.saveState();
+
+        } else {
+            this.activate(button);
+            this.saveState();    
+        }
     },
     
     restoreState: function () {

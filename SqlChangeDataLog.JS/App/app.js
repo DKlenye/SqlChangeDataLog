@@ -89,6 +89,16 @@ webix.ready(function() {
 });
 
 var onToolbarActivate = function (logCfg) {
+    
+    if (!logCfg) {
+        app.connection = null;
+        var grid = $$("table.table_list");
+        grid.disable();
+        grid.clearAll();
+        $$('table.log').clearAll();
+        return;
+    }
+
     app.connection = logCfg;
     $$('table_list').load(logCfg);
     $$('logtable').load(logCfg);
