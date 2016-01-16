@@ -1,10 +1,6 @@
 webix.protoUI({
     name: 'view.table_editor',
-    operations:[
-        { id: "Insert", value: "<span class='webix_icon " + app.settings.icons["insert"] + "'></span><span style='padding-left: 4px'>Insert</span>" },
-        { id: "Update", value: "<span class='webix_icon " + app.settings.icons['update'] + "'></span><span style='padding-left: 4px'>Update</span>" },
-        { id: "Delete", value: "<span class='webix_icon " + app.settings.icons['delete'] + "'></span><span style='padding-left: 4px'>Delete</span>" }
-    ],
+   
     $init: function (config) {
         var icons = config.icons || {};
         var me = this;
@@ -12,6 +8,12 @@ webix.protoUI({
             return webix.bind(me[fn], me);
         };
         
+        this.operations = [
+            { id: "Insert", value: "<span class='webix_icon " + app.settings.icons["insert"] + "'></span><span style='padding-left: 4px'>"+app.i18n.Insert+"</span>" },
+            { id: "Update", value: "<span class='webix_icon " + app.settings.icons['update'] + "'></span><span style='padding-left: 4px'>" + app.i18n.Update + "</span>" },
+            { id: "Delete", value: "<span class='webix_icon " + app.settings.icons['delete'] + "'></span><span style='padding-left: 4px'>" + app.i18n.Delete + "</span>" }
+        ],
+
         webix.extend(this.defaults, {
             disabled: true,
             rows: [
@@ -40,8 +42,8 @@ webix.protoUI({
                             multiview: true,
                             value: 'layout.columns',
                             options: [
-                                { value: "<span class='webix_icon fa-columns'></span><span style='padding-left: 4px'>Columns</span>", id: 'layout.columns' },
-                                { value: "<span class='webix_icon fa-file-text-o'></span><span style='padding-left: 4px'>TriggerText</span>", id: 'layout.triggertext' }
+                                { value: "<span class='webix_icon fa-columns'></span><span style='padding-left: 4px'>" + app.i18n.TableEditor.Columns + "</span>", id: 'layout.columns' },
+                                { value: "<span class='webix_icon fa-file-text-o'></span><span style='padding-left: 4px'>" + app.i18n.TableEditor.TriggerText + "</span>", id: 'layout.triggertext' }
                             ]
                         },
                         {
@@ -56,7 +58,7 @@ webix.protoUI({
                                                 {
                                                     id: "ColumnName",
                                                     fillspace: true,
-                                                    header: "Column Name",
+                                                    header: app.i18n.TableEditor.ColumnName,
                                                     template: function (obj) {
                                                         if (!obj.IsKey) return obj.ColumnName;
                                                         return "<span class='webix_icon fa-key' style='color:gold'></span> "+obj.ColumnName;
@@ -70,7 +72,7 @@ webix.protoUI({
                                         {
                                             height: 45,
                                             cols: [
-                                                { view: "button", type: "iconButton", label: "Save", icon: "floppy-o", width: 95, on: { onItemClick: bind("saveTable")} },
+                                                { view: "button", type: "iconButton", label: app.i18n.Save , icon: "floppy-o", width:115 ,on: { onItemClick: bind("saveTable")} },
                                                 {}
                                             ]
                                         }
@@ -227,7 +229,7 @@ webix.protoUI({
             settings = segmented._settings || segmented.s;
 
         var columnOption = settings.options[0];
-        columnOption.value = "<span class='webix_icon fa-columns'></span><span style='padding-left: 4px'>Columns " + (tableName || "") + "</span>";
+        columnOption.value = "<span class='webix_icon fa-columns'></span><span style='padding-left: 4px'>"+app.i18n.TableEditor.Columns+" "+ (tableName || "") + "</span>";
         $$('segmented.trigger').refresh();
     },
 

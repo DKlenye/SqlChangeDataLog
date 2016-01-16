@@ -15,29 +15,29 @@ webix.protoUI({
                     id: 'table.log',
                     resizeColumn:true,
                     columns: [
-                        { id: "idChangeLog", header: ["Id", {content: "serverFilter"}], width: 80, sort: 'server' },
-                        { id: "date", header: ["Date",{content: "serverFilter"}], width: 150, sort: 'server' },
-                        { id: "user", header: ["UserName", { content: "serverFilter"}], width: 260},
+                        { id: "idChangeLog", header: [app.i18n.LogTable.idChangeLog, {content: "serverFilter"}], width: 80, sort: 'server' },
+                        { id: "date", header: [app.i18n.LogTable.date, { content: "serverFilter"}], width: 150, sort: 'server' },
+                        { id: "user", header: [app.i18n.LogTable.user, { content: "serverFilter"}], width: 260 },
                         {
                             id: "changeType",
                             header: [
-                                "ChangeType", {
+                                app.i18n.LogTable.changeType, {
                                     content: "serverSelectFilter",
-                                    options: [{ id: "", value: "All" }, { id: "I", value: "Insert" }, { id: "U", value: "Update" }, { id: "D", value: "Delete"}]
+                                    options: [{ id: "", value: app.i18n.All }, { id: "I", value: app.i18n.Insert }, { id: "U", value: app.i18n.Update }, { id: "D", value: app.i18n.Delete}]
                                 }
                             ],
-                            width: 100,
+                            width: 125,
                             template: function (obj) {
                                 var o = {
-                                    I: 'Insert',
-                                    U: 'Update',
-                                    D: 'Delete'
+                                    I: app.i18n.Insert,
+                                    U: app.i18n.Update,
+                                    D: app.i18n.Delete
                                 };
                                 return o[obj.changeType];
                             }
                         },
-                        { id: "table", header: ["TableName", { content: "serverFilter"}], fillspace: true },
-                        { id: "idString", header: ["IdString", { content: "serverFilter" }], width: 100 }
+                        { id: "table", header: [app.i18n.LogTable.table, { content: "serverFilter"}], fillspace: true },
+                        { id: "idString", header: [app.i18n.LogTable.idString, { content: "serverFilter"}], width: 120 }
                     ],
                     dataThrottle: 500,
                     scheme: {
@@ -50,21 +50,21 @@ webix.protoUI({
                         onAfterLoad: bind("_onAfterLoad"),
                         onSelectChange: bind("_onSelectChange")
                     },
-                    select: 'row',
-                    pager: 'pagerA'
+                    select: 'row'//,
+                    //pager: 'pagerA'
                 },
-                {
+               /* {
                     paddingY: 7,
                     rows: [
                         {
                             view: "pager",
                             id: "pagerA",
-                            template: "{common.first()} {common.prev()} {common.pages()} {common.next()} {common.last()} Page {common.page()} from #limit#",
+                            template: "{common.first()} {common.prev()} {common.pages()} {common.next()} {common.last()} " + app.i18n.LogTable.page + " {common.page()} " + app.i18n.LogTable.from + " #limit#",
                             size: 50,
                             group: 5
                         }
                     ]
-                }
+                }*/
             ]
         });
     },

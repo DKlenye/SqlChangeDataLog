@@ -18,17 +18,17 @@ webix.protoUI({
                         {
                             id: 'Operations',
                             header: [
-                                "Operations",
+                                app.i18n.TableList.Operations,
                                 {
                                     content: "selectFilter",
-                                    options: [{ id: "All", value: "All" }, { id: "Logging", value: "Logging" }, { id: "Not Logging", value: "Not Logging" }],
+                                    options: [{ id: "All", value: app.i18n.All }, { id: "Logging", value: app.i18n.TableList.Logging }, { id: "Not Logging", value: app.i18n.TableList.NotLogging}],
                                     compare: function(value, filter) {
                                         if (filter == "All") return true;
                                         return filter == "Logging" ? !!value : !value;
                                     }
                                 }
                             ],
-                            width: 130,
+                            width: 150,
                             template: function(obj) {
 
                                 if (!obj.Operations) return "";
@@ -42,7 +42,7 @@ webix.protoUI({
 
                             }
                         },
-                        { id: 'Name', fillspace: true, header: ["Table", { content: "textFilter" }], sort: "string" }
+                        { id: 'Name', fillspace: true, header: [app.i18n.TableList.Tables , { content: "textFilter" }], sort: "string" }
                     ],
                     on: {
                         onBeforeLoad: bind("_onBeforeLoad"),

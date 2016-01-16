@@ -9,9 +9,9 @@ webix.protoUI({
                     view: 'datatable',
                     resizeColumn: true,
                     columns: [
-                        { id: "Column", header: "Column", fillspace: 0.5 },
-                        { id: "OldValue", header: "OldValue", fillspace: 1 },
-                        { id: "NewValue", header: "NewValue", fillspace: 1 }
+                        { id: "Column", header: app.i18n.LogDetails.Column, fillspace: 0.5 },
+                        { id: "OldValue", header: app.i18n.LogDetails.OldValue, fillspace: 1 },
+                        { id: "NewValue", header: app.i18n.LogDetails.NewValue, fillspace: 1 }
                     ]
                 }
             ]

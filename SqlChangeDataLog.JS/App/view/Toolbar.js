@@ -11,7 +11,7 @@ webix.protoUI({
             bind = function (fn) {
                 return webix.bind(me[fn], me);
             };
-
+            
         webix.extend(this.defaults, {
             height: me.minHeight,
             cols: [
@@ -25,13 +25,15 @@ webix.protoUI({
                 {
                     id: 'layout.add',
                     hidden: true,
-                    cols: [{
-                        width: 250,
-                        id:'layout.add.text',
-                        rows: [
+                    cols: [
+                        {
+                            width: 300,
+                            id: 'layout.add.text',
+                            rows: [
                                 {
                                     id: 'text.server',
-                                    label: 'server',
+                                    label: app.i18n.Toolbar.Server,
+                                    labelWidth: app.i18n.Toolbar.LabelWidth,
                                     dataIndex: 'server',
                                     view: 'text',
                                     height: 30,
@@ -41,7 +43,8 @@ webix.protoUI({
                                 {
                                     id: 'text.database',
                                     dataIndex: 'database',
-                                    label: 'database',
+                                    label: app.i18n.Toolbar.Database,
+                                    labelWidth: app.i18n.Toolbar.LabelWidth,
                                     view: 'text',
                                     height: 30,
                                     nextFocus: 'text.logtable',
@@ -49,23 +52,61 @@ webix.protoUI({
                                 },
                                 {
                                     id: 'text.logtable',
-                                    dataIndex:'logtable',
-                                    label: 'log table',
+                                    dataIndex: 'logtable',
+                                    label: app.i18n.Toolbar.LogTable,
+                                    labelWidth: app.i18n.Toolbar.LabelWidth,
                                     view: 'text',
-                                    value:this.defaultLogTable,
+                                    value: this.defaultLogTable,
                                     height: 30,
                                     on: { 'onKeyPress': bind("onTextKeyPress") }
                                 }
                             ]
-                    }, {
+                        }, {
+                            width: 100,
+                            rows: [
+                                {},
+                                { view: 'button', type: 'icon', height: 30, label: app.i18n.Cancel, icon: 'ban', click: bind("toggleAdd") },
+                                { view: 'button', type: 'icon', height: 30, label: app.i18n.Ok, icon: 'check', click: bind("confirmAdd") }
+                            ]
+                        }
+                    ]
+                },
+                {},
+                {
+                    view: "icon",
+                    icon: "globe",
+                    popup: {
+                        view: "popup",
+                        id: "lang",
+                        head: false,
                         width: 100,
-                        rows: [
-                            {},
-                            { view: 'button', type: 'icon', height: 30, label: 'Cancel', icon: 'ban', click: bind("toggleAdd") },
-                            { view: 'button', type: 'icon', height: 30, label: 'Ok', icon: 'check', click: bind("confirmAdd") }
-                        ]
-                    }]
-                }]
+                        body: {
+                            view: "list",
+                            id:'langList',
+                            scroll: false,
+                            yCount: 2,
+                            select: true,
+                            borderless: true,
+                            template: "#lang#",
+                            data: [
+                                { id: 'en-US', lang: "English" },
+                                { id: 'ru-RU', lang: "Russian" }
+                            ],
+                            on: {
+                                "onAfterRender":function() {
+                                    $$("langList").select(app.i18n.locale, true);
+                                    $$("langList").attachEvent("onAfterSelect", function(e) {
+                                        $$("lang").hide();
+                                        app.i18n.setLocale(e);
+                                    });
+                                }
+                            }
+                        }
+                    }
+                },
+                { view: "icon", icon: "th" },
+                { view: "icon", icon: "info-circle" }
+            ]
         });
 
     },
@@ -179,13 +220,13 @@ webix.protoUI({
 
             var errorMessage = "";
             if (!response.Server) {
-                errorMessage = "Bad Server name";
+                errorMessage = app.i18n.Toolbar.BadServer;
             }
             if (!errorMessage && !response.Database) {
-                errorMessage = "Bad Database name";
+                errorMessage = app.i18n.Toolbar.BadDatabase;
             }
             if (!errorMessage && response.BadTableName) {
-                errorMessage = "Bad Log Table name";
+                errorMessage = app.i18n.Toolbar.BadTable;
             };
 
             if (errorMessage) {
@@ -334,12 +375,13 @@ webix.protoUI({
         var me = this;
         var cfg = button.config.logCfg;
 
-        var message = "Table " + cfg.logtable + " not found in database " + cfg.database + ". Create table '" + cfg.logtable + "'?";
         webix.confirm({
-            title: 'Not found table ' + cfg.logtable,
-            type:"confirm-warning",
-            text: message,
-            callback : function(ok) {
+            ok: app.i18n.Ok,
+            cancel:app.i18n.Cancel,
+            title: webix.template(app.i18n.Toolbar.NotFoundTitle)({ logtable: cfg.logtable }),
+            type: "confirm-warning",
+            text: webix.template(app.i18n.Toolbar.NotFoundMessage)({ database: cfg.database, logtable: cfg.logtable }),
+            callback: function(ok) {
                 if (ok) {
                     webix.ajax().post('/Handlers/CreateTable.ashx', cfg, function() {
                         button.config.logCfg.warning = false;

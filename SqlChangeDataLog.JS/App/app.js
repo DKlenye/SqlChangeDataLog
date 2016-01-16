@@ -1,6 +1,9 @@
 app = {};
 
-webix.ready(function() {
+webix.ready(function () {
+
+    app.i18n.setLocale();
+
     webix.ui({
         rows: [
             {
@@ -20,12 +23,12 @@ webix.ready(function() {
                             {
                                 id: "viewscroll.tablesettings",
                                 icon: "table",
-                                value: "Data log settings"
+                                value: app.i18n.TableSettings
                             },
                             {
                                 id: "viewscroll.logview",
                                 icon: "search",
-                                value: "View log data"
+                                value: app.i18n.LogView
                             }
                         ],
                         on: {
