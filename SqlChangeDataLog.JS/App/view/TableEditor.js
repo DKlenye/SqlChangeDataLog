@@ -52,7 +52,7 @@ webix.protoUI({
                                             view: 'datatable',
                                             id: 'table.columns',
                                             columns: [
-                                                { id: "Checked", header: { content: "masterCheckbox" }, template: "{common.checkbox()}", width: 40 },
+                                                { id: "Checked", header: { content: "masterCheckbox", css: "center" }, css:"center", template: "{common.checkbox()}", width: 40 },
                                                 {
                                                     id: "ColumnName",
                                                     fillspace: true,
