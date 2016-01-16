@@ -53,11 +53,15 @@ namespace SqlChangeDataLog.Web.Application
         protected IDbConnection Connect(TContext context)
         {
             IDbConnection dbConnection = new SqlConnection(buildConnectionString(context.Server,context.Database));
-            dbConnection.Open();
+            try
+            {
+                dbConnection.Open();
+            }
+            catch{}
             return dbConnection;
         }
 
-        string buildConnectionString(string server, string database)
+        protected string buildConnectionString(string server, string database)
         {
             return String.Format("data source={0}; initial catalog={1}; integrated security=SSPI;", server, database);
         }

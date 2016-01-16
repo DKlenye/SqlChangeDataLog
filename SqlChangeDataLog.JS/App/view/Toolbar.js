@@ -162,12 +162,54 @@ webix.protoUI({
         return cfg;
     },
     
+    
     confirmAdd:function() {
-        var addCfg = this.getAddConfig();
-        this.toggleAdd();
-        var button = this.addButton(addCfg);
-        this.activate($$(button));
-        this.saveState();
+        var me = this;
+        var addCfg = me.getAddConfig();
+
+        me.disable();
+        me.showOverlay("Connect <span class='webix_icon fa-spinner fa-spin'></span>");
+
+        webix.ajax().post('/Handlers/CheckConnection.ashx', addCfg, function (response) {
+
+            me.enable();
+            me.hideOverlay();
+
+            response = JSON.parse(response);
+
+            var errorMessage = "";
+            if (!response.Server) {
+                errorMessage = "Bad Server name";
+            }
+            if (!errorMessage && !response.Database) {
+                errorMessage = "Bad Database name";
+            }
+            if (!errorMessage && response.BadTableName) {
+                errorMessage = "Bad Log Table name";
+            };
+
+            if (errorMessage) {
+                webix.alert({
+                    title: 'Error',
+                    type: 'alert-error',
+                    text: errorMessage
+                });
+                return;
+            };
+
+            var addCfg = me.getAddConfig();
+            addCfg.warning = !response.LogTable;
+
+            me.toggleAdd();
+            var button = me.addButton(addCfg);
+            var $button = $$(button);
+            me.activate($button);
+            if ($button.config.logCfg.warning) {
+                me.createLogTable($button);
+            }
+
+            me.saveState();    
+        });
     },
 
     addButton: function (cfg) {
@@ -177,7 +219,6 @@ webix.protoUI({
     },
 
     createButton: function (cfg) {
-        var template = webix.template('<span class="webix_tab_close webix_icon fa-times"></span> <span class="webix_icon fa-icon fa-database" style="font-size:18px;"></span><span> #server# #database# <br/>#logtable# </span> ');
         return {
             icon: 'database',
             autowidth: true,
@@ -186,9 +227,19 @@ webix.protoUI({
             css:'webix_segment_N',
             icon: "database",
             logCfg: cfg,
-            label: template(cfg),
+            label: this.buildButtonLabel(cfg),
             click: webix.bind(this.onButtonClick,this)
         };
+    },
+
+    buildButtonLabel:function(cfg) {
+        var template = webix.template(
+            '</span> <span class="webix_tab_close webix_icon fa-times"></span>' +
+                ' <span class="webix_icon fa-icon fa-database" style="font-size:18px;"></span>' +
+                    '<span> #server# #database# <br/>' +
+                        (cfg.warning == true ? '<span class="webix_icon fa-icon fa-exclamation-triangle" style="font-size:18px; color: #ffd21a !important;">' : "") +
+                        '</span>#logtable# </span> ');
+        return template(cfg);
     },
 
     activate: function(button) {
@@ -203,26 +254,39 @@ webix.protoUI({
             this.activeButton = null;
             this.callEvent("activate", []);
         }
-        
-        
     },
 
     onButtonClick: function (id,e) {
 
         var button = $$(id);
+        var target = e.target || e.srcElement;
 
-        if (e.target.className == "webix_tab_close webix_icon fa-times") {
-            if (this.activeButton == button) {
-                var targetButton = this.getTargetActivationButton();
-                this.activate(targetButton);    
+        switch (target.className) {
+        
+            case "webix_tab_close webix_icon fa-times":
+            {
+                if (this.activeButton == button) {
+                    var targetButton = this.getTargetActivationButton();
+                    this.activate(targetButton);    
+                }
+                this.removeView(button);
+                this.saveState();
+                break;
             }
-            this.removeView(button);
-            this.saveState();
 
-        } else {
-            this.activate(button);
-            this.saveState();    
+            case "webix_icon fa-icon fa-exclamation-triangle":
+            {
+                this.createLogTable(button);
+                break;
+            }
+
+            default:
+            {
+                this.activate(button);
+                this.saveState();  
+            }
         }
+        
     },
     
     restoreState: function () {
@@ -264,7 +328,27 @@ webix.protoUI({
     loadState: function () {
         var state = webix.storage.local.get(this.stateName);
         if (state) return JSON.parse(state);
+    },
+
+    createLogTable: function (button) {
+        var me = this;
+        var cfg = button.config.logCfg;
+
+        var message = "Table " + cfg.logtable + " not found in database " + cfg.database + ". Create table '" + cfg.logtable + "'?";
+        webix.confirm({
+            title: 'Not found table ' + cfg.logtable,
+            type:"confirm-warning",
+            text: message,
+            callback : function(ok) {
+                if (ok) {
+                    webix.ajax().post('/Handlers/CreateTable.ashx', cfg, function() {
+                        button.config.logCfg.warning = false;
+                        button.define("label", me.buildButtonLabel(button.config.logCfg));
+                        button.refresh();
+                    });
+                }
+            }
+        });
     }
-
-
-}, webix.ui.toolbar);
+    
+}, webix.ui.toolbar, webix.OverlayBox);
