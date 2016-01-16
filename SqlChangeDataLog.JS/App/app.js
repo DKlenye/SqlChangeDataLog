@@ -1,32 +1,21 @@
-app = {
-    
-    skins: [
-        { id: "../Content/webix.css", name: "Default" },
-        { id: "../Content/Skins/air.css", name: "Air" },
-        { id: "../Content/Skins/compact.css", name: "Compact" }
-    ],
-    
-    requireSkin:function() {
-        var skin = webix.storage.local.get("skin");
-        if (skin) {
-            webix.require(skin);
-        }
-    },
-
-    setSkin:function(skin) {
-        webix.storage.local.put("skin", skin);
-        location.reload();
-    }
-
-};
+app = {};
 
 webix.ready(function () {
-
     app.i18n.setLocale();
-    app.requireSkin();
+    app.skin.setSkin()
+        .then(function() {
+            return webix.require("../Content/sidebar.css");
+        })
+       .then(function () {
+           webix.delay(startUI, this, [], 50);
+       });
+});
 
+
+var startUI = function () {
+    
     webix.ui({
-        id:"RootView",
+        id: "RootView",
         rows: [
             {
                 view: 'view.toolbar',
@@ -54,7 +43,7 @@ webix.ready(function () {
                             }
                         ],
                         on: {
-                            onItemClick: function(id) {
+                            onItemClick: function (id) {
                                 $$(id).show(false, false);
                             }
                         }
@@ -111,7 +100,9 @@ webix.ready(function () {
 
     $$('toolbar').restoreState();
     $$('sidebar').select('viewscroll.tablesettings');
-});
+    $$('RootView').resize();
+}
+
 
 var onToolbarActivate = function (logCfg) {
     

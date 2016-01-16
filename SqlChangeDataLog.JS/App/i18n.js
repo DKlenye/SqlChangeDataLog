@@ -106,7 +106,7 @@ app.i18n = {
 
         locale = this.loadState() || this.defaultLocale;
         webix.extend(this, this[locale], true);
-        this.locale = locale;
+        this.currentLocale = locale;
     },
     
     saveState: function (locale) {

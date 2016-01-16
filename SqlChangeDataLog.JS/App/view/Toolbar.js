@@ -94,7 +94,7 @@ webix.protoUI({
                             ],
                             on: {
                                 "onAfterRender":function() {
-                                    $$("langList").select(app.i18n.locale, true);
+                                    $$("langList").select(app.i18n.currentLocale, true);
                                     $$("langList").attachEvent("onAfterSelect", function(e) {
                                         $$("lang").hide();
                                         app.i18n.setLocale(e);
@@ -104,9 +104,8 @@ webix.protoUI({
                         }
                     }
                 },
-                { view: "icon", icon: "th" },
                 {
-                    view: "icon", icon: "info-circle",
+                    view: "icon", icon: "th",
                     popup: {
                         view: "popup",
                         id: "skin",
@@ -116,21 +115,25 @@ webix.protoUI({
                             view: "list",
                             id: 'skinList',
                             scroll: false,
-                            yCount: 3,
+                            yCount: 12,
                             select: true,
                             borderless: true,
-                            template: "#name#",
-                            data:app.skins,
+                            template: "#skin#",
+                            data:app.skin.getSkins(),
                             on: {
                                 "onAfterRender": function () {
+                                    $$("skinList").select(app.skin.currentSkin, true);
                                     $$("skinList").attachEvent("onAfterSelect", function (e) {
-                                        app.setSkin(e);
+                                        $$("skin").hide();
+                                        app.skin.setSkin(e);
                                     });
                                 }
                             }
                         }
                     }
-                }
+                },
+                { view: "icon", icon: "info-circle" }
+                
             ]
         });
 
@@ -412,6 +415,7 @@ webix.protoUI({
                         button.config.logCfg.warning = false;
                         button.define("label", me.buildButtonLabel(button.config.logCfg));
                         button.refresh();
+                        me.saveState();
                     });
                 }
             }
