@@ -50,10 +50,10 @@ webix.protoUI({
                         onAfterLoad: bind("_onAfterLoad"),
                         onSelectChange: bind("_onSelectChange")
                     },
-                    select: 'row'//,
-                    //pager: 'pagerA'
+                    select: 'row',
+                    pager: 'pagerA'
                 },
-               /* {
+                {
                     paddingY: 7,
                     rows: [
                         {
@@ -64,7 +64,7 @@ webix.protoUI({
                             group: 5
                         }
                     ]
-                }*/
+                }
             ]
         });
     },

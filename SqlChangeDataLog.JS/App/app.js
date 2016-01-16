@@ -1,10 +1,32 @@
-app = {};
+app = {
+    
+    skins: [
+        { id: "../Content/webix.css", name: "Default" },
+        { id: "../Content/Skins/air.css", name: "Air" },
+        { id: "../Content/Skins/compact.css", name: "Compact" }
+    ],
+    
+    requireSkin:function() {
+        var skin = webix.storage.local.get("skin");
+        if (skin) {
+            webix.require(skin);
+        }
+    },
+
+    setSkin:function(skin) {
+        webix.storage.local.put("skin", skin);
+        location.reload();
+    }
+
+};
 
 webix.ready(function () {
 
     app.i18n.setLocale();
+    app.requireSkin();
 
     webix.ui({
+        id:"RootView",
         rows: [
             {
                 view: 'view.toolbar',

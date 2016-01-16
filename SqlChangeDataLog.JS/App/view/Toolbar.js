@@ -105,7 +105,32 @@ webix.protoUI({
                     }
                 },
                 { view: "icon", icon: "th" },
-                { view: "icon", icon: "info-circle" }
+                {
+                    view: "icon", icon: "info-circle",
+                    popup: {
+                        view: "popup",
+                        id: "skin",
+                        head: false,
+                        width: 100,
+                        body: {
+                            view: "list",
+                            id: 'skinList',
+                            scroll: false,
+                            yCount: 3,
+                            select: true,
+                            borderless: true,
+                            template: "#name#",
+                            data:app.skins,
+                            on: {
+                                "onAfterRender": function () {
+                                    $$("skinList").attachEvent("onAfterSelect", function (e) {
+                                        app.setSkin(e);
+                                    });
+                                }
+                            }
+                        }
+                    }
+                }
             ]
         });
 
