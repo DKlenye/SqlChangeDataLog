@@ -16,7 +16,7 @@ namespace SqlChangeDataLog.QueryObjects
 	                [idString] [int] NOT NULL,
 	                [description] [xml] NOT NULL,
 	
-                 CONSTRAINT [PK_@TableName_ChangeLog] PRIMARY KEY CLUSTERED([idChangeLog] ASC)
+                 CONSTRAINT [PK_{tableName}_ChangeLog] PRIMARY KEY CLUSTERED([idChangeLog] ASC)
                  WITH (
  	                PAD_INDEX  = OFF,
  	                STATISTICS_NORECOMPUTE  = OFF,
