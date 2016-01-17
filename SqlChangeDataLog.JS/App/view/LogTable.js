@@ -17,7 +17,7 @@ webix.protoUI({
                     columns: [
                         { id: "idChangeLog", header: [app.i18n.LogTable.idChangeLog, {content: "serverFilter"}], width: 80, sort: 'server' },
                         { id: "date", header: [app.i18n.LogTable.date, { content: "serverFilter"}], width: 150, sort: 'server' },
-                        { id: "user", header: [app.i18n.LogTable.user, { content: "serverFilter"}], width: 260 },
+                        { id: "user", header: [app.i18n.LogTable.user, { content: "serverFilter"}], width: 150 },
                         {
                             id: "changeType",
                             header: [

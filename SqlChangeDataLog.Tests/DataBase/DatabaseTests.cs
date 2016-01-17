@@ -157,6 +157,25 @@ namespace SqlChangeDataLog.Tests.DataBase
             Connection.Execute(new DeleteEntity().All());
             Assert.AreEqual(LogRecordsCount, 2);
         }
-        
+
+
+        [Test]
+        public void Extended_Logic_If_RowCount_More_Then_One()
+        {
+            var tableDto = Dto;
+            tableDto.Update = CreateExtendedLogicRowCountTrigger("Update");
+            new SaveTable(Connection, tableDto).Execute();
+
+            var entity1 = InsertEntity("TestName1");
+            InsertEntity("TestName2");
+
+            Connection.Execute(new UpdateEntity().NameForAllEntities("NewName"));
+            Assert.AreEqual(LogRecordsCount, 0);
+            
+            entity1.Name = "ChangeName";
+            Connection.Execute(new UpdateEntity().Query(entity1));
+            Assert.AreEqual(LogRecordsCount, 1);
+        }
+
     }
 }

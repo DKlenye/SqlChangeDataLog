@@ -36,7 +36,6 @@ CREATE TRIGGER [dbo].[{TriggerName}]
     FOR {Operation} NOT FOR REPLICATION
 AS
 BEGIN
-    SET NOCOUNT ON;
 ";
 
         private const string FooterTemplate = @"

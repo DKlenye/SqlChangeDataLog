@@ -15,8 +15,7 @@ namespace SqlChangeDataLog.Tests
                 Operation = operation,
                 LogTableName = "ChangeLog",
                 TableName = "TestTable",
-                ExtendedLogic = @"IF (@@RowCount > 1)
-RETURN"
+                ExtendedLogic = @"IF (@@RowCount > 1) RETURN"
             };
         }
 

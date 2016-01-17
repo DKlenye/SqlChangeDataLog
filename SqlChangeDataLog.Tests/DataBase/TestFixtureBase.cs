@@ -75,5 +75,17 @@ namespace SqlChangeDataLog.Tests.DataBase
             };
         }
 
+        protected Trigger CreateExtendedLogicRowCountTrigger(string Operation)
+        {
+            return new Trigger()
+            {
+                Columns = new[] { "Id", "Name" },
+                Operation = Operation,
+                LogTableName = LogTableName,
+                TableName = "Entity",
+                ExtendedLogic = @"IF (@@RowCount > 1) RETURN"
+            };
+        }
+
     }
 }
