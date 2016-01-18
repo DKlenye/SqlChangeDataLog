@@ -39,6 +39,7 @@ BEGIN
 ";
 
         private const string FooterTemplate = @"
+SET NOCOUNT ON;
 INSERT INTO {LogTableName} ([date],[user],[changeType],[table],[idString],[description])
     SELECT 
         GETDATE(),
