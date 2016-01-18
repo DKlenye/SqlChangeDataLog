@@ -21,8 +21,10 @@ namespace SqlChangeDataLog.Commands
 
         public void Execute()
         {
-            Connection.Query<TriggerDto>(new SelectLogTrigger().ByTableName(dto.TableName)).ToList()
-                .ForEach(x => Connection.Execute(new DropTrigger().Query(x.TriggerName)));
+            var tx = Connection.BeginTransaction();
+            
+            Connection.Query<TriggerDto>(new SelectLogTrigger().ByTableName(dto.TableName),tx).ToList()
+                .ForEach(x => Connection.Execute(new DropTrigger().Query(x.TriggerName),tx));
 
             new List<Trigger>() {dto.Insert, dto.Update, dto.Delete}
             .ForEach(trigger =>
@@ -31,10 +33,13 @@ namespace SqlChangeDataLog.Commands
                 {
                     Connection.Execute(
                         new TriggerTextBuilder(trigger, dto.KeyColumns.Single(), trigger.LogTableName)
-                        .Query()
+                        .Query(),
+                        tx
                     );
                 }
             });
+
+            tx.Commit();
         }
     }
 }
