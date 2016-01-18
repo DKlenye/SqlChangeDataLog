@@ -35,7 +35,8 @@ app.i18n = {
         TableEditor: {
             Columns: "Columns" ,
             TriggerText: "Trigger Text",
-            ColumnName: "Column Name"
+            ColumnName: "Column Name",
+            ExtendedLogic: "Extended Logic:"
         },
         LogDetails: {
           Column: "Column",
@@ -83,7 +84,8 @@ app.i18n = {
         TableEditor: {
           Columns:"Столбцы таблицы",
           TriggerText:"Текст триггера",
-          ColumnName:"Имя столбца"
+          ColumnName:"Имя столбца",
+          ExtendedLogic: "Расширенная логика:"
       },
       LogDetails: {
           Column: "Столбец",

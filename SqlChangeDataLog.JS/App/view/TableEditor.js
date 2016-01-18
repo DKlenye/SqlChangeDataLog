@@ -69,6 +69,22 @@ webix.protoUI({
                                                 'onCheck': bind("_onCheck")
                                             }
                                         },
+                                        { view: 'resizer' },
+                                        {
+                                            
+                                            height: 150,
+                                            rows: [
+                                                
+
+
+                                                { type: "header", template: app.i18n.TableEditor.ExtendedLogic},
+                                                {
+                                                    view: 'textarea',
+                                                    id: 'text.extended'
+
+                                                }
+                                            ]
+                                        },
                                         {
                                             height: 45,
                                             cols: [
@@ -146,6 +162,7 @@ webix.protoUI({
     clearView:function() {
         $$("table.columns").clearAll();
         $$("text.trigger").setValue("");
+        $$("text.extended").setValue("");
     },
 
     fillData: function (data) {
@@ -211,7 +228,7 @@ webix.protoUI({
 
         optionValue = optionValue || "Insert";
         segment.setValue(optionValue);
-        this.onOperationChange(optionValue);
+        this.onOperationChange(optionValue, "None");
     },
     
     fillTriggerText:function(operation) {
@@ -221,6 +238,15 @@ webix.protoUI({
             triggerText = trigger.TriggerText;
         }
         $$('text.trigger').setValue(triggerText);
+    },
+
+    fillExtendedLogic: function(operation) {
+        var trigger = this.data[operation];
+        var text = "";
+        if (trigger && trigger.ExtendedLogic) {
+            text = trigger.ExtendedLogic;
+        }
+        $$('text.extended').setValue(text);
     },
 
     setSegmentedTableName: function (tableName) {
@@ -233,10 +259,16 @@ webix.protoUI({
         $$('segmented.trigger').refresh();
     },
 
-    onOperationChange: function (operation) {
+    onOperationChange: function (operation, oldOperation) {
+
+        if (oldOperation != "None") {
+            var trigger = this.data[oldOperation];
+            if(trigger) trigger.ExtendedLogic = $$('text.extended').getValue();
+        }
         this.clearView();
         $$("table.columns").parse(this.records[operation]);
         this.fillTriggerText(operation);
+        this.fillExtendedLogic(operation);
     },
 
     eachOperations: function (fn) {
@@ -247,7 +279,11 @@ webix.protoUI({
         var record = this.operations[$$('segmented.operation').getValue()];
     },
 
-    saveTable:function() {
+    saveTable: function () {
+
+        var trigger = this.data[$$('segmented.operation').getValue()];
+        if (trigger) {trigger.ExtendedLogic = $$('text.extended').getValue();}
+        
         var data = this.data;
         var me = this;
 
@@ -279,7 +315,6 @@ webix.protoUI({
     saveData: function () {
 
         this.disable();
-
         var data = this.data;
         var me = this;
         var params = webix.copy(this.params);

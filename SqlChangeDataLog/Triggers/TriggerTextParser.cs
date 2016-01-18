@@ -7,9 +7,11 @@ namespace SqlChangeDataLog.Triggers
     {
         private const string OperationPattern = @"(?<=for\s+)insert|update|delete";
         private const string SelectXmlPattern = @"(?<=[(]\s*)SELECT.*FOR XML AUTO";
-        private const string SelectColumnsPattern = @"^.*?(?=\s*\n?\s*from)";
+        private const string ColumnsPattern = @"^.*?(?=\s*\n?\s*from)";
         private const string RemoveSelectPattern = @"\s*select\s+(top\s+\d+\s+)?";
         private const string RemoveBracketsPattern = @"[\[\]]";
+        private const string ExtendedLogicPattern = @"(?<=as\s+begin\s+).*?(?=declare\s+@xml|insert\s+into)";
+        private const string NoCountPattern = @"set\s+nocount\s+on;?";
 
         public TriggerTextParser(string text)
         {
@@ -24,7 +26,7 @@ namespace SqlChangeDataLog.Triggers
             var regex1 = CreateRegex(SelectXmlPattern);
             var selectXml = regex1.Match(Text).ToString();
 
-            var regex2 = CreateRegex(SelectColumnsPattern);
+            var regex2 = CreateRegex(ColumnsPattern);
             var selectColumns = regex2.Match(selectXml).ToString();
             
             var regex3 = CreateRegex(RemoveSelectPattern);
@@ -38,19 +40,24 @@ namespace SqlChangeDataLog.Triggers
 
         public string ParseOperation()
         {
-            var regex = new Regex(OperationPattern,RegexOptions.IgnoreCase);
+            var regex = CreateRegex(OperationPattern);
             return regex.Match(Text).ToString().ToLower();
-        }
-
-        
-        Regex CreateRegex(string Pattern)
-        {
-            return new Regex(Pattern,RegexOptions.IgnoreCase|RegexOptions.Singleline);
         }
 
         public string ParseExtendedLogic()
         {
-            return "";
+            var regex1 = CreateRegex(ExtendedLogicPattern);
+            var extendedLogic = regex1.Match(Text).ToString().Trim();
+
+            var regex2 = CreateRegex(NoCountPattern);
+            return regex2.Replace(extendedLogic,"");
+
         }
+
+        Regex CreateRegex(string Pattern)
+        {
+            return new Regex(Pattern,RegexOptions.IgnoreCase|RegexOptions.Singleline);
+        }
+        
     }
 }

@@ -7,7 +7,7 @@ webix.ready(function () {
             return webix.require("../Content/sidebar.css");
         })
        .then(function () {
-           webix.delay(startUI, this, [], 50);
+           webix.delay(startUI, this, [], 200);
        });
 });
 
