@@ -65,17 +65,6 @@
     <Content Include="Content\skins\aircompact.css" />
     <Content Include="Content\skins\clouds.css" />
     <Content Include="Content\skins\compact.css" />
-    <Content Include="Content\skins\debug\air.css" />
-    <Content Include="Content\skins\debug\aircompact.css" />
-    <Content Include="Content\skins\debug\clouds.css" />
-    <Content Include="Content\skins\debug\compact.css" />
-    <Content Include="Content\skins\debug\flat.css" />
-    <Content Include="Content\skins\debug\glamour.css" />
-    <Content Include="Content\skins\debug\light.css" />
-    <Content Include="Content\skins\debug\metro.css" />
-    <Content Include="Content\skins\debug\terrace.css" />
-    <Content Include="Content\skins\debug\touch.css" />
-    <Content Include="Content\skins\debug\web.css" />
     <Content Include="Content\skins\flat.css" />
     <Content Include="Content\skins\glamour.css" />
     <Content Include="Content\skins\light.css" />
@@ -166,7 +155,7 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>5047</DevelopmentServerPort>
+          <DevelopmentServerPort>42885</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>
           </IISUrl>

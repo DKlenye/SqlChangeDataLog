@@ -130,7 +130,7 @@ webix.protoUI({
 
         me.clear();
 
-        webix.ajax().post('/Handlers/SelectTable.ashx', this.params, function (data) {
+        webix.ajax().post('Handlers/SelectTable.ashx', this.params, function (data) {
             me.fillData(data);
         });
     },
@@ -319,7 +319,7 @@ webix.protoUI({
         var me = this;
         var params = webix.copy(this.params);
         params.Table = data;
-        webix.ajax().post('/Handlers/SaveTable.ashx', params, webix.bind(me.onSave, me));
+        webix.ajax().post('Handlers/SaveTable.ashx', params, webix.bind(me.onSave, me));
     },
 
     onSave: function (data) {

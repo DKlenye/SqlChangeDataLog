@@ -239,7 +239,7 @@ webix.protoUI({
         me.disable();
         me.showOverlay("Connect <span class='webix_icon fa-spinner fa-spin'></span>");
 
-        webix.ajax().post('/Handlers/CheckConnection.ashx', addCfg, function (response) {
+        webix.ajax().post('Handlers/CheckConnection.ashx', addCfg, function (response) {
 
             me.enable();
             me.hideOverlay();
