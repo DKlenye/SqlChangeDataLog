@@ -1,13 +1,17 @@
-app = {};
+app = {
+    getUrl: function (handler) {
+        return "Handlers/" + handler + ".ashx";
+    }
+};
 
 webix.ready(function () {
     app.i18n.setLocale();
     app.skin.setSkin()
         .then(function() {
-            return webix.require("../Content/sidebar.css");
+            return webix.require("../Content/app.css");
         })
        .then(function () {
-           webix.delay(startUI, this, [], 200);
+           webix.delay(startUI, this, [], 300);
        });
 });
 

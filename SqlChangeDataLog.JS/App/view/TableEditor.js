@@ -130,7 +130,7 @@ webix.protoUI({
 
         me.clear();
 
-        webix.ajax().post('Handlers/SelectTable.ashx', this.params, function (data) {
+        webix.ajax().post(app.getUrl("SelectTable"), this.params, function (data) {
             me.fillData(data);
         });
     },
@@ -263,7 +263,7 @@ webix.protoUI({
 
         if (oldOperation != "None") {
             var trigger = this.data[oldOperation];
-            if(trigger) trigger.ExtendedLogic = $$('text.extended').getValue();
+            if(trigger) trigger.ExtendedLogic = $$('text.extended').getValue()+"";
         }
         this.clearView();
         $$("table.columns").parse(this.records[operation]);
@@ -282,7 +282,9 @@ webix.protoUI({
     saveTable: function () {
 
         var trigger = this.data[$$('segmented.operation').getValue()];
-        if (trigger) {trigger.ExtendedLogic = $$('text.extended').getValue();}
+        var extLogic = $$('text.extended').getValue();
+
+        if (trigger) { trigger.ExtendedLogic = extLogic+""; }
         
         var data = this.data;
         var me = this;
@@ -301,7 +303,8 @@ webix.protoUI({
                 if (!data[e]) {
                     data[e] = {
                         Operation:e,
-                        TableName: data.TableName
+                        TableName: data.TableName,
+                        ExtendedLogic: extLogic+""
                     };
                 }
                 data[e].Columns = columns;
@@ -319,7 +322,7 @@ webix.protoUI({
         var me = this;
         var params = webix.copy(this.params);
         params.Table = data;
-        webix.ajax().post('Handlers/SaveTable.ashx', params, webix.bind(me.onSave, me));
+        webix.ajax().post(app.getUrl('SaveTable'), params, webix.bind(me.onSave, me));
     },
 
     onSave: function (data) {

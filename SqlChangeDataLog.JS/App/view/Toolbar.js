@@ -239,7 +239,7 @@ webix.protoUI({
         me.disable();
         me.showOverlay("Connect <span class='webix_icon fa-spinner fa-spin'></span>");
 
-        webix.ajax().post('Handlers/CheckConnection.ashx', addCfg, function (response) {
+        webix.ajax().post(app.getUrl('CheckConnection'), addCfg, function (response) {
 
             me.enable();
             me.hideOverlay();
@@ -411,7 +411,7 @@ webix.protoUI({
             text: webix.template(app.i18n.Toolbar.NotFoundMessage)({ database: cfg.database, logtable: cfg.logtable }),
             callback: function(ok) {
                 if (ok) {
-                    webix.ajax().post('/Handlers/CreateTable.ashx', cfg, function() {
+                    webix.ajax().post(app.getUrl('CreateTable'), cfg, function() {
                         button.config.logCfg.warning = false;
                         button.define("label", me.buildButtonLabel(button.config.logCfg));
                         button.refresh();

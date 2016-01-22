@@ -79,7 +79,7 @@ webix.protoUI({
     },
 
     load: function(params) {
-        $$("table.table_list").load("post->"+app.settings.url.tableList, null, params);
+        $$("table.table_list").load("post->"+app.getUrl("SelectTableList"), null, params);
     },
 
     refreshItem: function (item) {

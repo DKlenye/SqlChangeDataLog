@@ -98,7 +98,7 @@ webix.protoUI({
 
         $$('table.log').define("url", {
                 $proxy: true,
-                source: "Handlers/SelectChangeLog.ashx",
+                source: app.getUrl("SelectChangeLog"),
                 params: _params,
                 load: function(view, callback, params) {
                     params = webix.extend(params || {}, this.params || {}, true);
