@@ -1,4 +1,16 @@
-﻿
+﻿.text-danger span {color: #FFA3A0 !important}
+.text-success span {color: #A0FFAC !important}
+        
+.center{
+    text-align:center;
+}
+  
+.webix_hcell.center input[type=checkbox], .webix_table_checkbox{
+    width:14px;
+    height:14px;
+  	margin-top:5px;
+}
+
 /* SideBar*/
 .webix_sidebar{
 	background: #ECEFF1;
@@ -93,3 +105,4 @@
 .webix_sidebar_popup_list .webix_list_item.webix_selected:hover{
 	background: #27ae60;
 }
+

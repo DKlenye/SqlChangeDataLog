@@ -5,6 +5,7 @@
 
   <PropertyGroup>
     <JS_Folder>App</JS_Folder>
+    <Webix_Folder>Webix</Webix_Folder>
     <JS_OutputFolder>..\SqlChangeDataLog.Web\Scripts</JS_OutputFolder>
   </PropertyGroup>
   
@@ -14,6 +15,7 @@
       <!--Transport-->
       <JS_Dependency Include="$(JS_Folder)\polyfill.js"/>
 
+      <JS_App Include="$(Webix_Folder)\**\*.js"/>
       <JS_App Include="@(JS_Dependency)"/>
       <JS_App Include="$(JS_Folder)\**\*.js" Exclude="@(JS_Dependency)"/>
       
