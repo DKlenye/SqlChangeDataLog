@@ -17,13 +17,17 @@ namespace SqlChangeDataLog
         {
             if (isEmpty()) return "";
 
-            var StringEquals = new[] { "changeType", "table", "idString" };
+            var StringEquals = new[] {"changeType", "table", "idString"};
             var IntEquals = new[] {"idChangeLog"};
 
             var clauses = new List<string>();
             var me = this;
 
-            GetType().GetProperties().Where(x => !String.IsNullOrEmpty(x.GetValue(this, null).ToString()))
+            GetType().GetProperties().Where(x =>
+            {
+                var value = x.GetValue(this, null).ToString();
+                return !String.IsNullOrEmpty(value) && value!="null";
+            })
                 .ToList().ForEach(x =>
                 {
                     if (StringEquals.Contains(x.Name))
@@ -46,7 +50,11 @@ namespace SqlChangeDataLog
         public bool isEmpty()
         {
             var me = this;
-            return GetType().GetProperties().All(x => String.IsNullOrEmpty(x.GetValue(me, null).ToString()));
+            return GetType().GetProperties().All(x =>
+            {
+                var value = x.GetValue(me, null).ToString();
+                return String.IsNullOrEmpty(value) || value == "null";
+            });
         }
     
     }
