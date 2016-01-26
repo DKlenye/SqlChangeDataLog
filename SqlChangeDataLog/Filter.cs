@@ -17,7 +17,7 @@ namespace SqlChangeDataLog
         {
             if (isEmpty()) return "";
 
-            var StringEquals = new[] {"changeType", "table", "idString"};
+            var StringEquals = new[] {"changeType", "idString"};
             var IntEquals = new[] {"idChangeLog"};
 
             var clauses = new List<string>();

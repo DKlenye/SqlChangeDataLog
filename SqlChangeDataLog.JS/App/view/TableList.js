@@ -21,7 +21,7 @@ webix.protoUI({
                                 app.i18n.TableList.Operations,
                                 {
                                     content: "selectFilter",
-                                    options: [{ id: "All", value: app.i18n.All }, { id: "Logging", value: app.i18n.TableList.Logging }, { id: "Not Logging", value: app.i18n.TableList.NotLogging}],
+                                    options: [{ id: "All", value: app.i18n.All }, { id: "Logging", value: app.i18n.TableList.Logging }, { id: "Not Logging", value: app.i18n.TableList.NotLogging }],
                                     compare: function(value, filter) {
                                         if (filter == "All") return true;
                                         return filter == "Logging" ? !!value : !value;
@@ -42,17 +42,23 @@ webix.protoUI({
 
                             }
                         },
-                        { id: 'Name', fillspace: true, header: [app.i18n.TableList.Tables , { content: "textFilter" }], sort: "string" }
+                        { id: 'Name', fillspace: true, header: [app.i18n.TableList.Tables, { content: "textFilter" }], sort: "string" }
                     ],
                     on: {
                         onBeforeLoad: bind("_onBeforeLoad"),
                         onAfterLoad: bind("_onAfterLoad"),
-                        onSelectChange: bind("_onSelectChange")
+                        onSelectChange: bind("_onSelectChange"),
+                        onBeforeFilter: bind("_onBeforeFilter")
                     }
                 }
             ]
         });
     },
+
+    _onBeforeFilter: function() {
+        $$("table.table_list").scrollTo(0, 0);
+    },
+
     _onBeforeLoad: function() {
         var grid = $$("table.table_list");
 
@@ -79,17 +85,17 @@ webix.protoUI({
     },
 
     load: function(params) {
-        $$("table.table_list").load("post->"+app.getUrl("SelectTableList"), null, params);
+        $$("table.table_list").load("post->" + app.getUrl("SelectTableList"), null, params);
     },
 
-    refreshItem: function (item) {
+    refreshItem: function(item) {
 
         var grid = $$("table.table_list");
         var dataset = grid.data;
 
-        var record = dataset.find(function (obj) {
+        var record = dataset.find(function(obj) {
             return obj.Name == item.TableName;
-        },true);
+        }, true);
 
         var operations = [];
         ["Insert", "Update", "Delete"].forEach(function(o) {

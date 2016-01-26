@@ -23,7 +23,7 @@ namespace SqlChangeDataLog.Web.Handlers
             //try server
             try
             {
-                using (IDbConnection testConnection = new SqlConnection(buildConnectionString(context.Server, "")))
+                using (IDbConnection testConnection = new SqlConnection(BuildConnectionString(context.Server, "")))
                 {
                     testConnection.Execute(new QueryObject("select 1"));
                 }

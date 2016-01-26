@@ -9,25 +9,25 @@ webix.protoUI({
             };
 
         webix.extend(this.defaults, {
-            rows: [ 
+            rows: [
                 {
                     view: 'datatable',
                     id: 'table.log',
-                    resizeColumn:true,
+                    resizeColumn: true,
                     columns: [
-                        { id: "idChangeLog", header: [app.i18n.LogTable.idChangeLog, {content: "serverFilter"}], width: 80, sort: 'server' },
-                        { id: "date", header: [app.i18n.LogTable.date, { content: "serverFilter"}], width: 150, sort: 'server' },
-                        { id: "user", header: [app.i18n.LogTable.user, { content: "serverFilter"}], width: 150 },
+                        { id: "idChangeLog", header: [app.i18n.LogTable.idChangeLog, { content: "serverFilter" }], width: 80, sort: 'server' },
+                        { id: "date", header: [app.i18n.LogTable.date, { content: "serverFilter" }], width: 150, sort: 'server' },
+                        { id: "user", header: [app.i18n.LogTable.user, { content: "serverFilter" }], width: 150 },
                         {
                             id: "changeType",
                             header: [
                                 app.i18n.LogTable.changeType, {
                                     content: "serverSelectFilter",
-                                    options: [{ id: "", value: app.i18n.All }, { id: "I", value: app.i18n.Insert }, { id: "U", value: app.i18n.Update }, { id: "D", value: app.i18n.Delete}]
+                                    options: [{ id: "", value: app.i18n.All }, { id: "I", value: app.i18n.Insert }, { id: "U", value: app.i18n.Update }, { id: "D", value: app.i18n.Delete }]
                                 }
                             ],
                             width: 125,
-                            template: function (obj) {
+                            template: function(obj) {
                                 var o = {
                                     I: app.i18n.Insert,
                                     U: app.i18n.Update,
@@ -36,10 +36,10 @@ webix.protoUI({
                                 return o[obj.changeType];
                             }
                         },
-                        { id: "table", header: [app.i18n.LogTable.table, { content: "serverFilter"}], fillspace: true },
-                        { id: "idString", header: [app.i18n.LogTable.idString, { content: "serverFilter"}], width: 120 }
+                        { id: "table", header: [app.i18n.LogTable.table, { content: "serverFilter" }], fillspace: true },
+                        { id: "idString", header: [app.i18n.LogTable.idString, { content: "serverFilter" }], width: 120 }
                     ],
-                    dataThrottle: 500,
+                    datathrottle: 50,
                     scheme: {
                         $init: function(obj) {
                             obj.date = dateToString(new Date(obj.date));
@@ -48,9 +48,11 @@ webix.protoUI({
                     on: {
                         onBeforeLoad: bind("_onBeforeLoad"),
                         onAfterLoad: bind("_onAfterLoad"),
-                        onSelectChange: bind("_onSelectChange")
+                        onSelectChange: bind("_onSelectChange"),
+                        onBeforeFilter:bind("_onBeforeFilter")
                     },
-                    select: 'row',
+                    select: 'row'
+                } /*,
                     pager: 'pagerA'
                 },
                 {
@@ -64,23 +66,25 @@ webix.protoUI({
                             group: 5
                         }
                     ]
-                }
+                }*/
             ]
         });
     },
 
-
+    _onBeforeFilter:function() {
+        $$("table.log").scrollTo(0, 0);
+    },
     _onBeforeLoad: function() {
         var grid = $$("table.log");
 
-        grid.disable();
+       // grid.disable();
         grid.showOverlay("Loading <span class='webix_icon fa-spinner fa-spin'></span>");
     },
     _onAfterLoad: function() {
         var grid = $$("table.log");
 
         grid.hideOverlay();
-        grid.enable();
+       // grid.enable();
     },
 
     _onSelectChange: function() {
@@ -92,7 +96,7 @@ webix.protoUI({
     load: function(params) {
 
         var _params = webix.copy(params);
-        _params.count = 50;
+        _params.count = 100;
 
         $$('table.log').clearAll();
 
@@ -102,6 +106,11 @@ webix.protoUI({
                 params: _params,
                 load: function(view, callback, params) {
                     params = webix.extend(params || {}, this.params || {}, true);
+                    webix.extend(params, {
+                        
+                        sort:{"id":"idChangeLog","dir":"desc"}
+                    });
+
                     webix.ajax().bind(view).post(this.source, params, callback);
                 }
         });
