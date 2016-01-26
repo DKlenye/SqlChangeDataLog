@@ -5,6 +5,7 @@ app = {
 };
 
 webix.ready(function () {
+
     app.i18n.setLocale();
     app.skin.setSkin()
         .then(function() {
@@ -13,6 +14,8 @@ webix.ready(function () {
        .then(function () {
            webix.delay(startUI, this, [], 300);
        });
+
+
 });
 
 
@@ -33,18 +36,22 @@ var startUI = function () {
                     {
                         id: "sidebar",
                         view: "sidebar",
+                        tooltip: {
+                            template: "<span class='webix_strong'>#value#</span>"
+                        },
                         collapsed: true,
                         data: [
-                            {
-                                id: "viewscroll.tablesettings",
-                                icon: "table",
-                                value: app.i18n.TableSettings
-                            },
                             {
                                 id: "viewscroll.logview",
                                 icon: "search",
                                 value: app.i18n.LogView
+                            },
+                            {
+                                id: "viewscroll.tablesettings",
+                                icon: "bars",
+                                value: app.i18n.TableSettings
                             }
+                            
                         ],
                         on: {
                             onItemClick: function (id) {
@@ -55,6 +62,24 @@ var startUI = function () {
                     {
                         id: 'viewscroll',
                         cells: [
+                            {
+                                id: 'viewscroll.logview',
+                                cols: [
+                                    {
+                                        view: 'view.logtable',
+                                        id: 'logtable',
+                                        gravity: 1.5,
+                                        on: {
+                                            'onSelectChange': onLogTableSelect
+                                        }
+                                    },
+                                    { view: 'resizer' },
+                                    {
+                                        view: 'view.logdetails',
+                                        id: 'logdetails'
+                                    }
+                                ]
+                            },
                             {
                                 id: 'viewscroll.tablesettings',
                                 cols: [
@@ -76,24 +101,6 @@ var startUI = function () {
                                         }
                                     }
                                 ]
-                            },
-                            {
-                                id: 'viewscroll.logview',
-                                cols: [
-                                    {
-                                        view: 'view.logtable',
-                                        id: 'logtable',
-                                        gravity: 1.5,
-                                        on: {
-                                            'onSelectChange': onLogTableSelect
-                                        }
-                                    },
-                                    { view: 'resizer' },
-                                    {
-                                        view: 'view.logdetails',
-                                        id: 'logdetails'
-                                    }
-                                ]
                             }
                         ]
                     }
@@ -103,8 +110,9 @@ var startUI = function () {
     });
 
     $$('toolbar').restoreState();
-    $$('sidebar').select('viewscroll.tablesettings');
+    $$('sidebar').select('viewscroll.logview');
     $$('RootView').resize();
+
 }
 
 
@@ -122,6 +130,7 @@ var onToolbarActivate = function (logCfg) {
     app.connection = logCfg;
     $$('table_list').load(logCfg);
     $$('logtable').load(logCfg);
+    $$('table.log').markSorting("idChangeLog", "desc");
 };
 
 var onTableSelect = function(table) {
