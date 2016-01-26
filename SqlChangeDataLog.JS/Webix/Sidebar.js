@@ -9,8 +9,8 @@ webix.protoUI({
         collapsed: false,
         collapsedWidth: 41,
         position: "left",
-        width: 250,
-        mouseEventDelay: 10
+        width: 250
+        //mouseEventDelay: 10
     },
     $init: function (config) {
         this.$ready.push(this._initSidebar);
@@ -51,7 +51,7 @@ webix.protoUI({
             title.callEvent("onMasterSelect", [id]);
         });
         this.attachEvent("onMouseMove", function (id, ev, node) {
-            this._showPopup(id, node);
+            //this._showPopup(id, node);
         });
 
         if (this.config.collapsed)
