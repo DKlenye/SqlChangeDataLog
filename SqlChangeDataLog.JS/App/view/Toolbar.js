@@ -2,7 +2,7 @@ webix.protoUI({
     name: 'view.toolbar',
     defaultLogTable: "ChangeLog",
     stateName:'toolbar',
-    minHeight: 68,
+    minHeight: 74,
     maxHeight: 99,
     inserting: false,
     $init: function () {
@@ -292,7 +292,7 @@ webix.protoUI({
             icon: 'database',
             autowidth: true,
             view: "button",
-            type: "htmlbutton",
+            type: "divbutton",
             css:'webix_segment_N',
             icon: "database",
             logCfg: cfg,

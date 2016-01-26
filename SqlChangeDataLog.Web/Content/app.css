@@ -106,3 +106,23 @@
 	background: #27ae60;
 }
 
+
+.webix_el_button div,.webix_el_toggle div
+{
+    border-radius:6px;
+    height:100%;
+    width:100%;
+    cursor:pointer;
+    color:#fff;
+    font-size:15px;
+    padding:auto 6px;
+    font-family:'PT Sans',Tahoma;
+    border:1px solid #3498db;
+    border-bottom:1px solid #268fd5;
+    outline:0;
+    -webkit-appearance: none;
+    align-items: flex-start;
+    text-align: center;
+    display: table-cell; 
+    vertical-align: middle;
+}

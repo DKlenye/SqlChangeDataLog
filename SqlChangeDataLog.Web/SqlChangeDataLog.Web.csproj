@@ -23,6 +23,13 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <PublishDatabases>true</PublishDatabases>
+    <PackageAsSingleFile>true</PackageAsSingleFile>
+    <FilesToIncludeForPublish>OnlyFilesToRunTheApp</FilesToIncludeForPublish>
+    <PublishDatabaseSettings>
+      <Objects>
+      </Objects>
+    </PublishDatabaseSettings>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -75,6 +82,8 @@
     <Content Include="Content\skins\web.css" />
     <Content Include="Content\webix.css" />
     <Content Include="Content\webix.min.css" />
+    <Content Include="test.html" />
+    <Content Include="favicon.ico" />
     <Content Include="index-debug.html" />
     <Content Include="index.html" />
     <Content Include="Scripts\app-debug.js" />
@@ -114,26 +123,26 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Content\fonts\fontawesome-webfont.eot" />
-    <None Include="Content\fonts\fontawesome-webfont.ttf" />
-    <None Include="Content\fonts\fontawesome-webfont.woff" />
-    <None Include="Content\fonts\fontawesome-webfont.woff2" />
-    <None Include="Content\fonts\FontAwesome.otf" />
-    <None Include="Content\fonts\PTS-bold.eot" />
-    <None Include="Content\fonts\PTS-bold.ttf" />
-    <None Include="Content\fonts\PTS-bold.woff" />
-    <None Include="Content\fonts\PTS-webfont.eot" />
-    <None Include="Content\fonts\PTS-webfont.ttf" />
-    <None Include="Content\fonts\PTS-webfont.woff" />
+    <Content Include="Content\fonts\fontawesome-webfont.eot" />
+    <Content Include="Content\fonts\fontawesome-webfont.ttf" />
+    <Content Include="Content\fonts\fontawesome-webfont.woff" />
+    <Content Include="Content\fonts\fontawesome-webfont.woff2" />
+    <Content Include="Content\fonts\FontAwesome.otf" />
+    <Content Include="Content\fonts\PTS-bold.eot" />
+    <Content Include="Content\fonts\PTS-bold.ttf" />
+    <Content Include="Content\fonts\PTS-bold.woff" />
+    <Content Include="Content\fonts\PTS-webfont.eot" />
+    <Content Include="Content\fonts\PTS-webfont.ttf" />
+    <Content Include="Content\fonts\PTS-webfont.woff" />
     <Content Include="packages.config" />
     <Content Include="Handlers\SelectTableList.ashx" />
     <Content Include="Handlers\SelectTable.ashx" />
-    <None Include="Content\fonts\Roboto-Medium-webfont.eot" />
-    <None Include="Content\fonts\Roboto-Medium-webfont.ttf" />
-    <None Include="Content\fonts\Roboto-Medium-webfont.woff" />
-    <None Include="Content\fonts\Roboto-Regular-webfont.eot" />
-    <None Include="Content\fonts\Roboto-Regular-webfont.ttf" />
-    <None Include="Content\fonts\Roboto-Regular-webfont.woff" />
+    <Content Include="Content\fonts\Roboto-Medium-webfont.eot" />
+    <Content Include="Content\fonts\Roboto-Medium-webfont.ttf" />
+    <Content Include="Content\fonts\Roboto-Medium-webfont.woff" />
+    <Content Include="Content\fonts\Roboto-Regular-webfont.eot" />
+    <Content Include="Content\fonts\Roboto-Regular-webfont.ttf" />
+    <Content Include="Content\fonts\Roboto-Regular-webfont.woff" />
     <Content Include="Handlers\SelectChangeLog.ashx" />
     <Content Include="Handlers\SaveTable.ashx" />
     <Content Include="Handlers\CheckConnection.ashx" />
@@ -154,7 +163,7 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>6280</DevelopmentServerPort>
+          <DevelopmentServerPort>1837</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>
           </IISUrl>
