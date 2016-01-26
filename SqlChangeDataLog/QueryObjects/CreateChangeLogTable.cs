@@ -13,7 +13,7 @@ namespace SqlChangeDataLog.QueryObjects
 	                [user] [sysname] NOT NULL,
 	                [changeType] [char](1) NOT NULL,
 	                [table] [varchar](50) NOT NULL,
-	                [idString] [int] NOT NULL,
+	                [idString] [varchar](32) NOT NULL,
 	                [description] [xml] NOT NULL,
 	
                  CONSTRAINT [PK_{tableName}_ChangeLog] PRIMARY KEY CLUSTERED([idChangeLog] ASC)
