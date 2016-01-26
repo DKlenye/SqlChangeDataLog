@@ -1,6 +1,6 @@
 app.skin = {
     stateName: "skin",
-    defaultSkin: 'flat',
+    defaultSkin: 'compact',
     url:'../Content/skins/#skin#.css',
     setSkin: function (skin) {
 
