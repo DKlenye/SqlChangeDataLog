@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using SqlChangeDataLog.Extensions;
 
@@ -6,10 +8,10 @@ namespace SqlChangeDataLog.Triggers
 {
     public class TriggerTextBuilder
     {
-        public TriggerTextBuilder(Trigger trigger, string primaryKey, string logTableName)
+        public TriggerTextBuilder(Trigger trigger, IEnumerable<string> primaryKeys, string logTableName)
         {
             LogTableName = logTableName;
-            PrimaryKey = primaryKey;
+            PrimaryKeys = primaryKeys;
             SqlTemplates = GetTemplates(trigger.Operation);
             Trigger = trigger;
         }
@@ -26,7 +28,7 @@ namespace SqlChangeDataLog.Triggers
         }
         
         public Trigger Trigger { get; private set; }
-        public string PrimaryKey { get; private set; }
+        public IEnumerable<string> PrimaryKeys { get; private set; }
         public string LogTableName { get; private set; }
         public SqlTemplates SqlTemplates { get; private set; }
 
@@ -46,7 +48,7 @@ INSERT INTO {LogTableName} ([date],[user],[changeType],[table],[idString],[descr
         USER,
         '{ChangeType}',
         '{TableName}',
-        CAST({PrimaryKey} as varchar(32)),
+        {PrimaryKeys},
         (
             {SelectXml}
         )
@@ -72,12 +74,18 @@ END";
             });
         }
 
+        private string BuildPrimaryKeys()
+        {
+            return String.Join(" + ',' + ",
+                PrimaryKeys.Select(PrimaryKey => "CAST([{PrimaryKey}] as varchar(32))".ApplyTemplate(new {PrimaryKey})));
+        }
+
         private string BuildFooter()
         {
             return FooterTemplate.ApplyTemplate(new
             {
                 SelectXml = BuildSelectXml(),
-                PrimaryKey = PrimaryKey,
+                PrimaryKeys = BuildPrimaryKeys(),
                 IdFrom = SqlTemplates.IdFrom(),
                 ChangeType = SqlTemplates.ChangeType(),
                 TableName = Trigger.TableName,
@@ -89,8 +97,8 @@ END";
         {
             return SqlTemplates.SelectXml().ApplyTemplate(new
             {
-                Columns = String.Join(",", Trigger.Columns),
-                PrimaryKey = PrimaryKey
+                Columns = String.Join(",", Trigger.Columns.Select(x => "[" + x + "]")),
+                PrimaryKey = PrimaryKeys.First()
             });
         }
         

@@ -1,11 +1,13 @@
 ﻿using System.Data;
 using System.Linq;
 using NUnit.Framework;
+using NUnit.Framework.Internal.Commands;
 using SqlChangeDataLog.Commands;
 using SqlChangeDataLog.Dtos;
 using SqlChangeDataLog.Extensions;
 using SqlChangeDataLog.Queries;
 using SqlChangeDataLog.QueryObjects;
+using SqlChangeDataLog.Tests.Dto;
 using SqlChangeDataLog.Tests.Queries;
 
 namespace SqlChangeDataLog.Tests.DataBase
@@ -33,6 +35,11 @@ namespace SqlChangeDataLog.Tests.DataBase
             get { return new SelectTableDto(Connection, "Entity").Query(); }
         }
 
+        protected TableDto CompositeIdDto
+        {
+            get { return new SelectTableDto(Connection, "CompositeIdEntity").Query(); }
+        }
+
 
         [Test]
         public void Not_Logging_Table_Must_Not_Contain_Log_Triggers()
@@ -48,12 +55,12 @@ namespace SqlChangeDataLog.Tests.DataBase
         public void Logging_Table_Must_Contain_Log_Triggers()
         {
             var tableDto = Dto;
-            tableDto.Insert = CreateTrigger("Insert");
+            tableDto.Insert = CreateEntityTrigger("Insert");
             new SaveTable(Connection, tableDto).Execute();
             
             Assert.AreEqual(TriggerCount, 1);
-            tableDto.Update = CreateTrigger("Update");
-            tableDto.Delete = CreateTrigger("Delete");
+            tableDto.Update = CreateEntityTrigger("Update");
+            tableDto.Delete = CreateEntityTrigger("Delete");
             new SaveTable(Connection, tableDto).Execute();
             Assert.AreEqual(TriggerCount, 3);
         }
@@ -62,9 +69,9 @@ namespace SqlChangeDataLog.Tests.DataBase
         public void Add_Remove_Log_Triggers_Test()
         {
             var tableDto = Dto;
-            tableDto.Insert = CreateTrigger("Insert");
-            tableDto.Update = CreateTrigger("Update");
-            tableDto.Delete = CreateTrigger("Delete");
+            tableDto.Insert = CreateEntityTrigger("Insert");
+            tableDto.Update = CreateEntityTrigger("Update");
+            tableDto.Delete = CreateEntityTrigger("Delete");
             new SaveTable(Connection, tableDto).Execute();
             Assert.AreEqual(TriggerCount, 3);
             
@@ -80,7 +87,7 @@ namespace SqlChangeDataLog.Tests.DataBase
         public void InsertTest()
         {
             var tableDto = Dto;
-            tableDto.Insert = CreateTrigger("Insert");
+            tableDto.Insert = CreateEntityTrigger("Insert");
             new SaveTable(Connection, tableDto).Execute();
 
             var entity = InsertEntity("TestName");
@@ -93,7 +100,7 @@ namespace SqlChangeDataLog.Tests.DataBase
         public void UpdateTest()
         {
             var tableDto = Dto;
-            tableDto.Update = CreateTrigger("Update");
+            tableDto.Update = CreateEntityTrigger("Update");
             new SaveTable(Connection, tableDto).Execute();
 
             var entity = InsertEntity("TestName");
@@ -109,7 +116,7 @@ namespace SqlChangeDataLog.Tests.DataBase
         public void DeleteTest()
         {
             var tableDto = Dto;
-            tableDto.Insert = CreateTrigger("Delete");
+            tableDto.Insert = CreateEntityTrigger("Delete");
             new SaveTable(Connection, tableDto).Execute();
 
             var entity = InsertEntity("TestName");
@@ -123,7 +130,7 @@ namespace SqlChangeDataLog.Tests.DataBase
         public void InsertMultipleTest()
         {
             var tableDto = Dto;
-            tableDto.Insert = CreateTrigger("Insert");
+            tableDto.Insert = CreateEntityTrigger("Insert");
             new SaveTable(Connection, tableDto).Execute();
 
             InsertMultipleEntity("TestName");
@@ -134,7 +141,7 @@ namespace SqlChangeDataLog.Tests.DataBase
         public void UpdateMultipleTest()
         {
             var tableDto = Dto;
-            tableDto.Update = CreateTrigger("Update");
+            tableDto.Update = CreateEntityTrigger("Update");
             new SaveTable(Connection, tableDto).Execute();
 
             InsertEntity("TestName1");
@@ -151,7 +158,7 @@ namespace SqlChangeDataLog.Tests.DataBase
             InsertEntity("TestName2");
 
             var query = Dto;
-            query.Delete = CreateTrigger("Delete");
+            query.Delete = CreateEntityTrigger("Delete");
             new SaveTable(Connection, query).Execute();
 
             Connection.Execute(new DeleteEntity().All());
@@ -175,6 +182,64 @@ namespace SqlChangeDataLog.Tests.DataBase
             entity1.Name = "ChangeName";
             Connection.Execute(new UpdateEntity().Query(entity1));
             Assert.AreEqual(LogRecordsCount, 1);
+        }
+
+        [Test]
+        public void CompositeIdEntityShouldContainsMultipleKeys()
+        {
+            Assert.AreEqual(CompositeIdDto.KeyColumns.Count(), 2);
+        }
+
+        [Test]
+        public void InsertCompositeIdTest()
+        {
+            var tableDto = CompositeIdDto;
+            tableDto.Insert = CreateCompositeIdEntityTrigger("Insert");
+            new SaveTable(Connection, tableDto).Execute();
+
+            Connection.Execute(new InsertCompositeIdEntity().Query(new CompositeIdEntity(1, "key1")));
+            Assert.AreEqual(LogRecordsCount, 1);
+
+            var log = Connection.Query<ChangeLogDto>(new SelectChangeLog().All(LogTableName)).First();
+            Assert.AreEqual(log.idString.Split(',').Count(), 2);
+        }
+        [Test]
+        public void UpdateCompositeIdTest()
+        {
+            var tableDto = CompositeIdDto;
+            tableDto.Update = CreateCompositeIdEntityTrigger("Update");
+            new SaveTable(Connection, tableDto).Execute();
+
+            var entity = new CompositeIdEntity(1, "key1");
+            Connection.Execute(new InsertCompositeIdEntity().Query(entity));
+            Assert.AreEqual(LogRecordsCount, 0);
+
+            entity.Key1 = 11;
+            entity.Key2 = "ChangeName";
+
+            Connection.Execute(new UpdateCompositeIdEntity().Key2ForAllEntities("newKey"));
+            Assert.AreEqual(LogRecordsCount, 1);
+
+            var log = Connection.Query<ChangeLogDto>(new SelectChangeLog().All(LogTableName)).First();
+            Assert.AreEqual(log.idString.Split(',').Count(), 2);
+        }
+
+        [Test]
+        public void DeleteCompositeIdTest()
+        {
+            var tableDto = CompositeIdDto;
+            tableDto.Insert = CreateCompositeIdEntityTrigger("Delete");
+            new SaveTable(Connection, tableDto).Execute();
+
+            var entity = new CompositeIdEntity(1, "key1");
+            Connection.Execute(new InsertCompositeIdEntity().Query(entity));
+            Assert.AreEqual(LogRecordsCount, 0);
+
+            Connection.Execute(new DeleteCompositeIdEntity().Query(entity));
+            Assert.AreEqual(LogRecordsCount, 1);
+
+            var log = Connection.Query<ChangeLogDto>(new SelectChangeLog().All(LogTableName)).First();
+            Assert.AreEqual(log.idString.Split(',').Count(), 2);
         }
 
     }

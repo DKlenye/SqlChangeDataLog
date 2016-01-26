@@ -5,7 +5,7 @@
         public override string SelectXml()
         {
                 return @"SELECT {Columns}
-            FROM INSERTED AS I WHERE I.{PrimaryKey} = C.{PrimaryKey} FOR XML AUTO";
+            FROM INSERTED AS I WHERE I.[{PrimaryKey}] = C.[{PrimaryKey}] FOR XML AUTO";
         }
 
         public override string ChangeType()

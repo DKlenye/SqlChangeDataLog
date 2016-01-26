@@ -5,7 +5,7 @@
         public override string SelectXml()
         {
                 return @"SELECT {Columns}
-            FROM DELETED AS D WHERE D.{PrimaryKey} = C.{PrimaryKey} FOR XML AUTO";
+            FROM DELETED AS D WHERE D.[{PrimaryKey}] = C.[{PrimaryKey}] FOR XML AUTO";
         }
         
         public override string ChangeType()

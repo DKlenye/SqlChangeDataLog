@@ -32,7 +32,7 @@ namespace SqlChangeDataLog.Commands
                 if (trigger != null)
                 {
                     Connection.Execute(
-                        new TriggerTextBuilder(trigger, dto.KeyColumns.Single(), trigger.LogTableName)
+                        new TriggerTextBuilder(trigger, dto.KeyColumns, trigger.LogTableName)
                         .Query(),
                         tx
                     );

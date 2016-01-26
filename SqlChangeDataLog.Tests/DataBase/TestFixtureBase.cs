@@ -28,6 +28,7 @@ namespace SqlChangeDataLog.Tests.DataBase
         {
             Connection = Connect();
             Connection.Execute(new CreateEntityTable().Query());
+            Connection.Execute(new CreateCompositeIdEntityTable().Query());
             Connection.Execute(new CreateChangeLogTable().Create(LogTableName));
         }
 
@@ -35,6 +36,7 @@ namespace SqlChangeDataLog.Tests.DataBase
         public void TearDown()
         {
             Connection.Execute(new DropEntityTable().Query());
+            Connection.Execute(new DropCompositeIdEntityTable().Query());
             Connection.Execute(new DropTable().Query(LogTableName));
             Connection.Dispose();
         }
@@ -64,7 +66,7 @@ namespace SqlChangeDataLog.Tests.DataBase
             return new[] {dto1, dto2};
         }
 
-        protected Trigger CreateTrigger(string Operation)
+        protected Trigger CreateEntityTrigger(string Operation)
         {
             return new Trigger()
             {
@@ -72,6 +74,17 @@ namespace SqlChangeDataLog.Tests.DataBase
                 Operation = Operation,
                 LogTableName = LogTableName,
                 TableName = "Entity"
+            };
+        }
+
+        protected Trigger CreateCompositeIdEntityTrigger(string Operation)
+        {
+            return new Trigger()
+            {
+                Columns = new[] { "Key1", "Key2" },
+                Operation = Operation,
+                LogTableName = LogTableName,
+                TableName = "CompositeIdEntity"
             };
         }
 
