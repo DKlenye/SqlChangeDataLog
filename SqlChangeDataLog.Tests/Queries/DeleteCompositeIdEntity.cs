@@ -9,7 +9,7 @@ namespace SqlChangeDataLog.Tests.Queries
             return new QueryObject("delete from CompositeIdEntity");
         }
 
-        public QueryObject Query(CompositeIdEntity entity)
+        public QueryObject Query(CompositeIdEntityDto entity)
         {
             return new QueryObject("delete from CompositeIdEntity where Key1 = @Key1 and Key2=@Key2",
                 new {entity.Key1, entity.Key2});

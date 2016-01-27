@@ -4,7 +4,7 @@ namespace SqlChangeDataLog.Tests.Queries
 {
     public class InsertCompositeIdEntity
     {
-        public QueryObject Query(CompositeIdEntity entity)
+        public QueryObject Query(CompositeIdEntityDto entity)
         {
             return new QueryObject(@"
                 insert into CompositeIdEntity(Key1, Key2) values(@Key1, @key2);",

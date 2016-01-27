@@ -1,5 +1,7 @@
 ﻿using System.Data;
 using System.Linq;
+using System.Text.RegularExpressions;
+using Dapper;
 using NUnit.Framework;
 using NUnit.Framework.Internal.Commands;
 using SqlChangeDataLog.Commands;
@@ -197,7 +199,7 @@ namespace SqlChangeDataLog.Tests.DataBase
             tableDto.Insert = CreateCompositeIdEntityTrigger("Insert");
             new SaveTable(Connection, tableDto).Execute();
 
-            Connection.Execute(new InsertCompositeIdEntity().Query(new CompositeIdEntity(1, "key1")));
+            Connection.Execute(new InsertCompositeIdEntity().Query(new CompositeIdEntityDto(1, "key1")));
             Assert.AreEqual(LogRecordsCount, 1);
 
             var log = Connection.Query<ChangeLogDto>(new SelectChangeLog().All(LogTableName)).First();
@@ -210,7 +212,7 @@ namespace SqlChangeDataLog.Tests.DataBase
             tableDto.Update = CreateCompositeIdEntityTrigger("Update");
             new SaveTable(Connection, tableDto).Execute();
 
-            var entity = new CompositeIdEntity(1, "key1");
+            var entity = new CompositeIdEntityDto(1, "key1");
             Connection.Execute(new InsertCompositeIdEntity().Query(entity));
             Assert.AreEqual(LogRecordsCount, 0);
 
@@ -231,7 +233,7 @@ namespace SqlChangeDataLog.Tests.DataBase
             tableDto.Insert = CreateCompositeIdEntityTrigger("Delete");
             new SaveTable(Connection, tableDto).Execute();
 
-            var entity = new CompositeIdEntity(1, "key1");
+            var entity = new CompositeIdEntityDto(1, "key1");
             Connection.Execute(new InsertCompositeIdEntity().Query(entity));
             Assert.AreEqual(LogRecordsCount, 0);
 
@@ -241,6 +243,49 @@ namespace SqlChangeDataLog.Tests.DataBase
             var log = Connection.Query<ChangeLogDto>(new SelectChangeLog().All(LogTableName)).First();
             Assert.AreEqual(log.idString.Split(',').Count(), 2);
         }
+
+        [Test]
+        public void InsertCompsiteIdMultipleTest()
+        {
+            var tableDto = CompositeIdDto;
+            tableDto.Insert = CreateCompositeIdEntityTrigger("Insert");
+            new SaveTable(Connection, tableDto).Execute();
+
+            InsertMultipleCompositeIdEntity();
+            Assert.AreEqual(LogRecordsCount, 2);
+        }
+
+        [Test]
+        public void UpdateCompositeIdMultipleTest()
+        {
+            var tableDto = CompositeIdDto;
+            tableDto.Update = CreateCompositeIdEntityTrigger("Update");
+            new SaveTable(Connection, tableDto).Execute();
+
+            InsertMultipleCompositeIdEntity();
+
+            Connection.Execute(new UpdateCompositeIdEntity().Key2ForAllEntities("add"));
+            Assert.AreEqual(LogRecordsCount, 2);
+
+            var regex = new Regex("<U.+?/>", RegexOptions.IgnoreCase | RegexOptions.Singleline);
+            var log = Connection.Query<ChangeLogDto>(new SelectChangeLog().All(LogTableName)).First();
+            Assert.AreEqual(regex.Matches(log.description).Count, 2);
+        }
+
+        [Test]
+        public void DeleteCompositeIdMultipleTest()
+        {
+            var tableDto = CompositeIdDto;
+            tableDto.Update = CreateCompositeIdEntityTrigger("Delete");
+            new SaveTable(Connection, tableDto).Execute();
+
+            InsertMultipleCompositeIdEntity();
+            Connection.Execute(new DeleteCompositeIdEntity().All());
+            
+            Connection.Execute(new DeleteEntity().All());
+            Assert.AreEqual(LogRecordsCount, 2);
+        }
+
 
     }
 }

@@ -1,8 +1,8 @@
 ﻿namespace SqlChangeDataLog.Tests.Dto
 {
-    public class CompositeIdEntity
+    public class CompositeIdEntityDto
     {
-        public CompositeIdEntity(int key1, string key2)
+        public CompositeIdEntityDto(int key1, string key2)
         {
             Key2 = key2;
             Key1 = key1;

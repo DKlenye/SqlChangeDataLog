@@ -48,7 +48,7 @@
   <ItemGroup>
     <Compile Include="DataBase\DatabaseTests.cs" />
     <Compile Include="DataBase\TestFixtureBase.cs" />
-    <Compile Include="Dto\CompositeIdEntity.cs" />
+    <Compile Include="Dto\CompositeIdEntityDto.cs" />
     <Compile Include="Dto\EntityDto.cs" />
     <Compile Include="ExtensionsTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

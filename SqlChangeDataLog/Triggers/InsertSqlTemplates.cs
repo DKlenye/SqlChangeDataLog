@@ -1,11 +1,15 @@
-﻿namespace SqlChangeDataLog.Triggers
+﻿using System.Collections.Generic;
+using SqlChangeDataLog.Extensions;
+
+namespace SqlChangeDataLog.Triggers
 {
     public class InsertSqlTemplates:SqlTemplates
     {
-        public override string SelectXml()
+        public override string SelectXml(IEnumerable<string> keys)
         {
-                return @"SELECT {Columns}
-            FROM INSERTED AS I WHERE I.[{PrimaryKey}] = C.[{PrimaryKey}] FOR XML AUTO";
+            return @"SELECT {Columns}
+            FROM INSERTED AS I WHERE {whereClause} FOR XML AUTO"
+                .ApplyTemplate(new {whereClause=BuildWhereClause(keys,InsertedWhereClauseTemplate)});
         }
 
         public override string ChangeType()

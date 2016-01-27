@@ -66,6 +66,25 @@ namespace SqlChangeDataLog.Tests.DataBase
             return new[] {dto1, dto2};
         }
 
+        protected CompositeIdEntityDto[] InsertMultipleCompositeIdEntity()
+        {
+            var dto1 = new CompositeIdEntityDto(1, "key1");
+            var dto2 = new CompositeIdEntityDto(1, "key2");
+
+            using (var connection = Connect())
+            {
+                using (var transaction = connection.BeginTransaction())
+                {
+                    connection.Query<int>(new InsertCompositeIdEntity().Query(dto1), transaction);
+                    connection.Query<int>(new InsertCompositeIdEntity().Query(dto2), transaction);
+                    transaction.Commit();
+                }
+            }
+
+            return new[] { dto1, dto2 };
+
+        }
+        
         protected Trigger CreateEntityTrigger(string Operation)
         {
             return new Trigger()

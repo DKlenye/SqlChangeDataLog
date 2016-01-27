@@ -5,7 +5,7 @@
         public QueryObject Key2ForAllEntities(string key2)
         {
             return new QueryObject(@"update CompositeIdEntity
-                                     set Key2 = @key2", new { key2 });
+                                     set Key2 = Key2 + @key2", new { key2 });
         }
         
     }

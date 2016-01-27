@@ -95,10 +95,9 @@ END";
 
         private string BuildSelectXml()
         {
-            return SqlTemplates.SelectXml().ApplyTemplate(new
+            return SqlTemplates.SelectXml(PrimaryKeys).ApplyTemplate(new
             {
-                Columns = String.Join(",", Trigger.Columns.Select(x => "[" + x + "]")),
-                PrimaryKey = PrimaryKeys.First()
+                Columns = String.Join(",", Trigger.Columns.Select(x => "[" + x + "]"))
             });
         }
         
