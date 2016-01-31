@@ -4,11 +4,116 @@
         <title>ChangeLog</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
         <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
-        <link href="Content/skins/compact.css" rel="stylesheet" type="text/css" />
+        <link href="Content/webix.css" rel="stylesheet" type="text/css" />
+        <style type="text/css">
+           
+ .webix_el_button .webix_divbutton
+ {
+  text-align: center;
+  border-radius: 6px;
+  border: 1px solid #dddddd;
+  height: 100%;
+  width: 100%;
+  cursor: pointer;
+  font-size: 14px;
+  font-family: 'PT Sans', Tahoma;
+  outline: none;
+}
+
+
+
+            
+        </style>
+
+
+
         <script src="Scripts/webix.js" type="text/javascript"></script>
         <script type="text/javascript">
-            webix.ready(function() {
-               /* webix.ui({
+
+            webix.protoUI({
+                name: "divbutton",
+                defaults: {
+                    logCfg:{},
+                    template: function (obj, common) {
+                        
+                        console.log('tpl')                        
+                        
+                        var text = webix.template(
+                            
+                            'asdf and longlonglonglongtext'
+                           /* '<span style="display: inline-block; height: 100%; vertical-align: middle;"></span><span style="display: inline-block; vertical-align: middle;">'+
+                            '<span class="webix_tab_close webix_icon fa-times"></span>' +
+                            ' <span class="webix_icon fa-icon fa-database style="font-size:18px;"></span>' +
+                            '<span> #server# <br/> #database# </span> <br/>' +
+                            (obj.logCfg.warning == true ? '<span class="webix_icon fa-icon fa-exclamation-triangle" style="font-size:18px; color: #ffd21a !important;"></span>' : "") +
+                            '<span>#log# </span>' +
+                            '</span>'*/
+                         )(obj.logCfg, common);
+
+                        var wrap = "<div class='webixtype_base webix_divbutton' >"+text+"</div>";
+                        return "<div class='webix_el_box' style='width:" + obj.awidth + "px; height:" + obj.aheight + "px'>" + wrap + "</div>";
+                    }    
+                },
+                $init:function() {
+                    console.log('init')
+                },
+                $cssName:'button'
+            }, webix.ui.button);
+
+
+
+           webix.ready(function () {
+
+                webix.ui({
+                    rows: [
+                        {
+                            view: 'toolbar',
+                            height:178,
+                            cols: [
+                                {
+                                    view: 'divbutton',
+                                    label: 'ButtonLabel',
+                                    autowidth: true,
+                                    logCfg: {
+                                        server: 'DB2',
+                                        database: 'transport',
+                                        log: 'ChangeLog'
+                                    },
+                                    click: function(o,e) {
+                                        var el = e.target || e.srcElement;
+                                        webix.message(el.className);
+                                    }
+
+                                },
+                                {
+                                    view: 'divbutton',
+                                    label: 'ButtonLabel',
+                                    autowidth: true,
+                                    logCfg: {
+                                        server: 'DBSRV2',
+                                        database: 'transport_dbf_store',
+                                        log: 'ChangeLog',
+                                        warning:true
+                                    },
+                                    click: function (o, e) {
+                                        var el = e.target || e.srcElement;
+                                        webix.message(el.className);
+                                    }
+
+                                },
+                                {
+                                    view: 'button',
+                                    label: 'ButtonLabellonglonglong',
+                                    type: 'htmlbutton',
+                                    autowidth: true
+                                }
+                            ]
+                        }
+                    ]
+                });
+
+
+                /* webix.ui({
                     view: 'button',
                     type: "htmlbutton",
                     template: function (obj, common) {
