@@ -1,7 +1,7 @@
 webix.protoUI({
     name: 'view.toolbar',
     defaultLogTable: "ChangeLog",
-    stateName:'toolbar',
+    stateName: 'toolbar',
     minHeight: 74,
     maxHeight: 99,
     inserting: false,
@@ -11,7 +11,7 @@ webix.protoUI({
             bind = function (fn) {
                 return webix.bind(me[fn], me);
             };
-            
+
         webix.extend(this.defaults, {
             height: me.minHeight,
             cols: [
@@ -82,7 +82,7 @@ webix.protoUI({
                         width: 100,
                         body: {
                             view: "list",
-                            id:'langList',
+                            id: 'langList',
                             scroll: false,
                             yCount: 2,
                             select: true,
@@ -93,9 +93,9 @@ webix.protoUI({
                                 { id: 'ru-RU', lang: "Russian" }
                             ],
                             on: {
-                                "onAfterRender":function() {
+                                "onAfterRender": function () {
                                     $$("langList").select(app.i18n.currentLocale, true);
-                                    $$("langList").attachEvent("onAfterSelect", function(e) {
+                                    $$("langList").attachEvent("onAfterSelect", function (e) {
                                         $$("lang").hide();
                                         app.i18n.setLocale(e);
                                     });
@@ -119,7 +119,7 @@ webix.protoUI({
                             select: true,
                             borderless: true,
                             template: "#skin#",
-                            data:app.skin.getSkins(),
+                            data: app.skin.getSkins(),
                             on: {
                                 "onAfterRender": function () {
                                     $$("skinList").select(app.skin.currentSkin, true);
@@ -133,37 +133,37 @@ webix.protoUI({
                     }
                 },
                 { view: "icon", icon: "info-circle" }
-                
+
             ]
         });
 
     },
-   
-    onTextKeyPress: function (key, event) {
-    
-        switch (key) {
-        //ESC         
-        case 27:
-            {
-                this.toggleAdd();
-                return false;
-            }
-        //ENTER
-        case 13:
-            {
-                var id = event.srcElement.parentNode.parentNode.getAttribute("view_id");
-                var field = $$(id);
 
-                if (field && field.config.nextFocus) {
-                    var focusField = $$(field.config.nextFocus);
-                    focusField.focus();
-                    focusField.getInputNode().select();
+    onTextKeyPress: function (key, event) {
+
+        switch (key) {
+            //ESC            
+            case 27:
+                {
+                    this.toggleAdd();
                     return false;
                 }
+                //ENTER
+            case 13:
+                {
+                    var id = event.srcElement.parentNode.parentNode.getAttribute("view_id");
+                    var field = $$(id);
 
-                this.confirmAdd();
-                return false;
-            }
+                    if (field && field.config.nextFocus) {
+                        var focusField = $$(field.config.nextFocus);
+                        focusField.focus();
+                        focusField.getInputNode().select();
+                        return false;
+                    }
+
+                    this.confirmAdd();
+                    return false;
+                }
         }
     },
 
@@ -174,8 +174,8 @@ webix.protoUI({
         $$('layout.add')[isInserting ? "hide" : "show"]();
         $$('button.add')[isInserting ? "show" : "hide"]();
 
-        this.eachButtons(function(b) {
-            b[isInserting ?"enable":"disable"]();
+        this.eachButtons(function (b) {
+            b[isInserting ? "enable" : "disable"]();
         });
 
         if (!isInserting) {
@@ -192,8 +192,8 @@ webix.protoUI({
         this.inserting = !this.inserting;
     },
 
-    resetAddLayout:function() {
-        this.eachAddFields(function(text) {
+    resetAddLayout: function () {
+        this.eachAddFields(function (text) {
             text.setValue('');
         });
         $$('text.logtable').setValue(this.defaultLogTable);
@@ -203,17 +203,17 @@ webix.protoUI({
         $$('layout.add.text').getChildViews().forEach(fn, scope || this);
     },
 
-    eachButtons:function(fn) {
-        this.getChildViews().forEach(function(button) {
+    eachButtons: function (fn) {
+        this.getChildViews().forEach(function (button) {
             if (button.name == "button") {
                 fn(button);
             }
         });
     },
 
-    getTargetActivationButton:function() {
+    getTargetActivationButton: function () {
         var rezult, me = this;
-        this.getChildViews().every(function(button) {
+        this.getChildViews().every(function (button) {
             if (button.name == "button" && me.activeButton != button) {
                 rezult = button;
                 return false;
@@ -223,16 +223,16 @@ webix.protoUI({
         return rezult;
     },
 
-    getAddConfig:function() {
+    getAddConfig: function () {
         var cfg = {};
-        this.eachAddFields(function(field) {
+        this.eachAddFields(function (field) {
             cfg[field.config.dataIndex] = field.getValue();
         });
         return cfg;
     },
-    
-    
-    confirmAdd:function() {
+
+
+    confirmAdd: function () {
         var me = this;
         var addCfg = me.getAddConfig();
 
@@ -277,7 +277,7 @@ webix.protoUI({
                 me.createLogTable($button);
             }
 
-            me.saveState();    
+            me.saveState();
         });
     },
 
@@ -292,26 +292,26 @@ webix.protoUI({
             icon: 'database',
             autowidth: true,
             view: "button",
-            type: "divbutton",
-            css:'webix_segment_N',
+            type: "htmlbutton",
+            css: 'webix_segment_N',
             icon: "database",
             logCfg: cfg,
             label: this.buildButtonLabel(cfg),
-            click: webix.bind(this.onButtonClick,this)
+            click: webix.bind(this.onButtonClick, this)
         };
     },
 
-    buildButtonLabel:function(cfg) {
+    buildButtonLabel: function (cfg) {
         var template = webix.template(
-            '</span> <span class="webix_tab_close webix_icon fa-times"></span>' +
+            '<span class="webix_tab_close webix_icon fa-times"></span>' +
                 ' <span class="webix_icon fa-icon fa-database" style="font-size:18px;"></span>' +
-                    '<span> #server# #database# <br/>' +
-                        (cfg.warning == true ? '<span class="webix_icon fa-icon fa-exclamation-triangle" style="font-size:18px; color: #ffd21a !important;">' : "") +
-                        '</span>#logtable# </span> ');
+                    '<span> #server# #database# </span> <br/>' +
+                        (cfg.warning == true ? '<span class="app_table_add webix_icon fa-icon fa-exclamation-triangle" style="font-size:18px; color: #ffd21a !important;"></span>' : "") +
+                        '<span>#logtable# </span> ');
         return template(cfg);
     },
 
-    activate: function(button) {
+    activate: function (button) {
         if (this.activeButton) {
             webix.html.removeCss(this.activeButton.getNode(), "webix_selected");
         }
@@ -325,39 +325,55 @@ webix.protoUI({
         }
     },
 
-    onButtonClick: function (id,e) {
+    closeButton: function (button) {
+        if (this.activeButton == button) {
+            var targetButton = this.getTargetActivationButton();
+            this.activate(targetButton);
+        }
+        this.removeView(button);
+        this.saveState();
+    },
+
+    onButtonClick: function(id, e) {
 
         var button = $$(id);
-        var target = e.target || e.srcElement;
+        var el = e.srcElement || e.target;
+        var pos = webix.html.posRelative(e);
 
-        switch (target.className) {
-        
-            case "webix_tab_close webix_icon fa-times":
-            {
-                if (this.activeButton == button) {
-                    var targetButton = this.getTargetActivationButton();
-                    this.activate(targetButton);    
-                }
-                this.removeView(button);
-                this.saveState();
-                break;
-            }
+        if (el.tagName.toLowerCase() == "button") {
 
-            case "webix_icon fa-icon fa-exclamation-triangle":
-            {
+            if (el.offsetWidth - pos.x < 25 && pos.y < 25) {
+                this.closeButton(button);
+                return;
+            } else if (el.offsetWidth - pos.x < 25 && pos.y > 35 && button.logCfg.warning) {
                 this.createLogTable(button);
-                break;
+                return;
             }
+            this.activate(button);
+            this.saveState();
 
+        } else {
+            switch (el.className) {
+            case "webix_tab_close webix_icon fa-times":
+                {
+                    this.closeButton(button);
+                    break;
+                }
+            case "app_table_add webix_icon fa-icon fa-exclamation-triangle":
+                {
+                    this.createLogTable(button);
+                    break;
+                }
             default:
-            {
-                this.activate(button);
-                this.saveState();  
+                {
+                    this.activate(button);
+                    this.saveState();
+                }
             }
         }
-        
+
     },
-    
+
     restoreState: function () {
         var state = this.loadState();
         var me = this;
@@ -379,7 +395,7 @@ webix.protoUI({
         var state = [];
         var me = this;
 
-        this.eachButtons(function(b) {
+        this.eachButtons(function (b) {
             var cfg = b.config.logCfg;
             if (me.activeButton && me.activeButton == b) {
                 cfg.active = true;
@@ -405,13 +421,13 @@ webix.protoUI({
 
         webix.confirm({
             ok: app.i18n.Ok,
-            cancel:app.i18n.Cancel,
+            cancel: app.i18n.Cancel,
             title: webix.template(app.i18n.Toolbar.NotFoundTitle)({ logtable: cfg.logtable }),
             type: "confirm-warning",
             text: webix.template(app.i18n.Toolbar.NotFoundMessage)({ database: cfg.database, logtable: cfg.logtable }),
-            callback: function(ok) {
+            callback: function (ok) {
                 if (ok) {
-                    webix.ajax().post(app.getUrl('CreateTable'), cfg, function() {
+                    webix.ajax().post(app.getUrl('CreateTable'), cfg, function () {
                         button.config.logCfg.warning = false;
                         button.define("label", me.buildButtonLabel(button.config.logCfg));
                         button.refresh();
@@ -421,5 +437,5 @@ webix.protoUI({
             }
         });
     }
-    
+
 }, webix.ui.toolbar, webix.OverlayBox);
