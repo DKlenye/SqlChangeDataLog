@@ -114,6 +114,17 @@ webix.protoUI({
                     webix.ajax().bind(view).post(this.source, params, callback);
                 }
         });
+    },
+    
+    clearFilter:function() {
+        var table = $$("table.log");
+        var filters = table._filter_elements || table.ij;
+
+        for (var i in filters) {
+            var filter = filters[i];
+            filter[2].setValue(filter[0], "");
+        }
+
     }
 
 }, webix.ui.layout);

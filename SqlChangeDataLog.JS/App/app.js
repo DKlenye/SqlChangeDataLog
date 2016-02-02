@@ -129,6 +129,7 @@ var onToolbarActivate = function (logCfg) {
 
     app.connection = logCfg;
     $$('table_list').load(logCfg);
+    $$('logtable').clearFilter();
     $$('logtable').load(logCfg);
     $$('table.log').markSorting("idChangeLog", "desc");
 };
