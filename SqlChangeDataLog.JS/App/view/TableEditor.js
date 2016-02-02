@@ -1,15 +1,15 @@
 webix.protoUI({
     name: 'view.table_editor',
-   
+
     $init: function (config) {
         var icons = config.icons || {};
         var me = this;
-        var bind = function(fn) {
+        var bind = function (fn) {
             return webix.bind(me[fn], me);
         };
-        
+
         this.operations = [
-            { id: "Insert", value: "<span class='webix_icon " + app.settings.icons["insert"] + "'></span><span style='padding-left: 4px'>"+app.i18n.Insert+"</span>" },
+            { id: "Insert", value: "<span class='webix_icon " + app.settings.icons["insert"] + "'></span><span style='padding-left: 4px'>" + app.i18n.Insert + "</span>" },
             { id: "Update", value: "<span class='webix_icon " + app.settings.icons['update'] + "'></span><span style='padding-left: 4px'>" + app.i18n.Update + "</span>" },
             { id: "Delete", value: "<span class='webix_icon " + app.settings.icons['delete'] + "'></span><span style='padding-left: 4px'>" + app.i18n.Delete + "</span>" }
         ],
@@ -22,11 +22,11 @@ webix.protoUI({
                     cols: [
                         {
                             view: "segmented",
-                            id:"segmented.operation",
+                            id: "segmented.operation",
                             optionWidth: 120,
                             value: "None",
                             options: [
-                                
+
                             ],
                             on: {
                                 onChange: bind("onOperationChange")
@@ -51,33 +51,33 @@ webix.protoUI({
                                 {
                                     id: 'layout.columns',
                                     rows: [{
-                                            view: 'datatable',
-                                            id: 'table.columns',
-                                            columns: [
-                                                { id: "Checked", header: { content: "masterCheckbox", css: "center" }, css:"center", template: "{common.checkbox()}", width: 40 },
+                                        view: 'datatable',
+                                        id: 'table.columns',
+                                        columns: [
+                                                { id: "Checked", header: { content: "masterCheckbox", css: "center", contentId: "cb" }, css: "center", template: "{common.checkbox()}", width: 40 },
                                                 {
                                                     id: "ColumnName",
                                                     fillspace: true,
                                                     header: app.i18n.TableEditor.ColumnName,
                                                     template: function (obj) {
                                                         if (!obj.IsKey) return obj.ColumnName;
-                                                        return "<span class='webix_icon fa-key' style='color:gold'></span> "+obj.ColumnName;
+                                                        return "<span class='webix_icon fa-key' style='color:gold'></span> " + obj.ColumnName;
                                                     }
                                                 }
                                             ],
-                                            on: {
-                                                'onCheck': bind("_onCheck")
-                                            }
-                                        },
+                                        on: {
+                                            'onCheck': bind("_onCheck")
+                                        }
+                                    },
                                         { view: 'resizer' },
                                         {
-                                            
+
                                             height: 150,
                                             rows: [
-                                                
 
 
-                                                { type: "header", template: app.i18n.TableEditor.ExtendedLogic},
+
+                                                { type: "header", template: app.i18n.TableEditor.ExtendedLogic },
                                                 {
                                                     view: 'textarea',
                                                     id: 'text.extended'
@@ -88,7 +88,7 @@ webix.protoUI({
                                         {
                                             height: 45,
                                             cols: [
-                                                { view: "button", type: "iconButton", label: app.i18n.Save , icon: "floppy-o", width:115 ,on: { onItemClick: bind("saveTable")} },
+                                                { view: "button", type: "iconButton", label: app.i18n.Save, icon: "floppy-o", width: 115, on: { onItemClick: bind("saveTable")} },
                                                 {}
                                             ]
                                         }
@@ -99,7 +99,7 @@ webix.protoUI({
                                     rows: [
                                         {
                                             view: 'textarea',
-                                            id:'text.trigger'
+                                            id: 'text.trigger'
                                         }
                                     ]
                                 }
@@ -112,7 +112,7 @@ webix.protoUI({
     },
 
     load: function (connection, table) {
-    if (table) {
+        if (table) {
             this.enable();
             this.params = webix.copy(connection);
             this.params["TableName"] = table;
@@ -135,18 +135,18 @@ webix.protoUI({
         });
     },
 
-    _getOptions : function() {
+    _getOptions: function () {
         var segmented = $$("segmented.operation");
         var settings = segmented._settings || segmented.s;
         return settings.options;
     },
 
-    _setOptions:function(options) {
+    _setOptions: function (options) {
         var segmented = $$("segmented.operation");
         var settings = segmented._settings || segmented.s;
         settings.options = options;
     },
-    _refreshOptions:function() {
+    _refreshOptions: function () {
         $$("segmented.operation").refresh();
     },
 
@@ -159,7 +159,7 @@ webix.protoUI({
         this._refreshOptions();
     },
 
-    clearView:function() {
+    clearView: function () {
         $$("table.columns").clearAll();
         $$("text.trigger").setValue("");
         $$("text.extended").setValue("");
@@ -179,7 +179,7 @@ webix.protoUI({
         this.setOptions();
     },
 
-    buildOperationRecord:function(operation) {
+    buildOperationRecord: function (operation) {
         var data = this.data;
         var trigger = data[operation];
         var rezult = [];
@@ -204,14 +204,14 @@ webix.protoUI({
         return rezult;
     },
 
-    setOptions:function() {
+    setOptions: function () {
 
         var data = this.data;
         var optionValue;
         var options = [];
         var segment = $$('segmented.operation');
 
-        this.eachOperations(function(operation) {
+        this.eachOperations(function (operation) {
             var trigger = data[operation.id];
             if (!trigger) {
                 options.push(operation); //todo выключить опцию
@@ -230,8 +230,8 @@ webix.protoUI({
         segment.setValue(optionValue);
         this.onOperationChange(optionValue, "None");
     },
-    
-    fillTriggerText:function(operation) {
+
+    fillTriggerText: function (operation) {
         var trigger = this.data[operation];
         var triggerText = "";
         if (trigger && trigger.TriggerText) {
@@ -240,7 +240,7 @@ webix.protoUI({
         $$('text.trigger').setValue(triggerText);
     },
 
-    fillExtendedLogic: function(operation) {
+    fillExtendedLogic: function (operation) {
         var trigger = this.data[operation];
         var text = "";
         if (trigger && trigger.ExtendedLogic) {
@@ -255,7 +255,7 @@ webix.protoUI({
             settings = segmented._settings || segmented.s;
 
         var columnOption = settings.options[0];
-        columnOption.value = "<span class='webix_icon fa-columns'></span><span style='padding-left: 4px'>"+app.i18n.TableEditor.Columns+" "+ (tableName || "") + "</span>";
+        columnOption.value = "<span class='webix_icon fa-columns'></span><span style='padding-left: 4px'>" + app.i18n.TableEditor.Columns + " " + (tableName || "") + "</span>";
         $$('segmented.trigger').refresh();
     },
 
@@ -263,12 +263,13 @@ webix.protoUI({
 
         if (oldOperation != "None") {
             var trigger = this.data[oldOperation];
-            if(trigger) trigger.ExtendedLogic = $$('text.extended').getValue()+"";
+            if (trigger) trigger.ExtendedLogic = $$('text.extended').getValue() + "";
         }
         this.clearView();
         $$("table.columns").parse(this.records[operation]);
         this.fillTriggerText(operation);
         this.fillExtendedLogic(operation);
+        this.setCheckHeader();
     },
 
     eachOperations: function (fn) {
@@ -284,15 +285,15 @@ webix.protoUI({
         var trigger = this.data[$$('segmented.operation').getValue()];
         var extLogic = $$('text.extended').getValue();
 
-        if (trigger) { trigger.ExtendedLogic = extLogic+""; }
-        
+        if (trigger) { trigger.ExtendedLogic = extLogic + ""; }
+
         var data = this.data;
         var me = this;
 
-        ["Insert", "Update", "Delete"].forEach(function(e) {
+        ["Insert", "Update", "Delete"].forEach(function (e) {
             var record = me.records[e];
             var columns = [];
-            record.forEach(function(_column) {
+            record.forEach(function (_column) {
                 if (_column.Checked) {
                     columns.push(_column.ColumnName);
                 }
@@ -302,9 +303,9 @@ webix.protoUI({
             } else {
                 if (!data[e]) {
                     data[e] = {
-                        Operation:e,
+                        Operation: e,
                         TableName: data.TableName,
-                        ExtendedLogic: extLogic+""
+                        ExtendedLogic: extLogic + ""
                     };
                 }
                 data[e].Columns = columns;
@@ -325,12 +326,29 @@ webix.protoUI({
         webix.ajax().post(app.getUrl('SaveTable'), params, webix.bind(me.onSave, me));
     },
 
-    onSave: function (data) {
+    onSave: function(data) {
         var dto = JSON.parse(data);
         this.callEvent("onTableChange", [dto]);
-        
+
         this.fillData(data);
         this.enable();
+    },
+
+    setCheckHeader: function () {
+        var table = $$("table.columns");
+        var input = table.getHeaderNode("Checked").firstChild;
+        
+        var header = (table._active_headers||table.hj).cb;
+        
+        var checked = false;
+        table.data.each(function(rec) {
+            if (rec.Checked) {
+                checked = true;
+            }
+        });
+
+        input.checked = checked;
+        header.checked = checked;
     }
 
 
