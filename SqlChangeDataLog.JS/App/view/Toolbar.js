@@ -345,7 +345,7 @@ webix.protoUI({
             if (el.offsetWidth - pos.x < 25 && pos.y < 25) {
                 this.closeButton(button);
                 return;
-            } else if (el.offsetWidth - pos.x < 25 && pos.y > 35 && button.logCfg.warning) {
+            } else if (el.offsetWidth - pos.x < 25 && pos.y > 35 && button.config.logCfg.warning) {
                 this.createLogTable(button);
                 return;
             }
