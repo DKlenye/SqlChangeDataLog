@@ -78,7 +78,7 @@ webix.protoUI({
         var grid = $$("table.log");
 
        // grid.disable();
-        grid.showOverlay("Loading <span class='webix_icon fa-spinner fa-spin'></span>");
+        grid.showOverlay(app.i18n.Loading+" <span class='webix_icon fa-spinner fa-spin'></span>");
     },
     _onAfterLoad: function() {
         var grid = $$("table.log");

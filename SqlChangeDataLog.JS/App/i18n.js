@@ -2,6 +2,7 @@ app.i18n = {
     stateName: "locale",
     defaultLocale: "ru-RU",
     "en-US": {
+        Loading:"Loading",
         Ok: "Ok",
         Cancel: "Cancel",
         Save:"Save",
@@ -48,9 +49,17 @@ app.i18n = {
             Tables: "Tables",
             Logging:"Logging",
             NotLogging:"Not Logging"
+        },
+        UserTable: {
+            Users:"Users",
+            Login:"Login",
+            Phone:"Phone",
+            Email:"Email",
+            Name:"Name"
         }
     },
     "ru-RU": {
+        Loading:"Загрузка",
         Ok: "Ок",
         Cancel: "Отмена",
         Save: "Сохранить",
@@ -97,6 +106,13 @@ app.i18n = {
             Tables: "Таблицы",
             Logging:"Логгируются",
             NotLogging:"Не логгируются"
+        },
+        UserTable: {
+            Users: "Пользователи",
+            Login: "Логин",
+            Phone: "Телефон",
+            Email: "Почтовый адрес",
+            Name: "ФИО"
         }
     },
     setLocale: function (locale) {

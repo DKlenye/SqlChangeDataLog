@@ -55,6 +55,7 @@
     <Content Include="App\skin.js" />
     <Content Include="App\i18n.js" />
     <Content Include="App\settings.js" />
+    <Content Include="App\view\Users.js" />
     <Content Include="App\view\LogDetails.js" />
     <Content Include="App\view\LogTable.js" />
     <Content Include="App\view\TableEditor.js" />

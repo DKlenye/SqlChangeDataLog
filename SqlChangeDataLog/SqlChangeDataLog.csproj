@@ -36,6 +36,8 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.DirectoryServices" />
+    <Reference Include="System.DirectoryServices.AccountManagement" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -51,6 +53,7 @@
     <Compile Include="Dtos\TableListDto.cs" />
     <Compile Include="Dtos\TriggerDto.cs" />
     <Compile Include="Dtos\TriggerTextDto.cs" />
+    <Compile Include="Dtos\UserDto.cs" />
     <Compile Include="Extensions\DapperQueryObjectExtensions.cs" />
     <Compile Include="Extensions\StringApplyTemplateExtension.cs" />
     <Compile Include="Filter.cs" />
@@ -58,6 +61,7 @@
     <Compile Include="Queries\AbstractQuery.cs" />
     <Compile Include="Queries\SelectTableDto.cs" />
     <Compile Include="Queries\SelectTableListDto.cs" />
+    <Compile Include="Queries\SelectUsers.cs" />
     <Compile Include="QueryObject.cs" />
     <Compile Include="QueryObjects\DropTrigger.cs" />
     <Compile Include="QueryObjects\CreateChangeLogTable.cs" />
@@ -69,6 +73,7 @@
     <Compile Include="QueryObjects\SelectPrimaryKey.cs" />
     <Compile Include="QueryObjects\SelectTables.cs" />
     <Compile Include="QueryObjects\SelectTriggerText.cs" />
+    <Compile Include="QueryObjects\SelectLogUsers.cs" />
     <Compile Include="Sort.cs" />
     <Compile Include="Triggers\DeleteSqlTemplates.cs" />
     <Compile Include="Triggers\InsertSqlTemplates.cs" />

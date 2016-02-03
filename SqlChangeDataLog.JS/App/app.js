@@ -50,6 +50,11 @@ var startUI = function () {
                                 id: "viewscroll.tablesettings",
                                 icon: "bars",
                                 value: app.i18n.TableSettings
+                            },
+                            {
+                                id:"viewscroll.users",
+                                icon:"users",
+                                value: app.i18n.UserTable.Users
                             }
                             
                         ],
@@ -101,6 +106,15 @@ var startUI = function () {
                                         }
                                     }
                                 ]
+                            },
+                            {
+                                id: "viewscroll.users",
+                                cols: [
+                                    {
+                                        view: "view.userstable",
+                                        id: "usertable"
+                                    }
+                                ]
                             }
                         ]
                     }
@@ -129,6 +143,7 @@ var onToolbarActivate = function (logCfg) {
 
     app.connection = logCfg;
     $$('table_list').load(logCfg);
+    $$('usertable').load(logCfg);
     $$('logtable').clearFilter();
     $$('logtable').load(logCfg);
     $$('table.log').markSorting("idChangeLog", "desc");

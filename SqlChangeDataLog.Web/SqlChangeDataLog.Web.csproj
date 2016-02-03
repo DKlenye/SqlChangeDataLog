@@ -120,6 +120,9 @@
     <Compile Include="Handlers\SelectTableList.ashx.cs">
       <DependentUpon>SelectTableList.ashx</DependentUpon>
     </Compile>
+    <Compile Include="Handlers\SelectLogUsers.ashx.cs">
+      <DependentUpon>SelectLogUsers.ashx</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -154,7 +157,9 @@
       <Name>SqlChangeDataLog</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Handlers\SelectLogUsers.ashx" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
   <ProjectExtensions>
@@ -163,7 +168,7 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>2136</DevelopmentServerPort>
+          <DevelopmentServerPort>48746</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>
           </IISUrl>
