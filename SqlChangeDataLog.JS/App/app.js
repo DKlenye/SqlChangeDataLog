@@ -53,7 +53,7 @@ var startUI = function () {
                             },
                             {
                                 id:"viewscroll.users",
-                                icon:"users",
+                                icon:"user",
                                 value: app.i18n.UserTable.Users
                             }
                             
