@@ -7,7 +7,7 @@ namespace SqlChangeDataLog.Triggers
     {
         private const string OperationPattern = @"(?<=for\s+)insert|update|delete";
         private const string SelectXmlPattern = @"(?<=[(]\s*)SELECT.*FOR XML AUTO";
-        private const string ColumnsPattern = @"^.*?(?=\s*\n?\s*from)";
+        private const string ColumnsPattern = @"^.*?(?=\s*\n?\s+from)";
         private const string RemoveSelectPattern = @"\s*select\s+(top\s+\d+\s+)?";
         private const string RemoveBracketsPattern = @"[\[\]]";
         private const string ExtendedLogicPattern = @"(?<=as\s+begin\s+).*?(?=declare\s+@xml|insert\s+into)";
