@@ -14,6 +14,7 @@ webix.protoUI({
                     view: "datatable",
                     id: "table.table_list",
                     select: "row",
+                    resizeColumn: true,
                     columns: [
                         {
                             id: 'Operations',
@@ -42,8 +43,17 @@ webix.protoUI({
 
                             }
                         },
-                        { id: 'Name', fillspace: true, header: [app.i18n.TableList.Tables, { content: "textFilter" }], sort: "string" }
+                        { id: 'Name', fillspace: true, header: [app.i18n.TableList.Tables, { content: "textFilter" }], sort: "string" },
+                        { id: 'Description', fillspace: true, header: [app.i18n.Description, { content: "textFilter" }], sort: "string" }
                     ],
+                    scheme: {
+                        $init: function (obj) {
+                            var table = app.DescriptionMap[obj.Name];
+                            if (table) {
+                                obj.Description = table.Description;
+                            }
+                        }
+                    },
                     on: {
                         onBeforeLoad: bind("_onBeforeLoad"),
                         onAfterLoad: bind("_onAfterLoad"),

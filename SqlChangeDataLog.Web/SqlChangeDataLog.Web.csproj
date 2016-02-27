@@ -124,6 +124,9 @@
     <Compile Include="Handlers\SelectChangeLog.ashx.cs">
       <DependentUpon>SelectChangeLog.ashx</DependentUpon>
     </Compile>
+    <Compile Include="Handlers\SelectDescription.ashx.cs">
+      <DependentUpon>SelectDescription.ashx</DependentUpon>
+    </Compile>
     <Compile Include="Handlers\SelectTable.ashx.cs">
       <DependentUpon>SelectTable.ashx</DependentUpon>
     </Compile>
@@ -171,6 +174,7 @@
     <Content Include="Handlers\SelectLogUsers.ashx" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Handlers\SelectDescription.ashx" />
     <None Include="Properties\PublishProfiles\Local.pubxml" />
     <None Include="Properties\PublishProfiles\nsd-srv.pubxml" />
   </ItemGroup>

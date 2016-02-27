@@ -2,14 +2,16 @@ webix.protoUI({
     name: 'view.logdetails',
     $init: function(config) {
         webix.extend(this.defaults, {
-            disabled:true,
+            disabled: true,
             rows: [
                 {
-                    id:"table.logdetails",
+                    id: "table.logdetails",
                     view: 'datatable',
                     resizeColumn: true,
+                    headermenu: { width: 200 },
                     columns: [
                         { id: "Column", header: app.i18n.LogDetails.Column, fillspace: 0.5 },
+                        { id: "Description", header:app.i18n.Description , fillspace: 1.5 },
                         { id: "OldValue", header: app.i18n.LogDetails.OldValue, fillspace: 1 },
                         { id: "NewValue", header: app.i18n.LogDetails.NewValue, fillspace: 1 }
                     ]
@@ -29,9 +31,10 @@ webix.protoUI({
         }
     },
 
-    parseXml:function(data) {
+    parseXml: function (data) {
+        var description = app.DescriptionMap[data.table] || {};
         var parseFn = this["parse_" + data.changeType];
-        var dataObject = parseFn.call(this, data.description);
+        var dataObject = parseFn.call(this, data.description, description.Columns || {});
         var table = $$('table.logdetails');
         table.clearAll();
         table.parse(dataObject);
@@ -51,19 +54,20 @@ webix.protoUI({
         return rezult;
     },
 
-    parse_I: function(xml) {
+    parse_I: function (xml, description) {
         var obj = this.xmlToObject(xml);
         var rezult = [];
         for (var i in obj) {
             rezult.push({
-                Column:i,
+                Column: i,
+                Description:description[i],
                 NewValue:obj[i]
             });
         }
         return rezult;
     },
 
-    parse_U: function (xml) {
+    parse_U: function (xml, description) {
         var splitIndex = xml.indexOf('>') + 1;
         var _new = this.xmlToObject(xml.substring(0, splitIndex));
         var _old = this.xmlToObject(xml.substring(splitIndex, xml.length));
@@ -82,6 +86,7 @@ webix.protoUI({
         for (var i in map) {
             rezult.push({
                 Column: i,
+                Description: description[i],
                 OldValue: webix.isUndefined(_old[i]) ? 'NULL' : _old[i],
                 NewValue: webix.isUndefined(_new[i]) ? 'NULL' : _new[i],
                 $css: _old[i] == _new[i] ? "" : { "background-color": "papayawhip" }
@@ -91,12 +96,13 @@ webix.protoUI({
         return rezult;
     },
 
-    parse_D:function(xml) {
+    parse_D: function (xml, description) {
         var obj = this.xmlToObject(xml);
         var rezult = [];
         for (var i in obj) {
             rezult.push({
                 Column: i,
+                Description: description[i],
                 OldValue: obj[i]
             });
         }

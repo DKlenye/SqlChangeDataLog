@@ -48,6 +48,7 @@
   <ItemGroup>
     <Compile Include="Commands\SaveTable.cs" />
     <Compile Include="Dtos\ChangeLogDto.cs" />
+    <Compile Include="Dtos\DescriptionDto.cs" />
     <Compile Include="Dtos\PrimaryKeyDto.cs" />
     <Compile Include="Dtos\TableDto.cs" />
     <Compile Include="Dtos\TableListDto.cs" />
@@ -71,6 +72,7 @@
     <Compile Include="QueryObjects\SelectColumns.cs" />
     <Compile Include="QueryObjects\SelectLogTrigger.cs" />
     <Compile Include="QueryObjects\SelectPrimaryKey.cs" />
+    <Compile Include="QueryObjects\SelectDescription.cs" />
     <Compile Include="QueryObjects\SelectTables.cs" />
     <Compile Include="QueryObjects\SelectTriggerText.cs" />
     <Compile Include="QueryObjects\SelectLogUsers.cs" />

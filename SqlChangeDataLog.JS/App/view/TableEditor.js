@@ -63,6 +63,11 @@ webix.protoUI({
                                                         if (!obj.IsKey) return obj.ColumnName;
                                                         return "<span class='webix_icon fa-key' style='color:gold'></span> " + obj.ColumnName;
                                                     }
+                                                },
+                                                {
+                                                    id: "Description",
+                                                    fillspace: true,
+                                                    header: app.i18n.Description
                                                 }
                                             ],
                                         on: {
@@ -181,6 +186,10 @@ webix.protoUI({
 
     buildOperationRecord: function (operation) {
         var data = this.data;
+
+        var description = app.DescriptionMap[data.TableName] || {};
+        var descriptionColumns = description.Columns || {};
+
         var trigger = data[operation];
         var rezult = [];
 
@@ -196,6 +205,7 @@ webix.protoUI({
         data.Columns.forEach(function (column) {
             rezult.push({
                 ColumnName: column,
+                Description:descriptionColumns[column],
                 IsKey: isKey(column),
                 Checked: isChecked(column)
             });

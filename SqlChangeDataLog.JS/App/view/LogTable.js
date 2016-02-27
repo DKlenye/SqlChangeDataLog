@@ -14,6 +14,7 @@ webix.protoUI({
                     view: 'datatable',
                     id: 'table.log',
                     resizeColumn: true,
+                    headermenu: { width: 200},
                     columns: [
                         { id: "idChangeLog", header: [app.i18n.LogTable.idChangeLog, { content: "serverFilter" }], width: 80, sort: 'server' },
                         { id: "date", header: [app.i18n.LogTable.date, { content: "serverFilter" }], width: 150, sort: 'server' },
@@ -37,12 +38,19 @@ webix.protoUI({
                             }
                         },
                         { id: "table", header: [app.i18n.LogTable.table, { content: "serverFilter" }], fillspace: true },
+                        { id: "Description", header: app.i18n.Description, fillspace: true },
                         { id: "idString", header: [app.i18n.LogTable.idString, { content: "serverFilter" }], width: 120 }
-                    ],
+],
                     datathrottle: 50,
                     scheme: {
                         $init: function(obj) {
                             obj.date = dateToString(new Date(obj.date));
+                            
+                            var table = app.DescriptionMap[obj.table];
+                            if (table) {
+                                obj.Description = table.Description;
+                            }
+
                         }
                     },
                     on: {

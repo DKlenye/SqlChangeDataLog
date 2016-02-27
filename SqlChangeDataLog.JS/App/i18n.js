@@ -11,7 +11,8 @@ app.i18n = {
         Insert: "Insert",
         Delete: "Delete",
         Update: "Update",
-        All:"All",
+        All: "All",
+        Description:"Description",
         Toolbar: {
             LabelWidth: 80,
             Server: "server",
@@ -69,6 +70,7 @@ app.i18n = {
         Delete: "Удаление",
         Update: "Изменение",
         All: "Все",
+        Description: "Примечание",
         Toolbar: {
             LabelWidth:110,
             Server: "Сервер",

@@ -52,8 +52,8 @@ namespace SqlChangeDataLog
             var me = this;
             return GetType().GetProperties().All(x =>
             {
-                var value = x.GetValue(me, null).ToString();
-                return String.IsNullOrEmpty(value) || value == "null";
+                var value = x.GetValue(me, null);
+                return value==null || String.IsNullOrEmpty(value.ToString()) || value.ToString() == "null";
             });
         }
     

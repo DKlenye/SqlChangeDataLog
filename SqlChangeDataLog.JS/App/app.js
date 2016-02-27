@@ -15,7 +15,21 @@ webix.ready(function () {
            webix.delay(startUI, this, [], 300);
        });
 
-
+    app.Description = new webix.DataCollection();
+    
+    app.Description.attachEvent('onAfterLoad', function () {
+        app.DescriptionMap = {};
+        app.Description.data.each(function(r) {
+            if (!app.DescriptionMap[r.TableName]) {
+                app.DescriptionMap[r.TableName] = { Columns: {} };
+            }
+            if (r.ColumnName) {
+                app.DescriptionMap[r.TableName].Columns[r.ColumnName] = r.Description;
+            } else {
+                app.DescriptionMap[r.TableName].Description = r.Description;
+            }
+        });
+    });
 });
 
 
@@ -142,11 +156,17 @@ var onToolbarActivate = function (logCfg) {
     }
 
     app.connection = logCfg;
-    $$('table_list').load(logCfg);
-    $$('usertable').load(logCfg);
-    $$('logtable').clearFilter();
-    $$('logtable').load(logCfg);
-    $$('table.log').markSorting("idChangeLog", "desc");
+    app.Description.load("post->" + app.getUrl("SelectDescription"), function() {
+
+        $$('table_list').load(logCfg);
+        $$('usertable').load(logCfg);
+        $$('logtable').clearFilter();
+        $$('logtable').load(logCfg);
+        $$('table.log').markSorting("idChangeLog", "desc");
+
+    }, logCfg);
+    
+    
 };
 
 var onTableSelect = function(table) {
