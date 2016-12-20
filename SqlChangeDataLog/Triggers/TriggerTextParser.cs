@@ -23,8 +23,12 @@ namespace SqlChangeDataLog.Triggers
 
         public IEnumerable<string> ParseColumns()
         {
+
+            var regex0 = CreateRegex(ExtendedLogicPattern);
+            var textWithoutExtendedLogic = regex0.Replace(Text, "");
+
             var regex1 = CreateRegex(SelectXmlPattern);
-            var selectXml = regex1.Match(Text).ToString();
+            var selectXml = regex1.Match(textWithoutExtendedLogic).ToString();
 
             var regex2 = CreateRegex(ColumnsPattern);
             var selectColumns = regex2.Match(selectXml).ToString();

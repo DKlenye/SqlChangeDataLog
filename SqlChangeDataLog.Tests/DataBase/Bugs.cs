@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using NUnit.Framework;
 using SqlChangeDataLog.Commands;
 using SqlChangeDataLog.Extensions;
@@ -46,5 +47,38 @@ namespace SqlChangeDataLog.Tests.DataBase
             var dto = new SelectTableDto(Connection, Bug1TableName).Query();
             Assert.AreEqual(dto.Insert.Columns.Count(),5);
         }
+
+        [Test]
+        public void Bug2_AfterSaveTriggerColumnsInDtoNotAll()
+        {
+            var tableDto = new SelectTableDto(Connection, Bug1TableName).Query();
+            tableDto.Insert = new Trigger()
+            {
+                Columns = new[] { "IdFondTransfer", "IdFondMoveFrom", "IdFondFrom", "IdFondMoveTo", "IdFondTo" },
+                Operation = "Insert",
+                LogTableName = LogTableName,
+                TableName = Bug1TableName,
+                ExtendedLogic = @"
+                    IF((Select COUNT(*) FROM shipment_Log Where userAccount = USER AND MessageText LIKE 'Вход в программу(v 3.3.36.492)')=0)	 
+	                BEGIN	
+	                RAISERROR('Данная версия программы является устаревшей.',16,1);
+	                ROLLBACK TRANSACTION
+	                RETURN 
+	                END;
+                --IF ((SELECT GETDATE())>'20160701')	 
+                --	BEGIN	
+                --	RAISERROR('В связи с проведением деноминации, данная версия программы является устаревшей.  Функции оформления будут не доступны до --9.00',16,1);
+                --	ROLLBACK TRANSACTION
+                --	RETURN 
+                --	END;
+                "
+                                
+            };
+
+            new SaveTable(Connection, tableDto).Execute();
+            var dto = new SelectTableDto(Connection, Bug1TableName).Query();
+            Assert.AreEqual(dto.Insert.Columns.Count(), 5);
+        }
+
     }
 }
