@@ -12,6 +12,7 @@ webix.protoUI({
             rows: [
                 {
                     view: 'datatable',
+                    navigation: true,
                     id: 'table.log',
                     resizeColumn: true,
                     headermenu: { width: 200},

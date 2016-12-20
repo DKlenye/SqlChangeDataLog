@@ -12,6 +12,7 @@ webix.protoUI({
             rows: [
                 {
                     view: "datatable",
+                    navigation: true,
                     id: "table.table_list",
                     select: "row",
                     resizeColumn: true,
