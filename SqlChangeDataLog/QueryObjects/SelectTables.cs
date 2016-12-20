@@ -4,7 +4,7 @@
     {
         public QueryObject All()
         {
-            return new QueryObject( @"select name from sysobjects where xtype='U'");
+            return new QueryObject( @"select name from sysobjects where xtype='U' order by name");
         }
     }
 }
